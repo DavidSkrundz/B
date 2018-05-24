@@ -1,0 +1,28 @@
+TEST_FILES := $(shell find $(TESTS_DIR) -name '*.b')
+
+LEX_TESTS := $(patsubst %.b, %.lex.test, $(TEST_FILES))
+PARSE_TESTS := $(patsubst %.b, %.parse.test, $(TEST_FILES))
+RESOLVE_TESTS := $(patsubst %.b, %.resolve.test, $(TEST_FILES))
+C_TESTS := $(patsubst %.b, %.c.test, $(TEST_FILES))
+
+ALL_TESTS := $(LEX_TESTS) $(PARSE_TESTS) $(RESOLVE_TESTS) $(C_TESTS)
+
+.PHONY: test
+test: $(ALL_TESTS)
+	@echo "All tests passed."
+
+%.lex.test: %.b %.lex $(BC_NEW)
+	@$(BC_NEW) -l $< > $(patsubst %.lex.test, %.lex.gen, $@) 2>&1 || (exit 0)
+	@diff -q $(word 2, $^) $(patsubst %.lex.test, %.lex.gen, $@) >/dev/null || (echo "Test $@ failed" && exit 1)
+
+%.parse.test: %.b %.parse $(BC_NEW)
+	@$(BC_NEW) -p $< > $(patsubst %.parse.test, %.parse.gen, $@) 2>&1 || (exit 0)
+	@diff -q $(word 2, $^) $(patsubst %.parse.test, %.parse.gen, $@) >/dev/null || (echo "Test $@ failed" && exit 1)
+
+%.resolve.test: %.b %.resolve $(BC_NEW)
+	@$(BC_NEW) -r $< > $(patsubst %.resolve.test, %.resolve.gen, $@) 2>&1 || (exit 0)
+	@diff -q $(word 2, $^) $(patsubst %.resolve.test, %.resolve.gen, $@) >/dev/null || (echo "Test $@ failed" && exit 1)
+
+%.c.test: %.b %.c $(BC_NEW)
+	@$(BC_NEW) -g $< > $(patsubst %.c.test, %.c.gen, $@) 2>&1 || (exit 0)
+	@diff -q $(word 2, $^) $(patsubst %.c.test, %.c.gen, $@) >/dev/null || (echo "Test $@ failed" && exit 1)

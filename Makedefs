@@ -1,0 +1,19 @@
+# Using:
+ifeq (0, 1)
+#########################
+
+TOPDIR := <path to root>
+include $(TOPDIR)/Makedefs
+
+#########################
+endif
+
+
+# Ensure TOPDIR is defined
+ifeq ($(origin TOPDIR), undefined)
+  $(error TOPDIR is undefined)
+endif
+
+
+include $(TOPDIR)/Make.defaults
+include $(TOPDIR)/Make.rules

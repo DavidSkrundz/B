@@ -1,0 +1,8 @@
+(func (identifier main) (type (identifier Int))
+ (arguments
+ )
+ (block
+  (return (integer 0))
+ )
+)
+

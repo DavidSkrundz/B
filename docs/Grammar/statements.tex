@@ -1,0 +1,27 @@
+\section{Statements}
+
+\setlength{\grammarparsep}{20pt plus 1pt minus 1pt}
+\setlength{\grammarindent}{10em}
+\begin{grammar}
+
+<statement> ::= <statementBlock>
+\alt <statementIf>
+\alt <statementWhile>
+\alt <statementReturn>
+\alt <statementVar>
+\alt <statementAssign>
+\alt <expression>
+
+<statementIf> ::= `if' `(' <expression> `)' <statementBlock> <else>? `;'
+
+<else> ::= `else' ( <statementBlock> | <statementIf> )
+
+<statementWhile> ::= `while' `(' <expression> `)' <statementBlock> `;'
+
+<statementReturn> ::= `return' <expression>? `;'
+
+<statementVar> ::= <varDeclaration>
+
+<statementAssign> ::= <expression> `=` <expression> `;'
+
+\end{grammar}

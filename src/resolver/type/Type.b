@@ -1,0 +1,35 @@
+struct Type {
+	var kind: UInt;
+	var type: Void*;
+};
+
+struct TypeIdentifier {
+	var name: UInt8*;
+};
+
+struct TypePointer {
+	var base: Type*;
+};
+
+struct TypeFunction {
+	var returnType: Type*;
+	var argumentTypes: Type**;
+	var count: UInt;
+	var isVariadic: Bool;
+};
+
+func newType(): Type* {
+	return (Type*)xcalloc((UInt)1, sizeof(Type));
+};
+
+func newTypeIdentifier(): TypeIdentifier* {
+	return (TypeIdentifier*)xcalloc((UInt)1, sizeof(TypeIdentifier));
+};
+
+func newTypePointer(): TypePointer* {
+	return (TypePointer*)xcalloc((UInt)1, sizeof(TypePointer));
+};
+
+func newTypeFunction(): TypeFunction* {
+	return (TypeFunction*)xcalloc((UInt)1, sizeof(TypeFunction));
+};

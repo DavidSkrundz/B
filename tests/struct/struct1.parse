@@ -1,0 +1,6 @@
+(struct
+ (identifier MyStruct)
+ (fields
+ )
+)
+

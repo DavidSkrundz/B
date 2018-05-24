@@ -1,0 +1,21 @@
+# Clear builtin rules
+.SUFFIXES:
+
+# Goal defaults
+.DEFAULT_GOAL := all
+.PHONY: all
+.PHONY: clean
+
+# Directories
+BIN_DIR := bin
+BUILD_DIR := build
+TESTS_DIR := tests
+
+# Shell
+SHELL := /bin/bash
+
+# Flags
+CCFLAGS ?= -Wall -Werror -std=c99 -O3
+
+# Tools
+TEX := xelatex

@@ -1,0 +1,51 @@
+\section{Expressions}
+
+\setlength{\grammarparsep}{20pt plus 1pt minus 1pt}
+\setlength{\grammarindent}{10em}
+\begin{grammar}
+
+<expression> ::= <expressionLogicalOR>
+
+<expressionLogicalOR> ::= <expressionLogicalAND>
+\alt <expressionLogicalOR> `||' <expressionLogicalAND>
+
+<expressionLogicalAND> ::= <expressionEquality>
+\alt <expressionLogicalAND> `&&' <expressionEquality>
+
+<expressionEquality> ::= <expressionComparison>
+\alt <expressionEquality> `==' <expressionComparison>
+\alt <expressionEquality> `!=' <expressionComparison>
+
+<expressionComparison> ::= <expressionAdditive>
+\alt <expressionComparison> `<' <expressionAdditive>
+
+<expressionAdditive> ::= <expressionMultiplicative>
+\alt <expressionAdditive> `+' <expressionMultiplicative>
+\alt <expressionAdditive> `-' <expressionMultiplicative>
+
+<expressionMultiplicative> ::= <expressionCast>
+\alt <expressionMultiplicative> `*' <expressionCast>
+\alt <expressionMultiplicative> `/' <expressionCast>
+\alt <expressionMultiplicative> `&' <expressionCast>
+
+<expressionCast> ::= <expressionUnary>
+\alt `(' <type> `)' <expressionCast>
+
+<expressionUnary> ::= <expressionPostfix>
+\alt `sizeof' `(' <type> `)'
+\alt `*' <expressionCast>
+\alt `&' <expressionCast>
+
+<expressionPostfix> ::= <expressionPrimary>
+\alt <expressionPostfix> `(' <expressionList>? `)'
+\alt <expressionPostfix> `[' <expressionPrimary> `]'
+\alt <expressionPostfix> `->' <identifier>
+
+<expressionPrimary> ::= `(' <expression> `)'
+\alt <identifier>
+\alt `NULL'
+\alt `true' | `false'
+\alt [0-9]+
+\alt `"' [\^{}\textquotedbl\textbackslash n\textbackslash\textbackslash] `"'
+
+\end{grammar}

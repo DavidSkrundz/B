@@ -1,0 +1,24 @@
+\section{Declarations}
+
+\setlength{\grammarparsep}{20pt plus 1pt minus 1pt}
+\setlength{\grammarindent}{10em}
+\begin{grammar}
+
+<declaration> ::= <attribute>? <varDeclaration>
+\alt <attribute>? <structDeclaration>
+\alt <attribute>? <funcDeclaration>
+
+<varDeclaration> ::= `var' <identifier> `=' <expression> `;'
+\alt `var' <identifier> `:' <type> ( `=' <expression> )? `;'
+
+<structDeclaration> ::= `struct' <identifier> `{' <structField>* `}' `;'
+
+<structField> ::= `var' <identifier> `:' <type>`;'
+
+<funcDeclaration> ::= `func' <identifier> `(' <funcArgumentList>? `)' ( `:' <type> )? <statementBlock>? `;'
+
+<funcArgumentList> ::= <funcArgument> ( `,' <funcArgumentList> )?
+
+<funcArgument> ::= <identifier> `:' <type>
+
+\end{grammar}

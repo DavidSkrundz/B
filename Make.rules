@@ -1,0 +1,9 @@
+$(BIN_DIR):
+	@mkdir -p $@
+
+$(BUILD_DIR):
+	@mkdir -p $@
+
+%.pdf: %.tex
+	@$(TEX) $^
+	@$(TEX) $^
