@@ -17,93 +17,27 @@ func Lex(code: UInt8*, codeLength: UInt) {
 		} else if (*code == (UInt8)10) {
 			while (isspace(*code)) { code = (UInt8*)((UInt)code + sizeof(UInt8)); };
 		} else if (*code == (UInt8)44) {
-			token = newToken();
-			token->kind = TokenKind_Comma;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_Comma, &code);
 		} else if (*code == (UInt8)58) {
-			token = newToken();
-			token->kind = TokenKind_Colon;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_Colon, &code);
 		} else if (*code == (UInt8)59) {
-			token = newToken();
-			token->kind = TokenKind_Semicolon;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_Semicolon, &code);
 		} else if (*code == (UInt8)123) {
-			token = newToken();
-			token->kind = TokenKind_OpenCurly;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_OpenCurly, &code);
 		} else if (*code == (UInt8)125) {
-			token = newToken();
-			token->kind = TokenKind_CloseCurly;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_CloseCurly, &code);
 		} else if (*code == (UInt8)91) {
-			token = newToken();
-			token->kind = TokenKind_OpenBracket;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_OpenBracket, &code);
 		} else if (*code == (UInt8)93) {
-			token = newToken();
-			token->kind = TokenKind_CloseBracket;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_CloseBracket, &code);
 		} else if (*code == (UInt8)40) {
-			token = newToken();
-			token->kind = TokenKind_OpenParenthesis;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_OpenParenthesis, &code);
 		} else if (*code == (UInt8)41) {
-			token = newToken();
-			token->kind = TokenKind_CloseParenthesis;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_CloseParenthesis, &code);
 		} else if (*code == (UInt8)64) {
-			token = newToken();
-			token->kind = TokenKind_At;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_At, &code);
 		} else if (*code == (UInt8)42) {
-			token = newToken();
-			token->kind = TokenKind_Star;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_Star, &code);
 		} else if (*code == (UInt8)38) {
 			token = newToken();
 			token->kind = TokenKind_And;
@@ -131,13 +65,7 @@ func Lex(code: UInt8*, codeLength: UInt) {
 			_tokens[_tokenCount] = token;
 			_tokenCount = _tokenCount + (UInt)1;
 		} else if (*code == (UInt8)43) {
-			token = newToken();
-			token->kind = TokenKind_Plus;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_Plus, &code);
 		} else if (*code == (UInt8)45) {
 			token = newToken();
 			token->kind = TokenKind_Minus;
@@ -152,13 +80,7 @@ func Lex(code: UInt8*, codeLength: UInt) {
 			_tokens[_tokenCount] = token;
 			_tokenCount = _tokenCount + (UInt)1;
 		} else if (*code == (UInt8)47) {
-			token = newToken();
-			token->kind = TokenKind_Slash;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_Slash, &code);
 		} else if (*code == (UInt8)33) {
 			token = newToken();
 			token->kind = TokenKind_Not;
@@ -186,13 +108,7 @@ func Lex(code: UInt8*, codeLength: UInt) {
 			_tokens[_tokenCount] = token;
 			_tokenCount = _tokenCount + (UInt)1;
 		} else if (*code == (UInt8)60) {
-			token = newToken();
-			token->kind = TokenKind_LessThan;
-			token->value = code;
-			code = (UInt8*)((UInt)code + sizeof(UInt8));
-			token->length = (UInt)1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexToken(TokenKind_LessThan, &code);
 		} else if (*code == (UInt8)46) {
 			if (code[(UInt)1] == (UInt8)46 && code[(UInt)2] == (UInt8)46) {
 				token = newToken();
@@ -216,85 +132,25 @@ func Lex(code: UInt8*, codeLength: UInt) {
 			_tokens[_tokenCount] = token;
 			_tokenCount = _tokenCount + (UInt)1;
 		} else if (*code == (UInt8)48) {
-			token = newToken();
-			token->kind = TokenKind_IntegerLiteral;
-			token->value = code;
-			while (isdigit(*code)) { code = (UInt8*)((UInt)code + sizeof(UInt8)); };
-			token->length = (UInt)code - (UInt)token->value;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexIntegerLiteral(&code);
 		} else if (*code == (UInt8)49) {
-			token = newToken();
-			token->kind = TokenKind_IntegerLiteral;
-			token->value = code;
-			while (isdigit(*code)) { code = (UInt8*)((UInt)code + sizeof(UInt8)); };
-			token->length = (UInt)code - (UInt)token->value;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexIntegerLiteral(&code);
 		} else if (*code == (UInt8)50) {
-			token = newToken();
-			token->kind = TokenKind_IntegerLiteral;
-			token->value = code;
-			while (isdigit(*code)) { code = (UInt8*)((UInt)code + sizeof(UInt8)); };
-			token->length = (UInt)code - (UInt)token->value;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexIntegerLiteral(&code);
 		} else if (*code == (UInt8)51) {
-			token = newToken();
-			token->kind = TokenKind_IntegerLiteral;
-			token->value = code;
-			while (isdigit(*code)) { code = (UInt8*)((UInt)code + sizeof(UInt8)); };
-			token->length = (UInt)code - (UInt)token->value;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexIntegerLiteral(&code);
 		} else if (*code == (UInt8)52) {
-			token = newToken();
-			token->kind = TokenKind_IntegerLiteral;
-			token->value = code;
-			while (isdigit(*code)) { code = (UInt8*)((UInt)code + sizeof(UInt8)); };
-			token->length = (UInt)code - (UInt)token->value;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexIntegerLiteral(&code);
 		} else if (*code == (UInt8)53) {
-			token = newToken();
-			token->kind = TokenKind_IntegerLiteral;
-			token->value = code;
-			while (isdigit(*code)) { code = (UInt8*)((UInt)code + sizeof(UInt8)); };
-			token->length = (UInt)code - (UInt)token->value;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexIntegerLiteral(&code);
 		} else if (*code == (UInt8)54) {
-			token = newToken();
-			token->kind = TokenKind_IntegerLiteral;
-			token->value = code;
-			while (isdigit(*code)) { code = (UInt8*)((UInt)code + sizeof(UInt8)); };
-			token->length = (UInt)code - (UInt)token->value;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexIntegerLiteral(&code);
 		} else if (*code == (UInt8)55) {
-			token = newToken();
-			token->kind = TokenKind_IntegerLiteral;
-			token->value = code;
-			while (isdigit(*code)) { code = (UInt8*)((UInt)code + sizeof(UInt8)); };
-			token->length = (UInt)code - (UInt)token->value;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexIntegerLiteral(&code);
 		} else if (*code == (UInt8)56) {
-			token = newToken();
-			token->kind = TokenKind_IntegerLiteral;
-			token->value = code;
-			while (isdigit(*code)) { code = (UInt8*)((UInt)code + sizeof(UInt8)); };
-			token->length = (UInt)code - (UInt)token->value;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexIntegerLiteral(&code);
 		} else if (*code == (UInt8)57) {
-			token = newToken();
-			token->kind = TokenKind_IntegerLiteral;
-			token->value = code;
-			while (isdigit(*code)) { code = (UInt8*)((UInt)code + sizeof(UInt8)); };
-			token->length = (UInt)code - (UInt)token->value;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			lexIntegerLiteral(&code);
 		} else if (*code == (UInt8)65) {
 			lexStringLiteral(&code);
 		} else if (*code == (UInt8)66) {
@@ -420,6 +276,26 @@ func Lex(code: UInt8*, codeLength: UInt) {
 			exit(EXIT_FAILURE);
 		};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	};
+};
+
+func lexToken(kind: UInt, code: UInt8**) {
+	var token = newToken();
+	token->kind = kind;
+	token->value = *code;
+	*code = (UInt8*)((UInt)*code + sizeof(UInt8));
+	token->length = (UInt)1;
+	_tokens[_tokenCount] = token;
+	_tokenCount = _tokenCount + (UInt)1;
+};
+
+func lexIntegerLiteral(code: UInt8**) {
+	var token = newToken();
+	token->kind = TokenKind_IntegerLiteral;
+	token->value = *code;
+	while (isdigit(**code)) { *code = (UInt8*)((UInt)*code + sizeof(UInt8)); };
+	token->length = (UInt)*code - (UInt)token->value;
+	_tokens[_tokenCount] = token;
+	_tokenCount = _tokenCount + (UInt)1;
 };
 
 func lexStringLiteral(code: UInt8**) {
