@@ -131,129 +131,11 @@ func Lex(code: UInt8*, codeLength: UInt) {
 			code = (UInt8*)((UInt)code + sizeof(UInt8));
 			_tokens[_tokenCount] = token;
 			_tokenCount = _tokenCount + (UInt)1;
-		} else if (*code == (UInt8)48) {
+		} else if ((UInt8)47 < *code && *code < (UInt8)58) {
 			lexIntegerLiteral(&code);
-		} else if (*code == (UInt8)49) {
-			lexIntegerLiteral(&code);
-		} else if (*code == (UInt8)50) {
-			lexIntegerLiteral(&code);
-		} else if (*code == (UInt8)51) {
-			lexIntegerLiteral(&code);
-		} else if (*code == (UInt8)52) {
-			lexIntegerLiteral(&code);
-		} else if (*code == (UInt8)53) {
-			lexIntegerLiteral(&code);
-		} else if (*code == (UInt8)54) {
-			lexIntegerLiteral(&code);
-		} else if (*code == (UInt8)55) {
-			lexIntegerLiteral(&code);
-		} else if (*code == (UInt8)56) {
-			lexIntegerLiteral(&code);
-		} else if (*code == (UInt8)57) {
-			lexIntegerLiteral(&code);
-		} else if (*code == (UInt8)65) {
+		} else if ((UInt8)64 < *code && *code < (UInt8)91) {
 			lexStringLiteral(&code);
-		} else if (*code == (UInt8)66) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)67) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)68) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)69) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)70) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)71) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)72) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)73) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)74) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)75) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)76) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)77) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)78) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)79) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)80) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)81) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)82) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)83) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)84) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)85) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)86) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)87) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)88) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)89) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)90) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)97) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)98) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)99) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)100) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)101) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)102) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)103) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)104) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)105) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)106) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)107) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)108) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)109) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)110) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)111) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)112) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)113) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)114) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)115) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)116) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)117) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)118) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)119) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)120) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)121) {
-			lexStringLiteral(&code);
-		} else if (*code == (UInt8)122) {
+		} else if ((UInt8)96 < *code && *code < (UInt8)123) {
 			lexStringLiteral(&code);
 		} else if (*code == (UInt8)95) {
 			lexStringLiteral(&code);
@@ -274,7 +156,7 @@ func Lex(code: UInt8*, codeLength: UInt) {
 				fprintf(stderr, (char*)"Unexpected character: %02X%c", *code, 10);
 			};
 			exit(EXIT_FAILURE);
-		};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+		};;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	};
 };
 
