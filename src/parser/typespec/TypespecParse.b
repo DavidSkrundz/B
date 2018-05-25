@@ -11,8 +11,7 @@ func parseTypespec(tokens: Token***): Typespec* {
 		typespec->kind = TypespecKind_Identifier;
 		typespec->spec = (Void*)parseTypespecIdentifier(tokens);
 	} else { return (Typespec*)NULL; };
-	while ((**tokens)->kind == TokenKind_Star) {
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	while (checkToken(TokenKind_Star)) {
 		var typespecPointer = newTypespecPointer();
 		typespecPointer->base = typespec;
 		typespec = newTypespec();

@@ -1,50 +1,39 @@
 func parseStatementIf(tokens: Token***): StatementIf* {
-	if ((**tokens)->kind != TokenKind_If) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_If);
 	var statement = newStatementIf();
-	if ((**tokens)->kind != TokenKind_OpenParenthesis) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_OpenParenthesis);
 	statement->condition = parseExpression(tokens);
 	if (statement->condition == NULL) { return NULL; };
-	if ((**tokens)->kind != TokenKind_CloseParenthesis) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_CloseParenthesis);
 	statement->block = parseStatementBlock(tokens);
 	if (statement->block == NULL) { return NULL; };
-	if ((**tokens)->kind == TokenKind_Else) {
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	if (checkToken(TokenKind_Else)) {
 		if ((**tokens)->kind == TokenKind_If || (**tokens)->kind == TokenKind_OpenCurly) {
 			statement->elseBlock = parseStatement(tokens);
 			if (statement->elseBlock == NULL) { return NULL; };
 		} else { return NULL; };
 	};
-	if ((**tokens)->kind != TokenKind_Semicolon) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Semicolon);
 	return statement;
 };
 
 func parseStatementWhile(tokens: Token***): StatementWhile* {
-	if ((**tokens)->kind != TokenKind_While) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_While);
 	var statement = newStatementWhile();
-	if ((**tokens)->kind != TokenKind_OpenParenthesis) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_OpenParenthesis);
 	statement->condition = parseExpression(tokens);
 	if (statement->condition == NULL) { return NULL; };
-	if ((**tokens)->kind != TokenKind_CloseParenthesis) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_CloseParenthesis);
 	statement->block = parseStatementBlock(tokens);
-	if ((**tokens)->kind != TokenKind_Semicolon) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Semicolon);
 	return statement;
 };
 
 func parseStatementReturn(tokens: Token***): StatementReturn* {
-	if ((**tokens)->kind != TokenKind_Return) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Return);
 	var statement = newStatementReturn();
 	statement->expression = parseExpression(tokens);
-	if ((**tokens)->kind != TokenKind_Semicolon) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Semicolon);
 	return statement;
 };
 
@@ -60,19 +49,18 @@ func parseStatementExpression(tokens: Token***): StatementExpression* {
 	var expression = newStatementExpression();
 	expression->expression = parseExpression(tokens);
 	if (expression->expression == NULL) { return NULL; };
-	if ((**tokens)->kind != TokenKind_Semicolon) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
-	return expression;
+	if (checkToken(TokenKind_Semicolon)) {
+		return expression;
+	};
+	return NULL;
 };
 
 func parseStatementAssign(tokens: Token***): StatementAssign* {
 	var statement = newStatementAssign();
 	statement->lhs = parseExpression(tokens);
-	if ((**tokens)->kind != TokenKind_Assign) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Assign);
 	statement->rhs = parseExpression(tokens);
-	if ((**tokens)->kind != TokenKind_Semicolon) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Semicolon);
 	return statement;
 };
 
@@ -109,8 +97,7 @@ func parseStatement(tokens: Token***): Statement* {
 
 var MAX_STATEMENT_BLOCK_SIZE = (UInt)100;
 func parseStatementBlock(tokens: Token***): StatementBlock* {
-	if ((**tokens)->kind != TokenKind_OpenCurly) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_OpenCurly);
 	var block = newStatementBlock();
 	block->statements = (Statement**)xcalloc(MAX_STATEMENT_BLOCK_SIZE, sizeof(Statement*));
 	block->count = (UInt)0;
@@ -124,7 +111,6 @@ func parseStatementBlock(tokens: Token***): StatementBlock* {
 		block->statements[block->count] = statement;
 		block->count = block->count + (UInt)1;
 	};
-	if ((**tokens)->kind != TokenKind_CloseCurly) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_CloseCurly);
 	return block;
 };

@@ -1,7 +1,6 @@
 func parseExpressionPrimary(tokens: Token***): Expression* {
 	var expression = newExpression();
-	if ((**tokens)->kind == TokenKind_OpenParenthesis) {
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	if (checkToken(TokenKind_OpenParenthesis)) {
 		expression->kind = ExpressionKind_Group;
 		expression->expression = (Void*)parseExpression(tokens);
 		if ((**tokens)->kind != TokenKind_CloseParenthesis) { return NULL; };
@@ -11,8 +10,7 @@ func parseExpressionPrimary(tokens: Token***): Expression* {
 		var identifier = newExpressionIdentifier();
 		identifier->identifier = parseIdentifier(tokens);
 		expression->expression = (Void*)identifier;
-	} else if ((**tokens)->kind == TokenKind_NULL) {
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	} else if (checkToken(TokenKind_NULL)) {
 		expression->kind = ExpressionKind_NULL;
 	} else if ((**tokens)->kind == TokenKind_BooleanLiteral) {
 		expression->kind = ExpressionKind_BooleanLiteral;
@@ -38,8 +36,7 @@ func parseExpressionPrimary(tokens: Token***): Expression* {
 
 func parseExpressionFunctionCallArguments(tokens: Token***): ExpressionFunctionCall* {
 	var expression = newExpressionFunctionCall();
-	if ((**tokens)->kind != TokenKind_OpenParenthesis) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_OpenParenthesis);
 	expression->arguments = (Expression**)xcalloc(MAX_FUNC_ARGUMENT_COUNT, sizeof(Expression*));
 	expression->count = (UInt)0;
 	var loop = true;
@@ -52,31 +49,24 @@ func parseExpressionFunctionCallArguments(tokens: Token***): ExpressionFunctionC
 		if (argument == NULL) { return NULL; };
 		expression->arguments[expression->count] = argument;
 		expression->count = expression->count + (UInt)1;
-		if ((**tokens)->kind != TokenKind_Comma) {
-			loop = false;
-		} else {
-			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
-		};
+		loop = checkToken(TokenKind_Comma);
 	};
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_CloseParenthesis);
 	return expression;
 };
 
 func parseExpressionSubscript(tokens: Token***): ExpressionSubscript* {
 	var expression = newExpressionSubscript();
-	if ((**tokens)->kind != TokenKind_OpenBracket) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_OpenBracket);
 	expression->subscript = parseExpression(tokens);
 	if (expression->subscript == NULL) { return NULL; };
-	if ((**tokens)->kind != TokenKind_CloseBracket) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_CloseBracket);
 	return expression;
 };
 
 func parseExpressionArrow(tokens: Token***): ExpressionArrow* {
 	var expression = newExpressionArrow();
-	if ((**tokens)->kind != TokenKind_Arrow) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Arrow);
 	expression->field = parseIdentifier(tokens);
 	if (expression->field == NULL) { return NULL; };
 	return expression;
@@ -114,21 +104,17 @@ func parseExpressionPostfix(tokens: Token***): Expression* {
 };
 
 func parseExpressionUnary(tokens: Token***): Expression* {
-	if ((**tokens)->kind == TokenKind_Sizeof) {
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
-		if ((**tokens)->kind != TokenKind_OpenParenthesis) { return NULL; };
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	if (checkToken(TokenKind_Sizeof)) {
+		expectToken(TokenKind_OpenParenthesis);
 		var expr = newExpressionSizeof();
 		expr->type = parseTypespec(tokens);
 		if (expr->type == NULL) { return NULL; };
-		if ((**tokens)->kind != TokenKind_CloseParenthesis) { return NULL; };
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+		expectToken(TokenKind_CloseParenthesis);
 		var expression = newExpression();
 		expression->kind = ExpressionKind_Sizeof;
 		expression->expression = (Void*)expr;
 		return expression;
-	} else if ((**tokens)->kind == TokenKind_Star) {
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	} else if (checkToken(TokenKind_Star)) {
 		var expr = newExpressionDereference();
 		expr->expression = parseExpressionCast(tokens);
 		if (expr->expression == NULL) { return NULL; };
@@ -136,8 +122,7 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 		expression->kind = ExpressionKind_Dereference;
 		expression->expression = (Void*)expr;
 		return expression;
-	} else if ((**tokens)->kind == TokenKind_And) {
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	} else if (checkToken(TokenKind_And)) {
 		var expr = newExpressionReference();
 		expr->expression = parseExpressionCast(tokens);
 		if (expr->expression == NULL) { return NULL; };
@@ -152,8 +137,7 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 
 func parseExpressionCast(tokens: Token***): Expression* {
 	var save = *tokens;
-	if ((**tokens)->kind == TokenKind_OpenParenthesis) {
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	if (checkToken(TokenKind_OpenParenthesis)) {
 		var expression = newExpression();
 		expression->kind = ExpressionKind_Cast;
 		var expressionCast = newExpressionCast();
@@ -163,11 +147,10 @@ func parseExpressionCast(tokens: Token***): Expression* {
 			*tokens = save;
 			return parseExpressionUnary(tokens);
 		};
-		if ((**tokens)->kind != TokenKind_CloseParenthesis) {
+		if (checkToken(TokenKind_CloseParenthesis) == false) {
 			*tokens = save;
 			return parseExpressionUnary(tokens);
 		};
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		expressionCast->expression = parseExpressionCast(tokens);
 		if (expressionCast->expression == NULL) { return NULL; };
 		return expression;

@@ -1,27 +1,22 @@
 func parseDeclarationVar(tokens: Token***, declaration: Declaration*): DeclarationVar* {
-	if ((**tokens)->kind != TokenKind_Var) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Var);
 	declaration->name = parseIdentifier(tokens);
 	if (declaration->name == NULL) { return NULL; };
 	var decl = newDeclarationVar();
-	if ((**tokens)->kind == TokenKind_Colon) {
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	if (checkToken(TokenKind_Colon)) {
 		decl->type = parseTypespec(tokens);
 	};
-	if ((**tokens)->kind == TokenKind_Assign) {
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	if (checkToken(TokenKind_Assign)) {
 		decl->value = parseExpression(tokens);
 	};
-	if ((**tokens)->kind != TokenKind_Semicolon) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Semicolon);
 	if (decl->type == NULL && decl->value == NULL) { return NULL; };
 	return decl;
 };
 
 var MAX_STRUCT_FIELD_COUNT = (UInt)100;
 func parseDeclarationStructFields(tokens: Token***): DeclarationStructFields* {
-	if ((**tokens)->kind != TokenKind_OpenCurly) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_OpenCurly);
 	var fields = newDeclarationStructFields();
 	fields->fields = (Declaration**)xcalloc(MAX_STRUCT_FIELD_COUNT, sizeof(Declaration*));
 	fields->count = (UInt)0;
@@ -36,6 +31,7 @@ func parseDeclarationStructFields(tokens: Token***): DeclarationStructFields* {
 		fields->fields[fields->count] = varDecl;
 		fields->count = fields->count + (UInt)1;
 	};
+	expectToken(TokenKind_CloseCurly);
 	return fields;
 };
 
@@ -43,8 +39,7 @@ func parseDeclarationFuncArgument(tokens: Token***): DeclarationFuncArg* {
 	var arg = newDeclarationFuncArg();
 	arg->name = parseIdentifier(tokens);
 	if (arg->name == NULL) { return NULL; };
-	if ((**tokens)->kind != TokenKind_Colon) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Colon);
 	arg->type = parseTypespec(tokens);
 	if (arg->type == NULL) { return NULL; };
 	return arg;
@@ -52,11 +47,10 @@ func parseDeclarationFuncArgument(tokens: Token***): DeclarationFuncArg* {
 
 var MAX_FUNC_ARGUMENT_COUNT = (UInt)10;
 func parseDeclarationFuncArguments(tokens: Token***): DeclarationFuncArgs* {
-	if ((**tokens)->kind != TokenKind_OpenParenthesis) { return NULL; };
+	expectToken(TokenKind_OpenParenthesis);
 	var args = newDeclarationFuncArgs();
 	args->args = (DeclarationFuncArg**)xcalloc(MAX_FUNC_ARGUMENT_COUNT, sizeof(DeclarationFuncArg*));
 	args->count = (UInt)0;
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 	if (args->count == MAX_FUNC_ARGUMENT_COUNT) {
 		fprintf(stderr, (char*)"Too many arguments in func%c", 10);
 		exit(EXIT_FAILURE);
@@ -66,8 +60,7 @@ func parseDeclarationFuncArguments(tokens: Token***): DeclarationFuncArgs* {
 		args->args[args->count] = arg;
 		args->count = args->count + (UInt)1;
 	};
-	while ((**tokens)->kind == TokenKind_Comma) {
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	while (checkToken(TokenKind_Comma)) {
 		if (args->count == MAX_FUNC_ARGUMENT_COUNT) {
 			fprintf(stderr, (char*)"Too many arguments in func%c", 10);
 			exit(EXIT_FAILURE);
@@ -78,25 +71,21 @@ func parseDeclarationFuncArguments(tokens: Token***): DeclarationFuncArgs* {
 			args->count = args->count + (UInt)1;
 		};
 	};
-	if ((**tokens)->kind == TokenKind_Ellipses) {
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	if (checkToken(TokenKind_Ellipses)) {
 		args->isVariadic = true;
 	};
-	if ((**tokens)->kind != TokenKind_CloseParenthesis) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_CloseParenthesis);
 	return args;
 };
 
 func parseDeclarationFunc(tokens: Token***, declaration: Declaration*): DeclarationFunc* {
-	if ((**tokens)->kind != TokenKind_Func) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Func);
 	declaration->name = parseIdentifier(tokens);
 	if (declaration->name == NULL) { return NULL; };
 	var decl = newDeclarationFunc();
 	decl->args = parseDeclarationFuncArguments(tokens);
 	if (decl->args == NULL) { return NULL; };
-	if ((**tokens)->kind == TokenKind_Colon) {
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	if (checkToken(TokenKind_Colon)) {
 		decl->returnType = parseTypespec(tokens);
 		if (decl->returnType == NULL) { return NULL; };
 	};
@@ -104,25 +93,20 @@ func parseDeclarationFunc(tokens: Token***, declaration: Declaration*): Declarat
 		decl->block = parseStatementBlock(tokens);
 		if (decl->block == NULL) { return NULL; };
 	};
-	if ((**tokens)->kind != TokenKind_Semicolon) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Semicolon);
 	return decl;
 };
 
 func parseDeclarationStruct(tokens: Token***, declaration: Declaration*): DeclarationStruct* {
-	if ((**tokens)->kind != TokenKind_Struct) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Struct);
 	declaration->name = parseIdentifier(tokens);
 	if (declaration->name == NULL) { return NULL; };
 	var decl = newDeclarationStruct();
 	if ((**tokens)->kind == TokenKind_OpenCurly) {
 		decl->fields = parseDeclarationStructFields(tokens);
 		if (decl->fields == NULL) { return NULL; };
-		if ((**tokens)->kind != TokenKind_CloseCurly) { return NULL; };
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 	};
-	if ((**tokens)->kind != TokenKind_Semicolon) { return NULL; };
-	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+	expectToken(TokenKind_Semicolon);
 	return decl;
 };
 

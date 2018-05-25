@@ -31,3 +31,23 @@ func Parse() {
 		exit(EXIT_FAILURE);
 	};
 };
+
+func expectToken(kind: UInt) {
+	if ((*_tokens)->kind != kind) {
+		printDeclarations(_declarations, _declarationCount);
+		fprintf(stderr, (char*)"%c", 10);
+		fprintf(stderr, (char*)"Unexpected token: ");
+		printToken_error(*_tokens);
+		fprintf(stderr, (char*)", expecting %zu%c", kind, 10);
+		exit(EXIT_FAILURE);
+	};
+	_tokens = (Token**)((UInt)_tokens + sizeof(Token*));
+};
+
+func checkToken(kind: UInt): Bool {
+	if ((*_tokens)->kind != kind) {
+		return false;
+	};
+	_tokens = (Token**)((UInt)_tokens + sizeof(Token*));
+	return true;
+};
