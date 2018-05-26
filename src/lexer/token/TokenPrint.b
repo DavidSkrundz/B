@@ -83,6 +83,8 @@ func _printToken(token: Token*, stream: FILE*) {
 		fprintf(stream, (char*)"EQUAL (==)");
 	} else if (token->kind == TokenKind_LessThan) {
 		fprintf(stream, (char*)"LESSTHAN (<)");
+	} else if (token->kind == TokenKind_LessThanEqual) {
+		fprintf(stream, (char*)"LESSTHANEQUAL (<=)");
 	} else if (token->kind == TokenKind_NotEqual) {
 		fprintf(stream, (char*)"NOTEQUAL (!=)");
 	} else if (token->kind == TokenKind_Identifier) {
@@ -96,5 +98,5 @@ func _printToken(token: Token*, stream: FILE*) {
 	} else {
 		fprintf(stderr, (char*)"Unknown token kind: %zd%c", token->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 };

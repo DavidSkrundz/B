@@ -39,6 +39,7 @@ var TokenKind_Slash = 0;
 var TokenKind_Not = 0;
 var TokenKind_Equal = 0;
 var TokenKind_LessThan = 0;
+var TokenKind_LessThanEqual = 0;
 var TokenKind_NotEqual = 0;
 
 var TokenKind_Identifier = 0;
@@ -90,6 +91,7 @@ func InitTokenKinds() {
 	TokenKind_Not = counter; counter = counter + 1;
 	TokenKind_Equal = counter; counter = counter + 1;
 	TokenKind_LessThan = counter; counter = counter + 1;
+	TokenKind_LessThanEqual = counter; counter = counter + 1;
 	TokenKind_NotEqual = counter; counter = counter + 1;
 	
 	TokenKind_Identifier = counter; counter = counter + 1;

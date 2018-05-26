@@ -170,6 +170,8 @@ func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): 
 		return resolveExpressionInfixComparison(expression, expectedType);
 	} else if (expression->operator->kind == TokenKind_LessThan) {
 		return resolveExpressionInfixComparison(expression, expectedType);
+	} else if (expression->operator->kind == TokenKind_LessThanEqual) {
+		return resolveExpressionInfixComparison(expression, expectedType);
 	} else if (expression->operator->kind == TokenKind_Plus) {
 		return resolveExpressionInfixAddition(expression, expectedType);
 	} else if (expression->operator->kind == TokenKind_Minus) {
@@ -187,7 +189,7 @@ func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): 
 	} else {
 		fprintf(stderr, (char*)"Invalid operator %zu%c", expression->operator->kind, 10);
 		abort();
-	};;;;;;;;;;
+	};;;;;;;;;;;
 };
 
 func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType: Type*): Type* {

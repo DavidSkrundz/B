@@ -221,7 +221,10 @@ func parseExpressionComparison(tokens: Token***): Expression* {
 		if ((**tokens)->kind == TokenKind_LessThan) {
 			infix->operator = **tokens;
 			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
-		} else { loop = false; };
+		} else if ((**tokens)->kind == TokenKind_LessThanEqual) {
+			infix->operator = **tokens;
+			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+		} else { loop = false; };;
 		if (loop) {
 			infix->lhs = expression;
 			infix->rhs = parseExpressionAdditive(tokens);

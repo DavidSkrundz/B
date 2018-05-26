@@ -111,7 +111,18 @@ func Lex() {
 			_tokens[_tokenCount] = token;
 			_tokenCount = _tokenCount + 1;
 		} else if (*_code == (UInt8)60) {
-			lexToken(TokenKind_LessThan);
+			token = newToken();
+			token->kind = TokenKind_LessThan;
+			token->value = _code;
+			_code = (UInt8*)((UInt)_code + sizeof(UInt8));
+			token->length = 1;
+			if (*_code == (UInt8)61) {
+				_code = (UInt8*)((UInt)_code + sizeof(UInt8));
+				token->kind = TokenKind_LessThanEqual;
+				token->length = 2;
+			};
+			_tokens[_tokenCount] = token;
+			_tokenCount = _tokenCount + 1;
 		} else if (*_code == (UInt8)46) {
 			if (_code[1] == (UInt8)46 && _code[2] == (UInt8)46) {
 				token = newToken();
