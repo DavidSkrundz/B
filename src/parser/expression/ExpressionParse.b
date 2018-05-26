@@ -24,13 +24,19 @@ func parseExpressionPrimary(tokens: Token***): Expression* {
 		literal->literal = **tokens;
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		expression->expression = (Void*)literal;
+	} else if ((**tokens)->kind == TokenKind_CharacterLiteral) {
+		expression->kind = ExpressionKind_CharacterLiteral;
+		var literal = newExpressionCharacterLiteral();
+		literal->literal = **tokens;
+		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+		expression->expression = (Void*)literal;
 	} else if ((**tokens)->kind == TokenKind_StringLiteral) {
 		expression->kind = ExpressionKind_StringLiteral;
 		var literal = newExpressionStringLiteral();
 		literal->literal = **tokens;
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		expression->expression = (Void*)literal;
-	} else { return NULL; };;;;;;
+	} else { return NULL; };;;;;;;
 	return expression;
 };
 

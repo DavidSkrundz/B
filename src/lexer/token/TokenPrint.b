@@ -93,10 +93,12 @@ func _printToken(token: Token*, stream: FILE*) {
 		fprintf(stream, (char*)"BOOLEAN (%.*s)", (int)token->length, token->value);
 	} else if (token->kind == TokenKind_IntegerLiteral) {
 		fprintf(stream, (char*)"INTEGER (%.*s)", (int)token->length, token->value);
+	} else if (token->kind == TokenKind_CharacterLiteral) {
+		fprintf(stream, (char*)"CHARACTER (%.*s)", (int)token->length, token->value);
 	} else if (token->kind == TokenKind_StringLiteral) {
 		fprintf(stream, (char*)"STRING (%.*s)", (int)token->length, token->value);
 	} else {
 		fprintf(stderr, (char*)"Unknown token kind: %zd%c", token->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 };

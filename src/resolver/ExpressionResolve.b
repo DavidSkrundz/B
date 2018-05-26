@@ -226,6 +226,14 @@ func resolveExpressionIntegerLiteral(expression: ExpressionIntegerLiteral*, expe
 	return TypeUInt;
 };
 
+func resolveExpressionCharacterLiteral(expression: ExpressionCharacterLiteral*, expectedType: Type*): Type* {
+	if (expectedType != NULL && expectedType != TypeCharacter) {
+		fprintf(stderr, (char*)"Not expecting character (pointer UInt8)%c", 10);
+		exit(EXIT_FAILURE);
+	};
+	return TypeCharacter;
+};
+
 func resolveExpressionStringLiteral(expression: ExpressionStringLiteral*, expectedType: Type*): Type* {
 	if (expectedType != NULL && expectedType != TypeString) {
 		fprintf(stderr, (char*)"Not expecting string (pointer UInt8)%c", 10);
@@ -261,12 +269,14 @@ func resolveExpression(expression: Expression*, expectedType: Type*): Type* {
 		expression->resolvedType = resolveExpressionBooleanLiteral((ExpressionBooleanLiteral*)expression->expression, expectedType);
 	} else if (expression->kind == ExpressionKind_IntegerLiteral) {
 		expression->resolvedType = resolveExpressionIntegerLiteral((ExpressionIntegerLiteral*)expression->expression, expectedType);
+	} else if (expression->kind == ExpressionKind_CharacterLiteral) {
+		expression->resolvedType = resolveExpressionCharacterLiteral((ExpressionCharacterLiteral*)expression->expression, expectedType);
 	} else if (expression->kind == ExpressionKind_StringLiteral) {
 		expression->resolvedType = resolveExpressionStringLiteral((ExpressionStringLiteral*)expression->expression, expectedType);
 	} else {
 		fprintf(stderr, (char*)"Invalid expression kind %zu%c", expression->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;
 	if (expression->resolvedType == NULL) {
 		abort();
 	};

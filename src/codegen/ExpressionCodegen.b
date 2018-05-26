@@ -100,6 +100,12 @@ func codegenExpressionIntegerLiteral(expression: Expression*, expr: ExpressionIn
 	printf((char*)")");
 };
 
+func codegenExpressionCharacterLiteral(expression: Expression*, expr: ExpressionCharacterLiteral*) {
+	printf((char*)"((UInt8)");
+	printf((char*)"%c%.*s%c", 39, (int)expr->literal->length, expr->literal->value, 39);
+	printf((char*)")");
+};
+
 func codegenExpressionStringLiteral(expression: Expression*, expr: ExpressionStringLiteral*) {
 	printf((char*)"((UInt8*)");
 	printf((char*)"%c%.*s%c", 34, (int)expr->literal->length, expr->literal->value, 34);
@@ -133,10 +139,12 @@ func codegenExpression(expression: Expression*) {
 		codegenExpressionBooleanLiteral(expression, (ExpressionBooleanLiteral*)expression->expression);
 	} else if (expression->kind == ExpressionKind_IntegerLiteral) {
 		codegenExpressionIntegerLiteral(expression, (ExpressionIntegerLiteral*)expression->expression);
+	} else if (expression->kind == ExpressionKind_CharacterLiteral) {
+		codegenExpressionCharacterLiteral(expression, (ExpressionCharacterLiteral*)expression->expression);
 	} else if (expression->kind == ExpressionKind_StringLiteral) {
 		codegenExpressionStringLiteral(expression, (ExpressionStringLiteral*)expression->expression);
 	} else {
 		fprintf(stderr, (char*)"Invalid expression kind %zu%c", expression->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;
 };

@@ -45,6 +45,7 @@ var TokenKind_NotEqual = 0;
 var TokenKind_Identifier = 0;
 var TokenKind_BooleanLiteral = 0;
 var TokenKind_IntegerLiteral = 0;
+var TokenKind_CharacterLiteral = 0;
 var TokenKind_StringLiteral = 0;
 
 func InitTokenKinds() {
@@ -97,5 +98,6 @@ func InitTokenKinds() {
 	TokenKind_Identifier = counter; counter = counter + 1;
 	TokenKind_BooleanLiteral = counter; counter = counter + 1;
 	TokenKind_IntegerLiteral = counter; counter = counter + 1;
+	TokenKind_CharacterLiteral = counter; counter = counter + 1;
 	TokenKind_StringLiteral = counter; counter = counter + 1;
 };

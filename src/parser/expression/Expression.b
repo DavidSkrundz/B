@@ -56,6 +56,10 @@ struct ExpressionIntegerLiteral {
 	var literal: Token*;
 };
 
+struct ExpressionCharacterLiteral {
+	var literal: Token*;
+};
+
 struct ExpressionStringLiteral {
 	var literal: Token*;
 };
@@ -106,6 +110,10 @@ func newExpressionBooleanLiteral(): ExpressionBooleanLiteral* {
 
 func newExpressionIntegerLiteral(): ExpressionIntegerLiteral* {
 	return (ExpressionIntegerLiteral*)xcalloc(1, sizeof(ExpressionIntegerLiteral));
+};
+
+func newExpressionCharacterLiteral(): ExpressionCharacterLiteral* {
+	return (ExpressionCharacterLiteral*)xcalloc(1, sizeof(ExpressionCharacterLiteral));
 };
 
 func newExpressionStringLiteral(): ExpressionStringLiteral* {

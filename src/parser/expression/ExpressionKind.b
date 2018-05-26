@@ -12,6 +12,7 @@ var ExpressionKind_Identifier = 0;
 var ExpressionKind_NULL = 0;
 var ExpressionKind_BooleanLiteral = 0;
 var ExpressionKind_IntegerLiteral = 0;
+var ExpressionKind_CharacterLiteral = 0;
 var ExpressionKind_StringLiteral = 0;
 
 func InitExpressionKinds() {
@@ -31,5 +32,6 @@ func InitExpressionKinds() {
 	ExpressionKind_NULL = counter; counter = counter + 1;
 	ExpressionKind_BooleanLiteral = counter; counter = counter + 1;
 	ExpressionKind_IntegerLiteral = counter; counter = counter + 1;
+	ExpressionKind_CharacterLiteral = counter; counter = counter + 1;
 	ExpressionKind_StringLiteral = counter; counter = counter + 1;
 };

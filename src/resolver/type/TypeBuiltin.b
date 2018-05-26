@@ -12,6 +12,7 @@ var TypeInt64: Type*;
 var TypeUInt64: Type*;
 
 var TypeAny: Type*;
+var TypeCharacter: Type*;
 var TypeString: Type*;
 
 func InitBuiltinTypes() {
@@ -29,5 +30,6 @@ func InitBuiltinTypes() {
 	TypeUInt64 = createTypeIdentifierString("UInt64");
 	
 	TypeAny = createTypePointer(TypeVoid);
-	TypeString = createTypePointer(TypeUInt8);
+	TypeCharacter = TypeUInt8;
+	TypeString = createTypePointer(TypeCharacter);
 };

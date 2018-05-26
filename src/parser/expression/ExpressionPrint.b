@@ -103,8 +103,12 @@ func printExpressionIntegerLiteral(expression: ExpressionIntegerLiteral*) {
 	printf((char*)"(integer %.*s)", (int)expression->literal->length, expression->literal->value);
 };
 
+func printExpressionCharacterLiteral(expression: ExpressionCharacterLiteral*) {
+	printf((char*)"(character %.*s)", (int)expression->literal->length, expression->literal->value);
+};
+
 func printExpressionStringLiteral(expression: ExpressionStringLiteral*) {
-	printf((char*)"(string %c%.*s%c))", 34, (int)expression->literal->length, expression->literal->value, 34);
+	printf((char*)"(string %c%.*s%c)", 34, (int)expression->literal->length, expression->literal->value, 34);
 };
 
 func printExpression(expression: Expression*) {
@@ -134,10 +138,12 @@ func printExpression(expression: Expression*) {
 		printExpressionBooleanLiteral((ExpressionBooleanLiteral*)expression->expression);
 	} else if (expression->kind == ExpressionKind_IntegerLiteral) {
 		printExpressionIntegerLiteral((ExpressionIntegerLiteral*)expression->expression);
+	} else if (expression->kind == ExpressionKind_CharacterLiteral) {
+		printExpressionCharacterLiteral((ExpressionCharacterLiteral*)expression->expression);
 	} else if (expression->kind == ExpressionKind_StringLiteral) {
 		printExpressionStringLiteral((ExpressionStringLiteral*)expression->expression);
 	} else {
 		fprintf(stderr, (char*)"Invalid expression kind %zu%c", expression->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;
 };

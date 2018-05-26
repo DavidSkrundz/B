@@ -147,6 +147,8 @@ func Lex() {
 			_tokenCount = _tokenCount + 1;
 		} else if ((UInt8)47 < *_code && *_code < (UInt8)58) {
 			lexIntegerLiteral();
+		} else if (*_code == (UInt8)39) {
+			lexCharacterLiteral();
 		} else if ((UInt8)64 < *_code && *_code < (UInt8)91) {
 			lexStringLiteral();
 		} else if ((UInt8)96 < *_code && *_code < (UInt8)123) {
@@ -170,7 +172,7 @@ func Lex() {
 				fprintf(stderr, (char*)"Unexpected character: %02X%c", *_code, 10);
 			};
 			exit(EXIT_FAILURE);
-		};;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+		};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	};
 };
 
@@ -190,6 +192,18 @@ func lexIntegerLiteral() {
 	token->value = _code;
 	while (isdigit(*_code)) { _code = (UInt8*)((UInt)_code + sizeof(UInt8)); };
 	token->length = (UInt)_code - (UInt)token->value;
+	_tokens[_tokenCount] = token;
+	_tokenCount = _tokenCount + 1;
+};
+
+func lexCharacterLiteral() {
+	var token = newToken();
+	token->kind = TokenKind_CharacterLiteral;
+	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
+	token->value = _code;
+	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
+	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
+	token->length = 1;
 	_tokens[_tokenCount] = token;
 	_tokenCount = _tokenCount + 1;
 };
