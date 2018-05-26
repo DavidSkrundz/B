@@ -145,13 +145,13 @@ func Lex() {
 			_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 			_tokens[_tokenCount] = token;
 			_tokenCount = _tokenCount + 1;
-		} else if ((UInt8)47 < *_code && *_code < (UInt8)58) {
+		} else if ('0' <= *_code && *_code <= '9') {
 			lexIntegerLiteral();
 		} else if (*_code == (UInt8)39) {
 			lexCharacterLiteral();
-		} else if ((UInt8)64 < *_code && *_code < (UInt8)91) {
+		} else if ('A' <= *_code && *_code <= 'Z') {
 			lexStringLiteral();
-		} else if ((UInt8)96 < *_code && *_code < (UInt8)123) {
+		} else if ('a' <= *_code && *_code <= 'z') {
 			lexStringLiteral();
 		} else if (*_code == (UInt8)95) {
 			lexStringLiteral();
