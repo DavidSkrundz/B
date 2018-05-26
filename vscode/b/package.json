@@ -1,0 +1,26 @@
+{
+	"name": "b",
+	"displayName": "🅱️",
+	"description": "🅱️ language support",
+	"version": "0.0.1-alpha",
+	"publisher": "David Skrundz",
+	"engines": {
+		"vscode": "^1.23.0"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"contributes": {
+		"languages": [{
+			"id": "b",
+			"aliases": ["🅱️", "B"],
+			"extensions": [".b"],
+			"configuration": "./language-configuration.json"
+		}],
+		"grammars": [{
+			"language": "b",
+			"scopeName": "source.b",
+			"path": "./syntaxes/b.tmLanguage.json"
+		}]
+	}
+}

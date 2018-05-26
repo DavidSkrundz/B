@@ -1,0 +1,58 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "🅱️",
+	"patterns": [
+		{"include": "#attributes"},
+		{"include": "#keywords"},
+		{"include": "#operators"},
+		{"include": "#literals"}
+	],
+	"repository": {
+		"attributes": {
+			"patterns": [
+				{
+					"name": "meta.selector.b",
+					"match": "@\\w+"
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.b",
+					"match": "\\b(var|struct|func)\\b"
+				},
+				{
+					"name": "keyword.control.b",
+					"match": "\\b(if|else|while|return)\\b"
+				},
+				{
+					"name": "support.type.b",
+					"match": "\\b(Int|UInt)(|8|16|32|64)\\b"
+				}
+			]
+		},
+		"operators": {
+			"patterns": [
+				{
+					"name": "keyword.operator.b",
+					"match": "(==)"
+				}
+			]
+		},
+		"literals": {
+			"patterns": [
+				{
+					"name": "constant.numeric.b",
+					"match": "\\b[0-9]+\\b"
+				},
+				{
+					"name": "string.quoted.double.b",
+					"begin": "\"",
+					"end": "\""
+				}
+			]
+		}
+	},
+	"scopeName": "source.b"
+}
