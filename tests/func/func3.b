@@ -1,3 +1,3 @@
-func main(): Int {
+func main(): UInt {
 	return 0;
 };

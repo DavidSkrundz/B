@@ -22,5 +22,5 @@ typedef uint64_t UInt64;
 
 Void* a = (NULL);
 Bool b = (true);
-Int c = (1);
+UInt c = (1);
 

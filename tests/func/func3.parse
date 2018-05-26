@@ -1,4 +1,4 @@
-(func (identifier main) (type (identifier Int))
+(func (identifier main) (type (identifier UInt))
  (arguments
  )
  (block

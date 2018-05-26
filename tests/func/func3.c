@@ -20,9 +20,9 @@ typedef int64_t Int64;
 typedef uint64_t UInt64;
 
 
-Int main(void);
+UInt main(void);
 
-Int main(void) {
+UInt main(void) {
 	return (0);
 }
 

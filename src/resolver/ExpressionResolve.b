@@ -217,11 +217,11 @@ func resolveExpressionBooleanLiteral(expression: ExpressionBooleanLiteral*, expe
 };
 
 func resolveExpressionIntegerLiteral(expression: ExpressionIntegerLiteral*, expectedType: Type*): Type* {
-	if (expectedType != NULL && expectedType != TypeInt) {
+	if (expectedType != NULL && expectedType != TypeUInt) {
 		fprintf(stderr, (char*)"Not expecting Int%c", 10);
 		exit(EXIT_FAILURE);
 	};
-	return TypeInt;
+	return TypeUInt;
 };
 
 func resolveExpressionStringLiteral(expression: ExpressionStringLiteral*, expectedType: Type*): Type* {
