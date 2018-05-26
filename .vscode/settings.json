@@ -1,0 +1,17 @@
+{
+	"files.exclude": {
+		"bin": true,
+		"build": true,
+		"docs/*.aux": true,
+		"docs/*.log": true,
+		"docs/*.out": true,
+		"docs/*.toc": true,
+		"docs/*.gz": true,
+		"docs/*.pdf": true,
+	},
+	"files.associations": {
+		"Makefile": "makefile",
+		"Makedefs": "makefile",
+		"Make.*": "makefile",
+	},
+}
