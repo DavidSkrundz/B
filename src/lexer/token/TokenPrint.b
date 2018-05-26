@@ -94,7 +94,7 @@ func _printToken(token: Token*, stream: FILE*) {
 	} else if (token->kind == TokenKind_StringLiteral) {
 		fprintf(stream, (char*)"STRING (%.*s)", (int)token->length, token->value);
 	} else {
-		fprintf(stderr, (char*)"Unknown token kind: %zd", token->kind);
+		fprintf(stderr, (char*)"Unknown token kind: %zd%c", token->kind, 10);
 		abort();
 	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 };
