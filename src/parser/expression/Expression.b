@@ -61,53 +61,53 @@ struct ExpressionStringLiteral {
 };
 
 func newExpression(): Expression* {
-	return (Expression*)xcalloc((UInt)1, sizeof(Expression));
+	return (Expression*)xcalloc(1, sizeof(Expression));
 };
 
 func newExpressionCast(): ExpressionCast* {
-	return (ExpressionCast*)xcalloc((UInt)1, sizeof(ExpressionCast));
+	return (ExpressionCast*)xcalloc(1, sizeof(ExpressionCast));
 };
 
 func newExpressionSizeof(): ExpressionSizeof* {
-	return (ExpressionSizeof*)xcalloc((UInt)1, sizeof(ExpressionSizeof));
+	return (ExpressionSizeof*)xcalloc(1, sizeof(ExpressionSizeof));
 };
 
 func newExpressionDereference(): ExpressionDereference* {
-	return (ExpressionDereference*)xcalloc((UInt)1, sizeof(ExpressionDereference));
+	return (ExpressionDereference*)xcalloc(1, sizeof(ExpressionDereference));
 };
 
 func newExpressionReference(): ExpressionReference* {
-	return (ExpressionReference*)xcalloc((UInt)1, sizeof(ExpressionReference));
+	return (ExpressionReference*)xcalloc(1, sizeof(ExpressionReference));
 };
 
 func newExpressionFunctionCall(): ExpressionFunctionCall* {
-	return (ExpressionFunctionCall*)xcalloc((UInt)1, sizeof(ExpressionFunctionCall));
+	return (ExpressionFunctionCall*)xcalloc(1, sizeof(ExpressionFunctionCall));
 };
 
 func newExpressionSubscript(): ExpressionSubscript* {
-	return (ExpressionSubscript*)xcalloc((UInt)1, sizeof(ExpressionSubscript));
+	return (ExpressionSubscript*)xcalloc(1, sizeof(ExpressionSubscript));
 };
 
 func newExpressionArrow(): ExpressionArrow* {
-	return (ExpressionArrow*)xcalloc((UInt)1, sizeof(ExpressionArrow));
+	return (ExpressionArrow*)xcalloc(1, sizeof(ExpressionArrow));
 };
 
 func newExpressionInfixOperator(): ExpressionInfix* {
-	return (ExpressionInfix*)xcalloc((UInt)1, sizeof(ExpressionInfix));
+	return (ExpressionInfix*)xcalloc(1, sizeof(ExpressionInfix));
 };
 
 func newExpressionIdentifier(): ExpressionIdentifier* {
-	return (ExpressionIdentifier*)xcalloc((UInt)1, sizeof(ExpressionIdentifier));
+	return (ExpressionIdentifier*)xcalloc(1, sizeof(ExpressionIdentifier));
 };
 
 func newExpressionBooleanLiteral(): ExpressionBooleanLiteral* {
-	return (ExpressionBooleanLiteral*)xcalloc((UInt)1, sizeof(ExpressionBooleanLiteral));
+	return (ExpressionBooleanLiteral*)xcalloc(1, sizeof(ExpressionBooleanLiteral));
 };
 
 func newExpressionIntegerLiteral(): ExpressionIntegerLiteral* {
-	return (ExpressionIntegerLiteral*)xcalloc((UInt)1, sizeof(ExpressionIntegerLiteral));
+	return (ExpressionIntegerLiteral*)xcalloc(1, sizeof(ExpressionIntegerLiteral));
 };
 
 func newExpressionStringLiteral(): ExpressionStringLiteral* {
-	return (ExpressionStringLiteral*)xcalloc((UInt)1, sizeof(ExpressionStringLiteral));
+	return (ExpressionStringLiteral*)xcalloc(1, sizeof(ExpressionStringLiteral));
 };

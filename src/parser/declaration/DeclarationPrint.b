@@ -7,12 +7,12 @@ func printDeclarationVar(declaration: DeclarationVar*, name: Identifier*) {
 	};
 	if (declaration->value != NULL) {
 		printf((char*)" (expression%c", 10);
-		depth = depth + (UInt)1;
-		depth = depth + (UInt)1;
+		depth = depth + 1;
+		depth = depth + 1;
 		printDepth();
 		printExpression(declaration->value);
-		depth = depth - (UInt)1;
-		depth = depth - (UInt)1;
+		depth = depth - 1;
+		depth = depth - 1;
 		printf((char*)"%c", 10);
 		printDepth();
 		printf((char*)")");
@@ -22,15 +22,15 @@ func printDeclarationVar(declaration: DeclarationVar*, name: Identifier*) {
 
 func printDeclarationStructFields(fields: DeclarationStructFields*) {
 	printf((char*)"(fields%c", 10);
-	depth = depth + (UInt)1;
-	var i = (UInt)0;
+	depth = depth + 1;
+	var i = 0;
 	while (i < fields->count) {
 		printDepth();
 		printDeclaration(fields->fields[i]);
 		printf((char*)"%c", 10);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
-	depth = depth - (UInt)1;
+	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
 };
@@ -45,19 +45,19 @@ func printDeclarationFuncArg(arg: DeclarationFuncArg*) {
 
 func printDeclarationFuncArgs(args: DeclarationFuncArgs*) {
 	printf((char*)"(arguments%c", 10);
-	depth = depth + (UInt)1;
-	var i = (UInt)0;
+	depth = depth + 1;
+	var i = 0;
 	while (i < args->count) {
 		printDepth();
 		printDeclarationFuncArg(args->args[i]);
 		printf((char*)"%c", 10);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 	if (args->isVariadic) {
 		printDepth();
 		printf((char*)"(...)%c", 10);
 	};
-	depth = depth - (UInt)1;
+	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
 };
@@ -72,7 +72,7 @@ func printDeclarationFunc(declaration: DeclarationFunc*, name: Identifier*) {
 		printTypespec(declaration->returnType);
 	};
 	printf((char*)"%c", 10);
-	depth = depth + (UInt)1;
+	depth = depth + 1;
 	printDepth();
 	printDeclarationFuncArgs(declaration->args);
 	printf((char*)"%c", 10);
@@ -81,14 +81,14 @@ func printDeclarationFunc(declaration: DeclarationFunc*, name: Identifier*) {
 		printStatementBlock(declaration->block);
 		printf((char*)"%c", 10);
 	};
-	depth = depth - (UInt)1;
+	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
 };
 
 func printDeclarationStruct(declaration: DeclarationStruct*, name: Identifier*) {
 	printf((char*)"(struct%c", 10);
-	depth = depth + (UInt)1;
+	depth = depth + 1;
 	printDepth();
 	printIdentifier(name);
 	printf((char*)"%c", 10);
@@ -97,7 +97,7 @@ func printDeclarationStruct(declaration: DeclarationStruct*, name: Identifier*) 
 		printDeclarationStructFields(declaration->fields);
 		printf((char*)"%c", 10);
 	};
-	depth = depth - (UInt)1;
+	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
 };
@@ -120,10 +120,10 @@ func printDeclaration(declaration: Declaration*) {
 };
 
 func printDeclarations(declarations: Declaration**, count: UInt) {
-	var i = (UInt)0;
+	var i = 0;
 	while (i < count) {
 		printDeclaration(_declarations[i]);
 		printf((char*)"%c%c", 10, 10);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 };

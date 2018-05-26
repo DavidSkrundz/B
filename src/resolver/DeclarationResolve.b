@@ -18,10 +18,10 @@ func resolveDeclarationFuncArg(argument: DeclarationFuncArg*): Type* {
 
 func resolveDeclarationFuncArgs(args: DeclarationFuncArgs*): Type** {
 	var argumentTypes = (Type**)xcalloc(MAX_FUNC_ARGUMENT_COUNT, sizeof(Type*));
-	var i = (UInt)0;
+	var i = 0;
 	while (i < args->count) {
 		argumentTypes[i] = resolveDeclarationFuncArg(args->args[i]);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 	return argumentTypes;
 };
@@ -41,10 +41,10 @@ func resolveDeclarationTypeFunc(declaration: DeclarationFunc*, name: Identifier*
 };
 
 func resolveDeclarationStructFields(fields: DeclarationStructFields*) {
-	var i = (UInt)0;
+	var i = 0;
 	while (i < fields->count) {
 		resolveDeclarationDefinition(fields->fields[i]);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 };
 
@@ -104,11 +104,11 @@ func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: I
 	};
 	if (declaration->block != NULL) {
 		var oldContextCount = _context->count;
-		var i = (UInt)0;
+		var i = 0;
 		while (i < declaration->args->count) {
 			var argument = declaration->args->args[i];
 			addTo(_context, argument->name, argument->resolvedType);
-			i = i + (UInt)1;
+			i = i + 1;
 		};
 		resolveStatementBlock(declaration->block, returnType);
 		_context->count = oldContextCount;

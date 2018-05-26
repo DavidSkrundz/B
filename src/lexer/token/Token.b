@@ -5,5 +5,5 @@ struct Token {
 };
 
 func newToken(): Token* {
-	return (Token*)xcalloc((UInt)1, sizeof(Token));
+	return (Token*)xcalloc(1, sizeof(Token));
 };

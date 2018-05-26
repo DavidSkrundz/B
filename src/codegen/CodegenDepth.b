@@ -1,9 +1,9 @@
-var genDepth = (UInt)0;
+var genDepth = 0;
 
 func codegenDepth() {
-	var i = (UInt)0;
+	var i = 0;
 	while (i < genDepth) {
 		printf((char*)"%c", 9);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 };

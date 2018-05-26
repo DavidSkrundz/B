@@ -19,17 +19,17 @@ struct TypeFunction {
 };
 
 func newType(): Type* {
-	return (Type*)xcalloc((UInt)1, sizeof(Type));
+	return (Type*)xcalloc(1, sizeof(Type));
 };
 
 func newTypeIdentifier(): TypeIdentifier* {
-	return (TypeIdentifier*)xcalloc((UInt)1, sizeof(TypeIdentifier));
+	return (TypeIdentifier*)xcalloc(1, sizeof(TypeIdentifier));
 };
 
 func newTypePointer(): TypePointer* {
-	return (TypePointer*)xcalloc((UInt)1, sizeof(TypePointer));
+	return (TypePointer*)xcalloc(1, sizeof(TypePointer));
 };
 
 func newTypeFunction(): TypeFunction* {
-	return (TypeFunction*)xcalloc((UInt)1, sizeof(TypeFunction));
+	return (TypeFunction*)xcalloc(1, sizeof(TypeFunction));
 };

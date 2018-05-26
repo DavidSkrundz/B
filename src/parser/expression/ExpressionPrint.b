@@ -32,45 +32,45 @@ func printExpressionReference(expression: ExpressionReference*) {
 
 func printExpressionFunctionCall(expression: ExpressionFunctionCall*) {
 	printf((char*)"(call ");
-	depth = depth + (UInt)1;
+	depth = depth + 1;
 	printExpression(expression->function);
 	printf((char*)"%c", 10);
-	var i = (UInt)0;
+	var i = 0;
 	while (i < expression->count) {
 		printDepth();
 		printExpression(expression->arguments[i]);
 		printf((char*)"%c", 10);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
-	depth = depth - (UInt)1;
+	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
 };
 
 func printExpressionSubscript(expression: ExpressionSubscript*) {
 	printf((char*)"(subscript%c", 10);
-	depth = depth + (UInt)1;
+	depth = depth + 1;
 	printDepth();
 	printExpression(expression->base);
 	printf((char*)"%c", 10);
 	printDepth();
 	printExpression(expression->subscript);
 	printf((char*)"%c", 10);
-	depth = depth - (UInt)1;
+	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
 };
 
 func printExpressionArrow(expression: ExpressionArrow*) {
 	printf((char*)"(->%c", 10);
-	depth = depth + (UInt)1;
+	depth = depth + 1;
 	printDepth();
 	printExpression(expression->base);
 	printf((char*)"%c", 10);
 	printDepth();
 	printIdentifier(expression->field);
 	printf((char*)"%c", 10);
-	depth = depth - (UInt)1;
+	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
 };
@@ -79,14 +79,14 @@ func printExpressionInfix(expression: ExpressionInfix*) {
 	printf((char*)"(");
 	printToken(expression->operator);
 	printf((char*)"%c", 10);
-	depth = depth + (UInt)1;
+	depth = depth + 1;
 	printDepth();
 	printExpression(expression->lhs);
 	printf((char*)"%c", 10);
 	printDepth();
 	printExpression(expression->rhs);
 	printf((char*)"%c", 10);
-	depth = depth - (UInt)1;
+	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
 };

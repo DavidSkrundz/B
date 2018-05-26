@@ -4,5 +4,5 @@ struct Identifier {
 };
 
 func newIdentifier(): Identifier* {
-	return (Identifier*)xcalloc((UInt)1, sizeof(Identifier));
+	return (Identifier*)xcalloc(1, sizeof(Identifier));
 };

@@ -8,7 +8,7 @@ func resolveTypespecPointer(typespec: TypespecPointer*): Type* {
 func resolveTypespecIdentifier(typespec: TypespecIdentifier*): Type* {
 	var type = resolveTypeIdentifier(typespec->name);
 	if (type == NULL) {
-		var i = (UInt)0;
+		var i = 0;
 		while (i < _declarationCount) {
 			if (_declarations[i]->name->length == typespec->name->length) {
 				if (strncmp((char*)_declarations[i]->name->name, (char*)typespec->name->name, typespec->name->length) == (int)0) {
@@ -16,7 +16,7 @@ func resolveTypespecIdentifier(typespec: TypespecIdentifier*): Type* {
 					type = resolveTypeIdentifier(typespec->name);
 				};
 			};
-			i = i + (UInt)1;
+			i = i + 1;
 		};
 	};
 	if (type == NULL) {

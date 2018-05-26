@@ -4,7 +4,7 @@ func printStatementExpression(statement: StatementExpression*) {
 
 func printStatementAssign(statement: StatementAssign*) {
 	printf((char*)"(assign%c", 10);
-	depth = depth + (UInt)1;
+	depth = depth + 1;
 	printDepth();
 	printExpression(statement->lhs);
 	printf((char*)"%c", 10);
@@ -12,7 +12,7 @@ func printStatementAssign(statement: StatementAssign*) {
 	printExpression(statement->rhs);
 	printf((char*)"%c", 10);
 	printDepth();
-	depth = depth - (UInt)1;
+	depth = depth - 1;
 	printf((char*)")");
 };
 
@@ -22,7 +22,7 @@ func printStatementVar(statement: StatementVar*) {
 
 func printStatementIf(statement: StatementIf*) {
 	printf((char*)"(if ");
-	depth = depth + (UInt)1;
+	depth = depth + 1;
 	printExpression(statement->condition);
 	printf((char*)"%c", 10);
 	printDepth();
@@ -33,20 +33,20 @@ func printStatementIf(statement: StatementIf*) {
 		printStatement(statement->elseBlock);
 		printf((char*)"%c", 10);
 	};
-	depth = depth - (UInt)1;
+	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
 };
 
 func printStatementWhile(statement: StatementWhile*) {
 	printf((char*)"(while ");
-	depth = depth + (UInt)1;
+	depth = depth + 1;
 	printExpression(statement->condition);
 	printf((char*)"%c", 10);
 	printDepth();
 	printStatementBlock(statement->block);
 	printf((char*)"%c", 10);
-	depth = depth - (UInt)1;
+	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
 };
@@ -83,15 +83,15 @@ func printStatement(statement: Statement*) {
 
 func printStatementBlock(block: StatementBlock*) {
 	printf((char*)"(block%c", 10);
-	depth = depth + (UInt)1;
-	var i = (UInt)0;
+	depth = depth + 1;
+	var i = 0;
 	while (i < block->count) {
 		printDepth();
 		printStatement(block->statements[i]);
 		printf((char*)"%c", 10);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
-	depth = depth - (UInt)1;
+	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
 };

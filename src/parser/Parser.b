@@ -1,5 +1,5 @@
 var _declarations: Declaration**;
-var _declarationCount = (UInt)0;
+var _declarationCount = 0;
 
 func Parse() {
 	InitTypespecKinds();
@@ -9,7 +9,7 @@ func Parse() {
 	InitExpressionKinds();
 	
 	_declarations = (Declaration**)xcalloc(_tokenCount, sizeof(Declaration*));
-	_declarationCount = (UInt)0;
+	_declarationCount = 0;
 	
 	var t = &_tokens;
 	var loop = true;
@@ -19,7 +19,7 @@ func Parse() {
 			loop = false;
 		} else {
 			_declarations[_declarationCount] = declaration;
-			_declarationCount = _declarationCount + (UInt)1;
+			_declarationCount = _declarationCount + 1;
 		};
 	};
 	

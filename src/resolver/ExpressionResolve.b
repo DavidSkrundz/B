@@ -65,15 +65,15 @@ func resolveExpressionFunctionCall(expression: ExpressionFunctionCall*, expected
 		fprintf(stderr, (char*)"Too many arguments in function call%c", 10);
 		exit(EXIT_FAILURE);
 	};
-	var i = (UInt)0;
+	var i = 0;
 	while (i < funcType->count) {
 		resolveExpression(expression->arguments[i], funcType->argumentTypes[i]);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
-	i = (UInt)0;
+	i = 0;
 	while (i < expression->count) {
 		resolveExpression(expression->arguments[i], NULL);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 	
 	return funcType->returnType;
@@ -100,20 +100,20 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 	var pointerType = resolveExpression(expression->base, NULL);
 	var baseType = getPointerBase(pointerType);
 	var structDeclaration: DeclarationStruct*;
-	var i = (UInt)0;
+	var i = 0;
 	while (i < _declarationCount) {
 		if (_declarations[i]->kind == DeclarationKind_Struct) {
 			if (_declarations[i]->resolvedType == baseType) {
 				structDeclaration = (DeclarationStruct*)_declarations[i]->declaration;
 			};
 		};
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 	if (structDeclaration == NULL) {
 		fprintf(stderr, (char*)"Can't apply -> to non-struct%c", 10);
 		exit(EXIT_FAILURE);
 	};
-	i = (UInt)0;
+	i = 0;
 	while (i < structDeclaration->fields->count) {
 		var name = structDeclaration->fields->fields[i]->name;
 		if (name->length == expression->field->length) {
@@ -125,7 +125,7 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 				return structDeclaration->fields->fields[i]->resolvedType;
 			};
 		};
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 	fprintf(stderr, (char*)"Struct field does not exist%c", 10);
 	exit(EXIT_FAILURE);
@@ -191,7 +191,7 @@ func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): 
 };
 
 func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType: Type*): Type* {
-	var i = (UInt)0;
+	var i = 0;
 	while (i < _context->count) {
 		if (_context->names[i]->length == expression->identifier->length) {
 			if (strncmp((char*)_context->names[i]->name, (char*)expression->identifier->name, expression->identifier->length) == (int)0) {
@@ -202,7 +202,7 @@ func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType
 				return _context->types[i];
 			};
 		};
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 	fprintf(stderr, (char*)"Identifier is not a variable or function: %.*s%c", (int)expression->identifier->length, (char*)expression->identifier->name, 10);
 	exit(EXIT_FAILURE);

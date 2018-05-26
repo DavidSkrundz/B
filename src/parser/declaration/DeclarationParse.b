@@ -14,12 +14,12 @@ func parseDeclarationVar(tokens: Token***, declaration: Declaration*): Declarati
 	return decl;
 };
 
-var MAX_STRUCT_FIELD_COUNT = (UInt)100;
+var MAX_STRUCT_FIELD_COUNT = 100;
 func parseDeclarationStructFields(tokens: Token***): DeclarationStructFields* {
 	expectToken(TokenKind_OpenCurly);
 	var fields = newDeclarationStructFields();
 	fields->fields = (Declaration**)xcalloc(MAX_STRUCT_FIELD_COUNT, sizeof(Declaration*));
-	fields->count = (UInt)0;
+	fields->count = 0;
 	while ((**tokens)->kind != TokenKind_CloseCurly) {
 		if (fields->count == MAX_STRUCT_FIELD_COUNT) {
 			fprintf(stderr, (char*)"Too many fields in struct%c", 10);
@@ -29,7 +29,7 @@ func parseDeclarationStructFields(tokens: Token***): DeclarationStructFields* {
 		if (varDecl == NULL) { return NULL; };
 		if (varDecl->kind != DeclarationKind_Var) { return NULL; };
 		fields->fields[fields->count] = varDecl;
-		fields->count = fields->count + (UInt)1;
+		fields->count = fields->count + 1;
 	};
 	expectToken(TokenKind_CloseCurly);
 	return fields;
@@ -45,12 +45,12 @@ func parseDeclarationFuncArgument(tokens: Token***): DeclarationFuncArg* {
 	return arg;
 };
 
-var MAX_FUNC_ARGUMENT_COUNT = (UInt)10;
+var MAX_FUNC_ARGUMENT_COUNT = 10;
 func parseDeclarationFuncArguments(tokens: Token***): DeclarationFuncArgs* {
 	expectToken(TokenKind_OpenParenthesis);
 	var args = newDeclarationFuncArgs();
 	args->args = (DeclarationFuncArg**)xcalloc(MAX_FUNC_ARGUMENT_COUNT, sizeof(DeclarationFuncArg*));
-	args->count = (UInt)0;
+	args->count = 0;
 	if (args->count == MAX_FUNC_ARGUMENT_COUNT) {
 		fprintf(stderr, (char*)"Too many arguments in func%c", 10);
 		exit(EXIT_FAILURE);
@@ -58,7 +58,7 @@ func parseDeclarationFuncArguments(tokens: Token***): DeclarationFuncArgs* {
 	var arg = parseDeclarationFuncArgument(tokens);
 	if (arg != NULL) {
 		args->args[args->count] = arg;
-		args->count = args->count + (UInt)1;
+		args->count = args->count + 1;
 	};
 	while (checkToken(TokenKind_Comma)) {
 		if (args->count == MAX_FUNC_ARGUMENT_COUNT) {
@@ -68,7 +68,7 @@ func parseDeclarationFuncArguments(tokens: Token***): DeclarationFuncArgs* {
 		var arg2 = parseDeclarationFuncArgument(tokens);
 		if (arg2 != NULL) {
 			args->args[args->count] = arg2;
-			args->count = args->count + (UInt)1;
+			args->count = args->count + 1;
 		};
 	};
 	if (checkToken(TokenKind_Ellipses)) {

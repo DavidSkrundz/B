@@ -1,29 +1,29 @@
 func main(argc: int, argv: char**): int {
-	if (argc == (int)2 && strcmp(argv[(UInt)1], (char*)"--version") == (int)0) {
-		printVersion(argv[(UInt)0]);
+	if (argc == (int)2 && strcmp(argv[1], (char*)"--version") == (int)0) {
+		printVersion(argv[0]);
 	};
 	
-	if (argc < (int)3) { printUsage(argv[(UInt)0]); };
-	if (argv[(UInt)1][(UInt)0] != (char)45) { printUsage(argv[(UInt)0]); };
-	if (argv[(UInt)1][(UInt)2] != (char)0) { printUsage(argv[(UInt)0]); };
+	if (argc < (int)3) { printUsage(argv[0]); };
+	if (argv[1][0] != (char)45) { printUsage(argv[0]); };
+	if (argv[1][2] != (char)0) { printUsage(argv[0]); };
 	
 	var flags = (UInt8)0;
-	if (argv[(UInt)1][(UInt)1] == (char)108) {
+	if (argv[1][1] == (char)108) {
 		flags = (UInt8)1;
-	} else if (argv[(UInt)1][(UInt)1] == (char)112) {
+	} else if (argv[1][1] == (char)112) {
 		flags = (UInt8)2;
-	} else if (argv[(UInt)1][(UInt)1] == (char)114) {
+	} else if (argv[1][1] == (char)114) {
 		flags = (UInt8)4;
-	} else if (argv[(UInt)1][(UInt)1] == (char)103) {
+	} else if (argv[1][1] == (char)103) {
 		flags = (UInt8)8;
-	} else { printUsage(argv[(UInt)0]); };;;;
-	bmain(&argv[(UInt)2], (UInt)(argc - (int)2), flags);
+	} else { printUsage(argv[0]); };;;;
+	bmain(&argv[2], (UInt)argc - 2, flags);
 	
 	exit(EXIT_SUCCESS);
 };
 
 func printVersion(self: char*) {
-	printf((char*)"B Compiler (%s) Version 0.0.7%c", self, 10);
+	printf((char*)"B Compiler (%s) Version 0.0.8%c", self, 10);
 	exit(EXIT_SUCCESS);
 };
 

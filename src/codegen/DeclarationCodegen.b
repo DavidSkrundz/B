@@ -20,10 +20,10 @@ func codegenDeclarationDeclaration(declaration: Declaration*) {
 };
 
 func CodegenDeclarationDeclarations() {
-	var i = (UInt)0;
+	var i = 0;
 	while (i < _declarationCount) {
 		codegenDeclarationDeclaration(_declarations[i]);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 	printf((char*)"%c", 10);
 };
@@ -49,13 +49,13 @@ func codegenDeclarationFuncArg(argument: DeclarationFuncArg*) {
 
 func codegenDeclarationFuncArgs(args: DeclarationFuncArgs*) {
 	printf((char*)"(");
-	if (args->count == (UInt)0) {
+	if (args->count == 0) {
 		printf((char*)"void");
 	};
-	var i = (UInt)0;
+	var i = 0;
 	while (i < args->count) {
 		codegenDeclarationFuncArg(args->args[i]);
-		i = i + (UInt)1;
+		i = i + 1;
 		if (i < args->count) { printf((char*)", "); };
 	};
 	printf((char*)")");
@@ -87,10 +87,10 @@ func codegenDeclarationStructFieldDefinition(field: Declaration*) {
 };
 
 func codegenDeclarationStructFieldsDefinition(fields: DeclarationStructFields*) {
-	var i = (UInt)0;
+	var i = 0;
 	while (i < fields->count) {
 		codegenDeclarationStructFieldDefinition(fields->fields[i]);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 };
 
@@ -118,10 +118,10 @@ func codegenDeclarationDefinition(declaration: Declaration*) {
 };
 
 func CodegenDeclarationDefinitions() {
-	var i = (UInt)0;
+	var i = 0;
 	while (i < _declarationCount) {
 		codegenDeclarationDefinition(_declarations[i]);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 	printf((char*)"%c", 10);
 };
@@ -155,9 +155,9 @@ func codegenDeclarationImplementation(declaration: Declaration*) {
 };
 
 func CodegenDeclarationImplementations() {
-	var i = (UInt)0;
+	var i = 0;
 	while (i < _declarationCount) {
 		codegenDeclarationImplementation(_declarations[i]);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 };

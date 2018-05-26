@@ -3,5 +3,5 @@ struct Attribute {
 };
 
 func newAttribute(): Attribute* {
-	return (Attribute*)xcalloc((UInt)1, sizeof(Attribute));
+	return (Attribute*)xcalloc(1, sizeof(Attribute));
 };

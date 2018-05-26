@@ -47,10 +47,10 @@ func codegenExpressionFunctionCall(expression: Expression*, expr: ExpressionFunc
 	printf((char*)"(");
 	codegenExpression(expr->function);
 	printf((char*)"(");
-	var i = (UInt)0;
+	var i = 0;
 	while (i < expr->count) {
 		codegenExpression(expr->arguments[i]);
-		i = i + (UInt)1;
+		i = i + 1;
 		if (i < expr->count) { printf((char*)", "); };
 	};
 	printf((char*)")");

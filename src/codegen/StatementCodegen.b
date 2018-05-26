@@ -66,14 +66,14 @@ func codegenStatement(statement: Statement*) {
 
 func codegenStatementBlock(block: StatementBlock*) {
 	printf((char*)"{%c", 10);
-	genDepth = genDepth + (UInt)1;
-	var i = (UInt)0;
+	genDepth = genDepth + 1;
+	var i = 0;
 	while (i < block->count) {
 		codegenDepth();
 		codegenStatement(block->statements[i]);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
-	genDepth = genDepth - (UInt)1;
+	genDepth = genDepth - 1;
 	codegenDepth();
 	printf((char*)"}");
 };

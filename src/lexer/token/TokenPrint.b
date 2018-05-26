@@ -2,11 +2,11 @@ func printToken(token: Token*) { _printToken(token, stdout); };
 func printToken_error(token: Token*) { _printToken(token, stderr); };
 
 func printTokens(tokens: Token**, count: UInt) {
-	var i = (UInt)0;
+	var i = 0;
 	while (i < count) {
 		printToken(tokens[i]);
 		printf((char*)"%c", 10);
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 };
 

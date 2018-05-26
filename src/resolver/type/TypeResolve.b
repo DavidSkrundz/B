@@ -24,11 +24,11 @@ func registerType(type: Type*) {
 		exit(EXIT_FAILURE);
 	};
 	_types[_typeCount] = type;
-	_typeCount = _typeCount + (UInt)1;
+	_typeCount = _typeCount + 1;
 };
 
 func resolveTypeIdentifier(name: Identifier*): Type* {
-	var i = (UInt)0;
+	var i = 0;
 	while (i < _typeCount) {
 		var type = _types[i];
 		if (type->kind == TypeKind_Identifier) {
@@ -39,26 +39,26 @@ func resolveTypeIdentifier(name: Identifier*): Type* {
 				};
 			};
 		};
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 	return NULL;
 };
 
 func resolveTypePointer(base: Type*): Type* {
-	var i = (UInt)0;
+	var i = 0;
 	while (i < _typeCount) {
 		var type = _types[i];
 		if (type->kind == TypeKind_Pointer) {
 			var pointer = (TypePointer*)type->type;
 			if (pointer->base == base) { return type; };
 		};
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 	return NULL;
 };
 
 func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, argumentCount: UInt, isVariadic: Bool): Type* {
-	var i = (UInt)0;
+	var i = 0;
 	while (i < _typeCount) {
 		var type = _types[i];
 		if (type->kind == TypeKind_Function) {
@@ -67,19 +67,19 @@ func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, argumentCount
 				if (funcType->returnType == returnType) {
 					if (funcType->count == argumentCount) {
 						var isMatch = true;
-						var j = (UInt)0;
+						var j = 0;
 						while (j < argumentCount) {
 							if (funcType->argumentTypes[j] != argumentTypes[j]) {
 								isMatch = false;
 							};
-							j = j + (UInt)1;
+							j = j + 1;
 						};
 						if (isMatch) { return type; };
 					};
 				};
 			};
 		};
-		i = i + (UInt)1;
+		i = i + 1;
 	};
 	return NULL;
 };

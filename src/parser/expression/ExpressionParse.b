@@ -38,7 +38,7 @@ func parseExpressionFunctionCallArguments(tokens: Token***): ExpressionFunctionC
 	var expression = newExpressionFunctionCall();
 	expectToken(TokenKind_OpenParenthesis);
 	expression->arguments = (Expression**)xcalloc(MAX_FUNC_ARGUMENT_COUNT, sizeof(Expression*));
-	expression->count = (UInt)0;
+	expression->count = 0;
 	var loop = true;
 	while ((**tokens)->kind != TokenKind_CloseParenthesis && loop) {
 		if (expression->count == MAX_FUNC_ARGUMENT_COUNT) {
@@ -48,7 +48,7 @@ func parseExpressionFunctionCallArguments(tokens: Token***): ExpressionFunctionC
 		var argument = parseExpression(tokens);
 		if (argument == NULL) { return NULL; };
 		expression->arguments[expression->count] = argument;
-		expression->count = expression->count + (UInt)1;
+		expression->count = expression->count + 1;
 		loop = checkToken(TokenKind_Comma);
 	};
 	expectToken(TokenKind_CloseParenthesis);

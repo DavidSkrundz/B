@@ -12,13 +12,13 @@ struct TypespecIdentifier {
 };
 
 func newTypespec(): Typespec* {
-	return (Typespec*)xcalloc((UInt)1, sizeof(Typespec));
+	return (Typespec*)xcalloc(1, sizeof(Typespec));
 };
 
 func newTypespecPointer(): TypespecPointer* {
-	return (TypespecPointer*)xcalloc((UInt)1, sizeof(TypespecPointer));
+	return (TypespecPointer*)xcalloc(1, sizeof(TypespecPointer));
 };
 
 func newTypespecIdentifier(): TypespecIdentifier* {
-	return (TypespecIdentifier*)xcalloc((UInt)1, sizeof(TypespecIdentifier));
+	return (TypespecIdentifier*)xcalloc(1, sizeof(TypespecIdentifier));
 };

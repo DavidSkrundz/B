@@ -40,29 +40,29 @@ struct DeclarationStruct {
 };
 
 func newDeclaration(): Declaration* {
-	return (Declaration*)xcalloc((UInt)1, sizeof(Declaration));
+	return (Declaration*)xcalloc(1, sizeof(Declaration));
 };
 
 func newDeclarationVar(): DeclarationVar* {
-	return (DeclarationVar*)xcalloc((UInt)1, sizeof(DeclarationVar));
+	return (DeclarationVar*)xcalloc(1, sizeof(DeclarationVar));
 };
 
 func newDeclarationFuncArg(): DeclarationFuncArg* {
-	return (DeclarationFuncArg*)xcalloc((UInt)1, sizeof(DeclarationFuncArg));
+	return (DeclarationFuncArg*)xcalloc(1, sizeof(DeclarationFuncArg));
 };
 
 func newDeclarationFuncArgs(): DeclarationFuncArgs* {
-	return (DeclarationFuncArgs*)xcalloc((UInt)1, sizeof(DeclarationFuncArgs));
+	return (DeclarationFuncArgs*)xcalloc(1, sizeof(DeclarationFuncArgs));
 };
 
 func newDeclarationFunc(): DeclarationFunc* {
-	return (DeclarationFunc*)xcalloc((UInt)1, sizeof(DeclarationFunc));
+	return (DeclarationFunc*)xcalloc(1, sizeof(DeclarationFunc));
 };
 
 func newDeclarationStructFields(): DeclarationStructFields* {
-	return (DeclarationStructFields*)xcalloc((UInt)1, sizeof(DeclarationStructFields));
+	return (DeclarationStructFields*)xcalloc(1, sizeof(DeclarationStructFields));
 };
 
 func newDeclarationStruct(): DeclarationStruct* {
-	return (DeclarationStruct*)xcalloc((UInt)1, sizeof(DeclarationStruct));
+	return (DeclarationStruct*)xcalloc(1, sizeof(DeclarationStruct));
 };

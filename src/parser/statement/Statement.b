@@ -37,33 +37,33 @@ struct StatementVar {
 };
 
 func newStatement(): Statement* {
-	return (Statement*)xcalloc((UInt)1, sizeof(Statement));
+	return (Statement*)xcalloc(1, sizeof(Statement));
 };
 
 func newStatementBlock(): StatementBlock* {
-	return (StatementBlock*)xcalloc((UInt)1, sizeof(StatementBlock));
+	return (StatementBlock*)xcalloc(1, sizeof(StatementBlock));
 };
 
 func newStatementExpression(): StatementExpression* {
-	return (StatementExpression*)xcalloc((UInt)1, sizeof(StatementExpression));
+	return (StatementExpression*)xcalloc(1, sizeof(StatementExpression));
 };
 
 func newStatementAssign(): StatementAssign* {
-	return (StatementAssign*)xcalloc((UInt)1, sizeof(StatementAssign));
+	return (StatementAssign*)xcalloc(1, sizeof(StatementAssign));
 };
 
 func newStatementIf(): StatementIf* {
-	return (StatementIf*)xcalloc((UInt)1, sizeof(StatementIf));
+	return (StatementIf*)xcalloc(1, sizeof(StatementIf));
 };
 
 func newStatementWhile(): StatementWhile* {
-	return (StatementWhile*)xcalloc((UInt)1, sizeof(StatementWhile));
+	return (StatementWhile*)xcalloc(1, sizeof(StatementWhile));
 };
 
 func newStatementReturn(): StatementReturn* {
-	return (StatementReturn*)xcalloc((UInt)1, sizeof(StatementReturn));
+	return (StatementReturn*)xcalloc(1, sizeof(StatementReturn));
 };
 
 func newStatementVar(): StatementVar* {
-	return (StatementVar*)xcalloc((UInt)1, sizeof(StatementVar));
+	return (StatementVar*)xcalloc(1, sizeof(StatementVar));
 };

@@ -1,14 +1,14 @@
 var _code: UInt8*;
-var _codeLength = (UInt)0;
+var _codeLength = 0;
 
 var _tokens: Token**;
-var _tokenCount = (UInt)0;
+var _tokenCount = 0;
 
 func Lex() {
 	InitTokenKinds();
 	
 	_tokens = (Token**)xcalloc(_codeLength, sizeof(Token*));
-	_tokenCount = (UInt)0;
+	_tokenCount = 0;
 	
 	while (true) {
 		var token: Token*;
@@ -46,27 +46,27 @@ func Lex() {
 			token->kind = TokenKind_And;
 			token->value = _code;
 			_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-			token->length = (UInt)1;
+			token->length = 1;
 			if (*_code == (UInt8)38) {
 				_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 				token->kind = TokenKind_AndAnd;
-				token->length = (UInt)2;
+				token->length = 2;
 			};
 			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			_tokenCount = _tokenCount + 1;
 		} else if (*_code == (UInt8)124) {
 			token = newToken();
 			token->kind = TokenKind_Invalid;
 			token->value = _code;
 			_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-			token->length = (UInt)1;
+			token->length = 1;
 			if (*_code == (UInt8)124) {
 				_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 				token->kind = TokenKind_OrOr;
-				token->length = (UInt)2;
+				token->length = 2;
 			};
 			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			_tokenCount = _tokenCount + 1;
 		} else if (*_code == (UInt8)43) {
 			lexToken(TokenKind_Plus);
 		} else if (*_code == (UInt8)45) {
@@ -74,14 +74,14 @@ func Lex() {
 			token->kind = TokenKind_Minus;
 			token->value = _code;
 			_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-			token->length = (UInt)1;
+			token->length = 1;
 			if (*_code == (UInt8)62) {
 				_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 				token->kind = TokenKind_Arrow;
-				token->length = (UInt)2;
+				token->length = 2;
 			};
 			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			_tokenCount = _tokenCount + 1;
 		} else if (*_code == (UInt8)47) {
 			lexToken(TokenKind_Slash);
 		} else if (*_code == (UInt8)33) {
@@ -89,38 +89,38 @@ func Lex() {
 			token->kind = TokenKind_Not;
 			token->value = _code;
 			_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-			token->length = (UInt)1;
+			token->length = 1;
 			if (*_code == (UInt8)61) {
 				_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 				token->kind = TokenKind_NotEqual;
-				token->length = (UInt)2;
+				token->length = 2;
 			};
 			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			_tokenCount = _tokenCount + 1;
 		} else if (*_code == (UInt8)61) {
 			token = newToken();
 			token->kind = TokenKind_Assign;
 			token->value = _code;
 			_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-			token->length = (UInt)1;
+			token->length = 1;
 			if (*_code == (UInt8)61) {
 				_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 				token->kind = TokenKind_Equal;
-				token->length = (UInt)2;
+				token->length = 2;
 			};
 			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			_tokenCount = _tokenCount + 1;
 		} else if (*_code == (UInt8)60) {
 			lexToken(TokenKind_LessThan);
 		} else if (*_code == (UInt8)46) {
-			if (_code[(UInt)1] == (UInt8)46 && _code[(UInt)2] == (UInt8)46) {
+			if (_code[1] == (UInt8)46 && _code[2] == (UInt8)46) {
 				token = newToken();
 				token->kind = TokenKind_Ellipses;
 				token->value = _code;
-				_code = (UInt8*)((UInt)_code + (UInt)3);
-				token->length = (UInt)3;
+				_code = (UInt8*)((UInt)_code + 3);
+				token->length = 3;
 				_tokens[_tokenCount] = token;
-				_tokenCount = _tokenCount + (UInt)1;
+				_tokenCount = _tokenCount + 1;
 			};
 		} else if (*_code == (UInt8)34) {
 			token = newToken();
@@ -133,7 +133,7 @@ func Lex() {
 			token->length = (UInt)_code - (UInt)token->value;
 			_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			_tokenCount = _tokenCount + 1;
 		} else if ((UInt8)47 < *_code && *_code < (UInt8)58) {
 			lexIntegerLiteral();
 		} else if ((UInt8)64 < *_code && *_code < (UInt8)91) {
@@ -147,9 +147,9 @@ func Lex() {
 			token->kind = TokenKind_EOF;
 			token->value = _code;
 			_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-			token->length = (UInt)1;
+			token->length = 1;
 			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + (UInt)1;
+			_tokenCount = _tokenCount + 1;
 			return;
 		} else {
 			printTokens(_tokens, _tokenCount);
@@ -168,9 +168,9 @@ func lexToken(kind: UInt) {
 	token->kind = kind;
 	token->value = _code;
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-	token->length = (UInt)1;
+	token->length = 1;
 	_tokens[_tokenCount] = token;
-	_tokenCount = _tokenCount + (UInt)1;
+	_tokenCount = _tokenCount + 1;
 };
 
 func lexIntegerLiteral() {
@@ -180,39 +180,39 @@ func lexIntegerLiteral() {
 	while (isdigit(*_code)) { _code = (UInt8*)((UInt)_code + sizeof(UInt8)); };
 	token->length = (UInt)_code - (UInt)token->value;
 	_tokens[_tokenCount] = token;
-	_tokenCount = _tokenCount + (UInt)1;
+	_tokenCount = _tokenCount + 1;
 };
 
 func lexStringLiteral() {
 	var token = newToken();
 	token->value = _code;
-	while (isalnum(*_code) || *_code == (UInt8)95) { _code = (UInt8*)((UInt)_code + (UInt)1); };
+	while (isalnum(*_code) || *_code == (UInt8)95) { _code = (UInt8*)((UInt)_code + 1); };
 	token->length = (UInt)_code - (UInt)token->value;
-	if (token->length == (UInt)4 && strncmp((char*)token->value, (char*)"NULL", token->length) == (int)0) {
+	if (token->length == 4 && strncmp((char*)token->value, (char*)"NULL", token->length) == (int)0) {
 		token->kind = TokenKind_NULL;
-	} else if (token->length == (UInt)6 && strncmp((char*)token->value, (char*)"sizeof",  token->length) == (int)0) {
+	} else if (token->length == 6 && strncmp((char*)token->value, (char*)"sizeof",  token->length) == (int)0) {
 		token->kind = TokenKind_Sizeof;
-	} else if (token->length == (UInt)3 && strncmp((char*)token->value, (char*)"var",  token->length) == (int)0) {
+	} else if (token->length == 3 && strncmp((char*)token->value, (char*)"var",  token->length) == (int)0) {
 		token->kind = TokenKind_Var;
-	} else if (token->length == (UInt)4 && strncmp((char*)token->value, (char*)"func",  token->length) == (int)0) {
+	} else if (token->length == 4 && strncmp((char*)token->value, (char*)"func",  token->length) == (int)0) {
 		token->kind = TokenKind_Func;
-	} else if (token->length == (UInt)6 && strncmp((char*)token->value, (char*)"struct", token->length) == (int)0) {
+	} else if (token->length == 6 && strncmp((char*)token->value, (char*)"struct", token->length) == (int)0) {
 		token->kind = TokenKind_Struct;
-	} else if (token->length == (UInt)2 && strncmp((char*)token->value, (char*)"if", token->length) == (int)0) {
+	} else if (token->length == 2 && strncmp((char*)token->value, (char*)"if", token->length) == (int)0) {
 		token->kind = TokenKind_If;
-	} else if (token->length == (UInt)4 && strncmp((char*)token->value, (char*)"else", token->length) == (int)0) {
+	} else if (token->length == 4 && strncmp((char*)token->value, (char*)"else", token->length) == (int)0) {
 		token->kind = TokenKind_Else;
-	} else if (token->length == (UInt)5 && strncmp((char*)token->value, (char*)"while", token->length) == (int)0) {
+	} else if (token->length == 5 && strncmp((char*)token->value, (char*)"while", token->length) == (int)0) {
 		token->kind = TokenKind_While;
-	} else if (token->length == (UInt)6 && strncmp((char*)token->value, (char*)"return",  token->length) == (int)0) {
+	} else if (token->length == 6 && strncmp((char*)token->value, (char*)"return",  token->length) == (int)0) {
 		token->kind = TokenKind_Return;
-	} else if (token->length == (UInt)4 && strncmp((char*)token->value, (char*)"true",  token->length) == (int)0) {
+	} else if (token->length == 4 && strncmp((char*)token->value, (char*)"true",  token->length) == (int)0) {
 		token->kind = TokenKind_BooleanLiteral;
-	} else if (token->length == (UInt)5 && strncmp((char*)token->value, (char*)"false",  token->length) == (int)0) {
+	} else if (token->length == 5 && strncmp((char*)token->value, (char*)"false",  token->length) == (int)0) {
 		token->kind = TokenKind_BooleanLiteral;
 	} else {
 		token->kind = TokenKind_Identifier;
 	};;;;;;;;;;;
 	_tokens[_tokenCount] = token;
-	_tokenCount = _tokenCount + (UInt)1;
+	_tokenCount = _tokenCount + 1;
 };
