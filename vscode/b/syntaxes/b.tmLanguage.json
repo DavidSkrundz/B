@@ -47,6 +47,11 @@
 					"match": "\\b[0-9]+\\b"
 				},
 				{
+					"name": "string.quoted.single.b",
+					"begin": "'",
+					"end": "'"
+				},
+				{
 					"name": "string.quoted.double.b",
 					"begin": "\"",
 					"end": "\""
