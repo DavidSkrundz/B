@@ -4,17 +4,17 @@ func main(argc: int, argv: char**): int {
 	};
 	
 	if (argc < (int)3) { printUsage(argv[0]); };
-	if (argv[1][0] != (char)45) { printUsage(argv[0]); };
+	if (argv[1][0] != (char)'-') { printUsage(argv[0]); };
 	if (argv[1][2] != (char)0) { printUsage(argv[0]); };
 	
 	var flags = (UInt8)0;
-	if (argv[1][1] == (char)108) {
+	if (argv[1][1] == (char)'l') {
 		flags = (UInt8)1;
-	} else if (argv[1][1] == (char)112) {
+	} else if (argv[1][1] == (char)'p') {
 		flags = (UInt8)2;
-	} else if (argv[1][1] == (char)114) {
+	} else if (argv[1][1] == (char)'r') {
 		flags = (UInt8)4;
-	} else if (argv[1][1] == (char)103) {
+	} else if (argv[1][1] == (char)'g') {
 		flags = (UInt8)8;
 	} else { printUsage(argv[0]); };;;;
 	bmain(&argv[2], (UInt)argc - 2, flags);
