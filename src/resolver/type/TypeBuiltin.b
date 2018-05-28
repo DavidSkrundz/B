@@ -29,7 +29,7 @@ func InitBuiltinTypes() {
 	TypeInt64 = createTypeIdentifierString("Int64");
 	TypeUInt64 = createTypeIdentifierString("UInt64");
 	
-	TypeAny = createTypePointer(TypeVoid);
+	TypeAny = resolveTypePointer(TypeVoid);
 	TypeCharacter = TypeUInt8;
-	TypeString = createTypePointer(TypeCharacter);
+	TypeString = resolveTypePointer(TypeCharacter);
 };

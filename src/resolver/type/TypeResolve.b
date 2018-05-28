@@ -54,7 +54,13 @@ func resolveTypePointer(base: Type*): Type* {
 		};
 		i = i + 1;
 	};
-	return NULL;
+	var typePointer = newTypePointer();
+	typePointer->base = base;
+	var type = newType();
+	type->kind = TypeKind_Pointer;
+	type->type = (Void*)typePointer;
+	registerType(type);
+	return type;
 };
 
 func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, argumentCount: UInt, isVariadic: Bool): Type* {
@@ -101,20 +107,6 @@ func createTypeIdentifier(name: Identifier*): Type* {
 	var type = newType();
 	type->kind = TypeKind_Identifier;
 	type->type = (Void*)typeIdentifier;
-	registerType(type);
-	return type;
-};
-
-func createTypePointer(base: Type*): Type* {
-	if (resolveTypePointer(base) != NULL) {
-		fprintf(stderr, (char*)"Pointer type already created%c", 10);
-		abort();
-	};
-	var typePointer = newTypePointer();
-	typePointer->base = base;
-	var type = newType();
-	type->kind = TypeKind_Pointer;
-	type->type = (Void*)typePointer;
 	registerType(type);
 	return type;
 };

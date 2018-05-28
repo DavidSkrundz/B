@@ -62,9 +62,6 @@ func resolveExpressionDereference(expression: ExpressionDereference*, expectedTy
 	var expectedBaseType: Type*;
 	if (expectedType != NULL) {
 		expectedBaseType = resolveTypePointer(expectedType);
-		if (expectedBaseType == NULL) {
-			expectedBaseType = createTypePointer(expectedType);
-		};
 	};
 	var baseType = resolveExpression(expression->expression, expectedBaseType);
 	if (isPointer(baseType) == false) {
@@ -121,9 +118,6 @@ func resolveExpressionSubscript(expression: ExpressionSubscript*, expectedType: 
 	var expectedBaseType: Type*;
 	if (expectedType != NULL) {
 		expectedBaseType = resolveTypePointer(expectedType);
-		if (expectedBaseType == NULL) {
-			expectedBaseType = createTypePointer(expectedType);
-		};
 	};
 	var baseType = resolveExpression(expression->base, expectedBaseType);
 	if (isPointer(baseType) == false) {

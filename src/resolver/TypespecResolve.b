@@ -1,8 +1,6 @@
 func resolveTypespecPointer(typespec: TypespecPointer*): Type* {
 	var base = resolveTypespec(typespec->base);
-	var type = resolveTypePointer(base);
-	if (type != NULL) { return type; };
-	return createTypePointer(base);
+	return resolveTypePointer(base);
 };
 
 func resolveTypespecIdentifier(typespec: TypespecIdentifier*): Type* {
