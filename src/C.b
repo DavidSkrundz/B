@@ -30,6 +30,7 @@
 @foreign func strndup(str: char*, length: UInt): char*;
 
 @foreign func calloc(count: UInt, size: UInt): Void*;
+@foreign func realloc(pointer: Void*, size: UInt): Void*;
 
 @foreign func isspace(character: UInt8): Bool;
 @foreign func isprint(character: UInt8): Bool;
