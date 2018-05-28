@@ -9,6 +9,7 @@ func codegenTypedef(name: UInt8*, type: UInt8*) {
 func CodegenBuiltins() {
 	codegenInclude("ctype.h");
 	codegenInclude("stdbool.h");
+	codegenInclude("stddef.h");
 	codegenInclude("stdint.h");
 	codegenInclude("stdio.h");
 	codegenInclude("stdlib.h");

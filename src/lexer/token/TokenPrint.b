@@ -21,6 +21,8 @@ func _printToken(token: Token*, stream: FILE*) {
 		fprintf(stream, (char*)"NULL");
 	} else if (token->kind == TokenKind_Sizeof) {
 		fprintf(stream, (char*)"SIZEOF");
+	} else if (token->kind == TokenKind_Offsetof) {
+		fprintf(stream, (char*)"OFFSETOF");
 	} else if (token->kind == TokenKind_Struct) {
 		fprintf(stream, (char*)"STRUCT");
 	} else if (token->kind == TokenKind_Var) {
@@ -100,5 +102,5 @@ func _printToken(token: Token*, stream: FILE*) {
 	} else {
 		fprintf(stderr, (char*)"Unknown token kind: %zd%c", token->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 };

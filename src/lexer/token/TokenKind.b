@@ -3,6 +3,7 @@ var TokenKind_EOF = 0;
 var TokenKind_NULL = 0;
 
 var TokenKind_Sizeof = 0;
+var TokenKind_Offsetof = 0;
 
 var TokenKind_Var = 0;
 var TokenKind_Func = 0;
@@ -56,6 +57,7 @@ func InitTokenKinds() {
 	TokenKind_NULL = counter; counter = counter + 1;
 	
 	TokenKind_Sizeof = counter; counter = counter + 1;
+	TokenKind_Offsetof = counter; counter = counter + 1;
 	
 	TokenKind_Var = counter; counter = counter + 1;
 	TokenKind_Func = counter; counter = counter + 1;

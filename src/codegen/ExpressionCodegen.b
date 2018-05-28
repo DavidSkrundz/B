@@ -43,6 +43,14 @@ func codegenExpressionSizeof(expression: Expression*, expr: ExpressionSizeof*) {
 	printf((char*)")");
 };
 
+func codegenExpressionOffsetof(expression: Expression*, expr: ExpressionOffsetof*) {
+	printf((char*)"offsetof(");
+	codegenType(expr->resolvedType);
+	printf((char*)", ");
+	codegenIdentifier(expr->field);
+	printf((char*)")");
+};
+
 func codegenExpressionFunctionCall(expression: Expression*, expr: ExpressionFunctionCall*) {
 	printf((char*)"(");
 	codegenExpression(expr->function);
@@ -119,6 +127,8 @@ func codegenExpression(expression: Expression*) {
 		codegenExpressionCast(expression, (ExpressionCast*)expression->expression);
 	} else if (expression->kind == ExpressionKind_Sizeof) {
 		codegenExpressionSizeof(expression, (ExpressionSizeof*)expression->expression);
+	} else if (expression->kind == ExpressionKind_Offsetof) {
+		codegenExpressionOffsetof(expression, (ExpressionOffsetof*)expression->expression);
 	} else if (expression->kind == ExpressionKind_Dereference) {
 		codegenExpressionDereference(expression, (ExpressionDereference*)expression->expression);
 	} else if (expression->kind == ExpressionKind_Reference) {
@@ -146,5 +156,5 @@ func codegenExpression(expression: Expression*) {
 	} else {
 		fprintf(stderr, (char*)"Invalid expression kind %zu%c", expression->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;
 };

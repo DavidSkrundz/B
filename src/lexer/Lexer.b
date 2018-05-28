@@ -217,6 +217,8 @@ func lexStringLiteral() {
 		token->kind = TokenKind_NULL;
 	} else if (token->length == 6 && strncmp((char*)token->value, (char*)"sizeof",  token->length) == (int)0) {
 		token->kind = TokenKind_Sizeof;
+	} else if (token->length == 8 && strncmp((char*)token->value, (char*)"offsetof",  token->length) == (int)0) {
+		token->kind = TokenKind_Offsetof;
 	} else if (token->length == 3 && strncmp((char*)token->value, (char*)"var",  token->length) == (int)0) {
 		token->kind = TokenKind_Var;
 	} else if (token->length == 4 && strncmp((char*)token->value, (char*)"func",  token->length) == (int)0) {
@@ -237,7 +239,7 @@ func lexStringLiteral() {
 		token->kind = TokenKind_BooleanLiteral;
 	} else {
 		token->kind = TokenKind_Identifier;
-	};;;;;;;;;;;
+	};;;;;;;;;;;;
 	_tokens[_tokenCount] = token;
 	_tokenCount = _tokenCount + 1;
 };

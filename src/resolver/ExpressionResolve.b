@@ -20,6 +20,44 @@ func resolveExpressionSizeof(expression: ExpressionSizeof*, expectedType: Type*)
 	return TypeUInt;
 };
 
+func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Type*): Type* {
+	if (expectedType != NULL && expectedType != TypeUInt) {
+		fprintf(stderr, (char*)"Not expecting UInt%c", 10);
+		exit(EXIT_FAILURE);
+	};
+	var structType = resolveTypespec(expression->type);
+	var structDeclaration: DeclarationStruct*;
+	var i = 0;
+	while (i < _declarationCount) {
+		if (_declarations[i]->kind == DeclarationKind_Struct) {
+			if (_declarations[i]->resolvedType == structType) {
+				structDeclaration = (DeclarationStruct*)_declarations[i]->declaration;
+			};
+		};
+		i = i + 1;
+	};
+	if (structDeclaration == NULL) {
+		fprintf(stderr, (char*)"Can't get the offset of a non-struct%c", 10);
+		exit(EXIT_FAILURE);
+	};
+	i = 0;
+	while (i < structDeclaration->fields->count) {
+		var name = structDeclaration->fields->fields[i]->name;
+		if (name->length == expression->field->length) {
+			if (strncmp((char*)name->name, (char*)expression->field->name, name->length) == (int)0) {
+				expression->resolvedType = structDeclaration->fields->fields[i]->resolvedType;
+			};
+		};
+		i = i + 1;
+	};
+	if (expression->resolvedType == NULL) {
+		fprintf(stderr, (char*)"Struct does not have field: %.*s%c", (int)expression->field->length, (char*)expression->field->name, 10);
+		exit(EXIT_FAILURE);
+	};
+	expression->resolvedType = structType;
+	return TypeUInt;
+};
+
 func resolveExpressionDereference(expression: ExpressionDereference*, expectedType: Type*): Type* {
 	var expectedBaseType: Type*;
 	if (expectedType != NULL) {
@@ -249,6 +287,8 @@ func resolveExpression(expression: Expression*, expectedType: Type*): Type* {
 		expression->resolvedType = resolveExpressionCast((ExpressionCast*)expression->expression, expectedType);
 	} else if (expression->kind == ExpressionKind_Sizeof) {
 		expression->resolvedType = resolveExpressionSizeof((ExpressionSizeof*)expression->expression, expectedType);
+	} else if (expression->kind == ExpressionKind_Offsetof) {
+		expression->resolvedType = resolveExpressionOffsetof((ExpressionOffsetof*)expression->expression, expectedType);
 	} else if (expression->kind == ExpressionKind_Dereference) {
 		expression->resolvedType = resolveExpressionDereference((ExpressionDereference*)expression->expression, expectedType);
 	} else if (expression->kind == ExpressionKind_Reference) {
@@ -276,7 +316,7 @@ func resolveExpression(expression: Expression*, expectedType: Type*): Type* {
 	} else {
 		fprintf(stderr, (char*)"Invalid expression kind %zu%c", expression->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;
 	if (expression->resolvedType == NULL) {
 		abort();
 	};

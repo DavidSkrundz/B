@@ -18,6 +18,14 @@ func printExpressionSizeof(expression: ExpressionSizeof*) {
 	printf((char*)")");
 };
 
+func printExpressionOffsetOf(expression: ExpressionOffsetof*) {
+	printf((char*)"(offsetof ");
+	printTypespec(expression->type);
+	printf((char*)" ");
+	printIdentifier(expression->field);
+	printf((char*)")");
+};
+
 func printExpressionDereference(expression: ExpressionDereference*) {
 	printf((char*)"(dereference ");
 	printExpression((Expression*)expression->expression);
@@ -118,6 +126,8 @@ func printExpression(expression: Expression*) {
 		printExpressionCast((ExpressionCast*)expression->expression);
 	} else if (expression->kind == ExpressionKind_Sizeof) {
 		printExpressionSizeof((ExpressionSizeof*)expression->expression);
+	} else if (expression->kind == ExpressionKind_Offsetof) {
+		printExpressionOffsetOf((ExpressionOffsetof*)expression->expression);
 	} else if (expression->kind == ExpressionKind_Dereference) {
 		printExpressionDereference((ExpressionDereference*)expression->expression);
 	} else if (expression->kind == ExpressionKind_Reference) {
@@ -145,5 +155,5 @@ func printExpression(expression: Expression*) {
 	} else {
 		fprintf(stderr, (char*)"Invalid expression kind %zu%c", expression->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;
 };

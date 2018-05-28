@@ -120,6 +120,19 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 		expression->kind = ExpressionKind_Sizeof;
 		expression->expression = (Void*)expr;
 		return expression;
+	} else if (checkToken(TokenKind_Offsetof)) {
+		expectToken(TokenKind_OpenParenthesis);
+		var expr = newExpressionOffsetof();
+		expr->type = parseTypespec(tokens);
+		if (expr->type == NULL) { return NULL; };
+		expectToken(TokenKind_Comma);
+		expr->field = parseIdentifier(tokens);
+		if (expr->field == NULL) { return NULL; };
+		expectToken(TokenKind_CloseParenthesis);
+		var expression = newExpression();
+		expression->kind = ExpressionKind_Offsetof;
+		expression->expression = (Void*)expr;
+		return expression;
 	} else if (checkToken(TokenKind_Star)) {
 		var expr = newExpressionDereference();
 		expr->expression = parseExpressionCast(tokens);
@@ -138,7 +151,7 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 		return expression;
 	} else {
 		return parseExpressionPostfix(tokens);
-	};;;
+	};;;;
 };
 
 func parseExpressionCast(tokens: Token***): Expression* {

@@ -2,6 +2,7 @@ var ExpressionKind_Invalid = 0;
 var ExpressionKind_Group = 0;
 var ExpressionKind_Cast = 0;
 var ExpressionKind_Sizeof = 0;
+var ExpressionKind_Offsetof = 0;
 var ExpressionKind_Dereference = 0;
 var ExpressionKind_Reference = 0;
 var ExpressionKind_FunctionCall = 0;
@@ -22,6 +23,7 @@ func InitExpressionKinds() {
 	ExpressionKind_Group = counter; counter = counter + 1;
 	ExpressionKind_Cast = counter; counter = counter + 1;
 	ExpressionKind_Sizeof = counter; counter = counter + 1;
+	ExpressionKind_Offsetof = counter; counter = counter + 1;
 	ExpressionKind_Dereference = counter; counter = counter + 1;
 	ExpressionKind_Reference = counter; counter = counter + 1;
 	ExpressionKind_FunctionCall = counter; counter = counter + 1;

@@ -14,6 +14,12 @@ struct ExpressionSizeof {
 	var resolvedType: Type*;
 };
 
+struct ExpressionOffsetof {
+	var type: Typespec*;
+	var field: Identifier*;
+	var resolvedType: Type*;
+};
+
 struct ExpressionDereference {
 	var expression: Expression*;
 };
@@ -74,6 +80,10 @@ func newExpressionCast(): ExpressionCast* {
 
 func newExpressionSizeof(): ExpressionSizeof* {
 	return (ExpressionSizeof*)xcalloc(1, sizeof(ExpressionSizeof));
+};
+
+func newExpressionOffsetof(): ExpressionOffsetof* {
+	return (ExpressionOffsetof*)xcalloc(1, sizeof(ExpressionOffsetof));
 };
 
 func newExpressionDereference(): ExpressionDereference* {
