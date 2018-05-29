@@ -28,7 +28,15 @@
 				},
 				{
 					"name": "support.type.b",
-					"match": "\\b(Int|UInt)(|8|16|32|64)\\b"
+					"match": "\\b(U?Int(|8|16|32|64)|Void|Bool)\\b\\**"
+				},
+				{
+					"name": "keyword.other.unit.b",
+					"match": "\\b(NULL)\\b"
+				},
+				{
+					"name": "keyword.operator.new.b",
+					"match": "\\b(sizeof|offsetof)\\b"
 				}
 			]
 		},
