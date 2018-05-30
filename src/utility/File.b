@@ -1,5 +1,3 @@
-var NewlinesBetweenFiles = 3;
-
 func readFile(fileNames: char**, fileCount: UInt, buffer: UInt8**): UInt {
 	var files: FILE** = (FILE**)xcalloc(fileCount, sizeof(FILE*));
 	var lengths: UInt* = (UInt*)xcalloc(fileCount, sizeof(Int));
@@ -15,7 +13,7 @@ func readFile(fileNames: char**, fileCount: UInt, buffer: UInt8**): UInt {
 		};
 		fseek(files[index], 0, SEEK_END);
 		lengths[index] = ftell(files[index]);
-		totalLength = totalLength + lengths[index] + NewlinesBetweenFiles;
+		totalLength = totalLength + lengths[index];
 		fseek(files[index], 0, SEEK_SET);
 		index = index + 1;
 	};
@@ -33,12 +31,6 @@ func readFile(fileNames: char**, fileCount: UInt, buffer: UInt8**): UInt {
 			exit(EXIT_FAILURE);
 		};
 		currentLength = currentLength + lengths[index];
-		var lines = 0;
-		while (lines < NewlinesBetweenFiles) {
-			(*buffer)[currentLength] = (UInt8)10;
-			currentLength = currentLength + 1;
-			lines = lines + 1;
-		};
 		index = index + 1;
 	};
 	
