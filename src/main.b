@@ -41,7 +41,7 @@ func printUsage(self: char*) {
 func bmain(files: char**, fileCount: UInt, flags: UInt8) {
 	var i = 0;
 	while (i < fileCount) {
-		_codeLength = readFile(&(files[i]), 1, &_code);
+		_codeLength = readFile(&(files[i]), &_code);
 		
 		var tempFlags = flags;
 		
