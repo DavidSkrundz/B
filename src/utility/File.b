@@ -1,6 +1,6 @@
 var NewlinesBetweenFiles = 3;
 
-func readFiles(fileNames: char**, fileCount: UInt, buffer: UInt8**): UInt {
+func readFile(fileNames: char**, fileCount: UInt, buffer: UInt8**): UInt {
 	var files: FILE** = (FILE**)xcalloc(fileCount, sizeof(FILE*));
 	var lengths: UInt* = (UInt*)xcalloc(fileCount, sizeof(Int));
 	var totalLength = 0;
