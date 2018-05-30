@@ -150,11 +150,11 @@ func Lex() {
 		} else if (*_code == (UInt8)39) {
 			lexCharacterLiteral();
 		} else if ('A' <= *_code && *_code <= 'Z') {
-			lexStringLiteral();
+			lexIdentifier();
 		} else if ('a' <= *_code && *_code <= 'z') {
-			lexStringLiteral();
-		} else if (*_code == (UInt8)95) {
-			lexStringLiteral();
+			lexIdentifier();
+		} else if (*_code == (UInt8)'_') {
+			lexIdentifier();
 		} else if (*_code == (UInt8)0) {
 			lexToken(TokenKind_EOF);
 			return;
@@ -202,10 +202,10 @@ func lexCharacterLiteral() {
 	_tokenCount = _tokenCount + 1;
 };
 
-func lexStringLiteral() {
+func lexIdentifier() {
 	var token = newToken();
 	token->value = _code;
-	while (isalnum(*_code) || *_code == (UInt8)95) { _code = (UInt8*)((UInt)_code + 1); };
+	while (isalnum(*_code) || *_code == (UInt8)'_') { _code = (UInt8*)((UInt)_code + 1); };
 	token->length = (UInt)_code - (UInt)token->value;
 	if (token->length == 4 && strncmp((char*)token->value, (char*)"NULL", token->length) == (int)0) {
 		token->kind = TokenKind_NULL;
