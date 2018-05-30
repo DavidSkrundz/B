@@ -226,7 +226,7 @@ func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): 
 
 func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType: Type*): Type* {
 	var i = 0;
-	while (i < _context->count) {
+	while (i < bufferCount((Void**)_context->names)) {
 		if (_context->names[i]->length == expression->identifier->length) {
 			if (strncmp((char*)_context->names[i]->name, (char*)expression->identifier->name, expression->identifier->length) == (int)0) {
 				if (expectedType != NULL && expectedType != _context->types[i]) {

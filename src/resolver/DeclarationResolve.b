@@ -53,11 +53,12 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Identifier*
 };
 
 func resolveDeclarationDefinitionStruct(declaration: DeclarationStruct*, name: Identifier*) {
-	var before = _context->count;
+	var before = bufferCount((Void**)_context->names);
 	if (declaration->fields != NULL) {
 		resolveDeclarationStructFields(declaration->fields);
 	};
-	_context->count = before;
+	setBufferCount((Void**)_context->names, before);
+	setBufferCount((Void**)_context->types, before);
 };
 
 func resolveDeclarationType(declaration: Declaration*) {
@@ -103,7 +104,7 @@ func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: I
 		returnType = resolveTypespec(declaration->returnType);
 	};
 	if (declaration->block != NULL) {
-		var oldContextCount = _context->count;
+		var oldContextCount = bufferCount((Void**)_context->names);
 		var i = 0;
 		while (i < declaration->args->count) {
 			var argument = declaration->args->args[i];
@@ -111,7 +112,8 @@ func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: I
 			i = i + 1;
 		};
 		resolveStatementBlock(declaration->block, returnType);
-		_context->count = oldContextCount;
+		setBufferCount((Void**)_context->names, oldContextCount);
+		setBufferCount((Void**)_context->types, oldContextCount);
 	};
 	var type = resolveTypeFunction(returnType, argumentTypes, declaration->args->count, declaration->args->isVariadic);
 	if (type == NULL) {

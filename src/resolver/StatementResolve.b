@@ -58,11 +58,12 @@ func resolveStatement(statement: Statement*, expectedType: Type*) {
 };
 
 func resolveStatementBlock(block: StatementBlock*, expectedType: Type*) {
-	var oldContextCount = _context->count;
+	var oldContextCount = bufferCount((Void**)_context->names);
 	var i = 0;
 	while (i < block->count) {
 		resolveStatement(block->statements[i], expectedType);
 		i = i + 1;
 	};
-	_context->count = oldContextCount;
+	setBufferCount((Void**)_context->names, oldContextCount);
+	setBufferCount((Void**)_context->types, oldContextCount);
 };
