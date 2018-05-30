@@ -23,7 +23,7 @@ func main(argc: int, argv: char**): int {
 };
 
 func printVersion(self: char*) {
-	printf((char*)"B Compiler (%s) Version 0.0.14%c", self, 10);
+	printf((char*)"B Compiler (%s) Version 0.0.15%c", self, 10);
 	exit(EXIT_SUCCESS);
 };
 
@@ -42,7 +42,7 @@ func bmain(files: char**, fileCount: UInt, flags: UInt8) {
 	_codeLength = readFiles(files, fileCount, &_code);
 	
 	Lex();
-	if (flags & (UInt8)1 != (UInt8)0) { printTokens(_tokens, _tokenCount); };
+	if (flags & (UInt8)1 != (UInt8)0) { printTokens(); };
 	flags = flags / (UInt8)2;
 	if (flags == (UInt8)0) { return; };
 	

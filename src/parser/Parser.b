@@ -8,7 +8,7 @@ func Parse() {
 	InitStatementKinds();
 	InitExpressionKinds();
 	
-	_declarations = (Declaration**)xcalloc(_tokenCount, sizeof(Declaration*));
+	_declarations = (Declaration**)xcalloc(bufferCount((Void**)_tokens), sizeof(Declaration*));
 	_declarationCount = 0;
 	
 	var t = &_tokens;

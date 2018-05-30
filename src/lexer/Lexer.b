@@ -2,13 +2,10 @@ var _code: UInt8*;
 var _codeLength = 0;
 
 var _tokens: Token**;
-var _tokenCount = 0;
 
 func Lex() {
+	_tokens = NULL;
 	InitTokenKinds();
-	
-	_tokens = (Token**)xcalloc(_codeLength, sizeof(Token*));
-	_tokenCount = 0;
 	
 	while (true) {
 		if (*_code == ' ') {
@@ -73,7 +70,7 @@ func Lex() {
 			lexToken(TokenKind_EOF);
 			return;
 		} else {
-			printTokens(_tokens, _tokenCount);
+			printTokens();
 			if (isprint(*_code)) {
 				fprintf(stderr, (char*)"Unexpected character: '%c'%c", *_code, 10);
 			} else {
@@ -90,8 +87,7 @@ func lexToken(kind: UInt) {
 	token->value = _code;
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	token->length = 1;
-	_tokens[_tokenCount] = token;
-	_tokenCount = _tokenCount + 1;
+	append((Void***)&_tokens, (Void*)token);
 };
 
 func lexToken2(kind: UInt, character2: UInt8, kind2: UInt) {
@@ -105,8 +101,7 @@ func lexToken2(kind: UInt, character2: UInt8, kind2: UInt) {
 		token->kind = kind2;
 		token->length = 2;
 	};
-	_tokens[_tokenCount] = token;
-	_tokenCount = _tokenCount + 1;
+	append((Void***)&_tokens, (Void*)token);
 };
 
 func lexElipses() {
@@ -116,8 +111,7 @@ func lexElipses() {
 		token->value = _code;
 		_code = (UInt8*)((UInt)_code + 3);
 		token->length = 3;
-		_tokens[_tokenCount] = token;
-		_tokenCount = _tokenCount + 1;
+		append((Void***)&_tokens, (Void*)token);
 	};
 };
 
@@ -127,8 +121,7 @@ func lexIntegerLiteral() {
 	token->value = _code;
 	while (isdigit(*_code)) { _code = (UInt8*)((UInt)_code + sizeof(UInt8)); };
 	token->length = (UInt)_code - (UInt)token->value;
-	_tokens[_tokenCount] = token;
-	_tokenCount = _tokenCount + 1;
+	append((Void***)&_tokens, (Void*)token);
 };
 
 func lexStringLiteral() {
@@ -141,8 +134,7 @@ func lexStringLiteral() {
 	};
 	token->length = (UInt)_code - (UInt)token->value;
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-	_tokens[_tokenCount] = token;
-	_tokenCount = _tokenCount + 1;
+	append((Void***)&_tokens, (Void*)token);
 };
 
 func lexCharacterLiteral() {
@@ -153,8 +145,7 @@ func lexCharacterLiteral() {
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	token->length = 1;
-	_tokens[_tokenCount] = token;
-	_tokenCount = _tokenCount + 1;
+	append((Void***)&_tokens, (Void*)token);
 };
 
 func lexIdentifier() {
@@ -189,6 +180,5 @@ func lexIdentifier() {
 	} else {
 		token->kind = TokenKind_Identifier;
 	};;;;;;;;;;;;
-	_tokens[_tokenCount] = token;
-	_tokenCount = _tokenCount + 1;
+	append((Void***)&_tokens, (Void*)token);
 };

@@ -1,10 +1,10 @@
 func printToken(token: Token*) { _printToken(token, stdout); };
 func printToken_error(token: Token*) { _printToken(token, stderr); };
 
-func printTokens(tokens: Token**, count: UInt) {
+func printTokens() {
 	var i = 0;
-	while (i < count) {
-		printToken(tokens[i]);
+	while (i < bufferCount((Void**)_tokens)) {
+		printToken(_tokens[i]);
 		printf((char*)"%c", 10);
 		i = i + 1;
 	};
