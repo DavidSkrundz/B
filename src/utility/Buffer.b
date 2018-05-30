@@ -25,7 +25,8 @@ func append(list: Void***, element: Void*) {
 	buffer->count = buffer->count + 1;
 };
 
-func bufferCount(list: Void***): UInt {
-	var buffer = _getBuffer(list);
+func bufferCount(list: Void**): UInt {
+	if (list == NULL) { return 0; };
+	var buffer = _getBuffer(&list);
 	return buffer->count;
 };
