@@ -1,13 +1,13 @@
-func readFile(fileNames: char**, buffer: UInt8**): UInt {
+func readFile(fileName: char*, buffer: UInt8**): UInt {
 	var files: FILE** = (FILE**)xcalloc(1, sizeof(FILE*));
 	var lengths: UInt* = (UInt*)xcalloc(1, sizeof(Int));
 	var totalLength = 0;
 	
 	var index = 0;
-	files[index] = fopen(fileNames[index], (char*)"r");
+	files[index] = fopen(fileName, (char*)"r");
 	if (files[index] == NULL) {
 		fprintf(stderr, (char*)"could not open ");
-		perror(fileNames[index]);
+		perror(fileName);
 		exit(EXIT_FAILURE);
 	};
 	fseek(files[index], 0, SEEK_END);
@@ -23,7 +23,7 @@ func readFile(fileNames: char**, buffer: UInt8**): UInt {
 	} else {
 		fclose(files[index]);
 		fprintf(stderr, (char*)"could not open ");
-		perror(fileNames[index]);
+		perror(fileName);
 		exit(EXIT_FAILURE);
 	};
 	currentLength = currentLength + lengths[index];
