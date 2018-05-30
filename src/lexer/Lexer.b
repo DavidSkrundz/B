@@ -156,13 +156,7 @@ func Lex() {
 		} else if (*_code == (UInt8)95) {
 			lexStringLiteral();
 		} else if (*_code == (UInt8)0) {
-			token = newToken();
-			token->kind = TokenKind_EOF;
-			token->value = _code;
-			_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-			token->length = 1;
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + 1;
+			lexToken(TokenKind_EOF);
 			return;
 		} else {
 			printTokens(_tokens, _tokenCount);
