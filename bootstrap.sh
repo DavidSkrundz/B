@@ -58,3 +58,5 @@ do
 		exit 1
 	fi
 done
+
+git checkout master
