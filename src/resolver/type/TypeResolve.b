@@ -1,3 +1,5 @@
+var _types: Type**;
+
 func isPointer(type: Type*): Bool {
 	return type->kind == TypeKind_Pointer;
 };
@@ -19,17 +21,12 @@ func getPointerBase(type: Type*): Type* {
 };
 
 func registerType(type: Type*) {
-	if (_typeCount == MAX_TYPE_COUNT) {
-		fprintf(stderr, (char*)"Too many types are defined%c", 10);
-		exit(EXIT_FAILURE);
-	};
-	_types[_typeCount] = type;
-	_typeCount = _typeCount + 1;
+	append((Void***)&_types, (Void*)type);
 };
 
 func resolveTypeIdentifier(name: Identifier*): Type* {
 	var i = 0;
-	while (i < _typeCount) {
+	while (i < bufferCount((Void**)_types)) {
 		var type = _types[i];
 		if (type->kind == TypeKind_Identifier) {
 			var identifier = (TypeIdentifier*)type->type;
@@ -46,7 +43,7 @@ func resolveTypeIdentifier(name: Identifier*): Type* {
 
 func resolveTypePointer(base: Type*): Type* {
 	var i = 0;
-	while (i < _typeCount) {
+	while (i < bufferCount((Void**)_types)) {
 		var type = _types[i];
 		if (type->kind == TypeKind_Pointer) {
 			var pointer = (TypePointer*)type->type;
@@ -65,7 +62,7 @@ func resolveTypePointer(base: Type*): Type* {
 
 func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, argumentCount: UInt, isVariadic: Bool): Type* {
 	var i = 0;
-	while (i < _typeCount) {
+	while (i < bufferCount((Void**)_types)) {
 		var type = _types[i];
 		if (type->kind == TypeKind_Function) {
 			var funcType = (TypeFunction*)type->type;

@@ -1,13 +1,8 @@
-var _types: Type**;
-var _typeCount = 0;
 var _context: Context*;
 
-var MAX_TYPE_COUNT = 1000;
 func Resolve() {
 	InitTypeKinds();
 	
-	_types = (Type**)xcalloc(MAX_TYPE_COUNT, sizeof(Type*));
-	_typeCount = 0;
 	_context = newContext();
 	
 	InitBuiltinTypes();
