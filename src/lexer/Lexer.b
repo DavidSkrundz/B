@@ -11,8 +11,6 @@ func Lex() {
 	_tokenCount = 0;
 	
 	while (true) {
-		var token: Token*;
-		
 		if (*_code == ' ') {
 			while (isspace(*_code)) { _code = (UInt8*)((UInt)_code + sizeof(UInt8)); };
 		} else if (*_code == (UInt8)9) {
@@ -58,27 +56,9 @@ func Lex() {
 		} else if (*_code == '<') {
 			lexToken2(TokenKind_LessThan, '=', TokenKind_LessThanEqual);
 		} else if (*_code == '.') {
-			if (_code[1] == '.' && _code[2] == '.') {
-				token = newToken();
-				token->kind = TokenKind_Ellipses;
-				token->value = _code;
-				_code = (UInt8*)((UInt)_code + 3);
-				token->length = 3;
-				_tokens[_tokenCount] = token;
-				_tokenCount = _tokenCount + 1;
-			};
+			lexElipses();
 		} else if (*_code == (UInt8)34) {
-			token = newToken();
-			token->kind = TokenKind_StringLiteral;
-			_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-			token->value = _code;
-			while (*_code != (UInt8)34 && *_code != (UInt8)92 && isprint(*_code)) {
-				_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-			};
-			token->length = (UInt)_code - (UInt)token->value;
-			_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-			_tokens[_tokenCount] = token;
-			_tokenCount = _tokenCount + 1;
+			lexStringLiteral();
 		} else if ('0' <= *_code && *_code <= '9') {
 			lexIntegerLiteral();
 		} else if (*_code == (UInt8)39) {
@@ -129,12 +109,38 @@ func lexToken2(kind: UInt, character2: UInt8, kind2: UInt) {
 	_tokenCount = _tokenCount + 1;
 };
 
+func lexElipses() {
+	if (_code[1] == '.' && _code[2] == '.') {
+		var token = newToken();
+		token->kind = TokenKind_Ellipses;
+		token->value = _code;
+		_code = (UInt8*)((UInt)_code + 3);
+		token->length = 3;
+		_tokens[_tokenCount] = token;
+		_tokenCount = _tokenCount + 1;
+	};
+};
+
 func lexIntegerLiteral() {
 	var token = newToken();
 	token->kind = TokenKind_IntegerLiteral;
 	token->value = _code;
 	while (isdigit(*_code)) { _code = (UInt8*)((UInt)_code + sizeof(UInt8)); };
 	token->length = (UInt)_code - (UInt)token->value;
+	_tokens[_tokenCount] = token;
+	_tokenCount = _tokenCount + 1;
+};
+
+func lexStringLiteral() {
+	var token = newToken();
+	token->kind = TokenKind_StringLiteral;
+	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
+	token->value = _code;
+	while (*_code != (UInt8)34 && *_code != (UInt8)92 && isprint(*_code)) {
+		_code = (UInt8*)((UInt)_code + sizeof(UInt8));
+	};
+	token->length = (UInt)_code - (UInt)token->value;
+	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	_tokens[_tokenCount] = token;
 	_tokenCount = _tokenCount + 1;
 };
