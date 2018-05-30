@@ -13,52 +13,52 @@ func Lex() {
 	while (true) {
 		var token: Token*;
 		
-		if (*_code == (UInt8)32) {
+		if (*_code == ' ') {
 			while (isspace(*_code)) { _code = (UInt8*)((UInt)_code + sizeof(UInt8)); };
 		} else if (*_code == (UInt8)9) {
 			while (isspace(*_code)) { _code = (UInt8*)((UInt)_code + sizeof(UInt8)); };
 		} else if (*_code == (UInt8)10) {
 			while (isspace(*_code)) { _code = (UInt8*)((UInt)_code + sizeof(UInt8)); };
-		} else if (*_code == (UInt8)44) {
+		} else if (*_code == ',') {
 			lexToken(TokenKind_Comma);
-		} else if (*_code == (UInt8)58) {
+		} else if (*_code == ':') {
 			lexToken(TokenKind_Colon);
-		} else if (*_code == (UInt8)59) {
+		} else if (*_code == ';') {
 			lexToken(TokenKind_Semicolon);
-		} else if (*_code == (UInt8)123) {
+		} else if (*_code == '{') {
 			lexToken(TokenKind_OpenCurly);
-		} else if (*_code == (UInt8)125) {
+		} else if (*_code == '}') {
 			lexToken(TokenKind_CloseCurly);
-		} else if (*_code == (UInt8)91) {
+		} else if (*_code == '[') {
 			lexToken(TokenKind_OpenBracket);
-		} else if (*_code == (UInt8)93) {
+		} else if (*_code == ']') {
 			lexToken(TokenKind_CloseBracket);
-		} else if (*_code == (UInt8)40) {
+		} else if (*_code == '(') {
 			lexToken(TokenKind_OpenParenthesis);
-		} else if (*_code == (UInt8)41) {
+		} else if (*_code == ')') {
 			lexToken(TokenKind_CloseParenthesis);
-		} else if (*_code == (UInt8)64) {
+		} else if (*_code == '@') {
 			lexToken(TokenKind_At);
-		} else if (*_code == (UInt8)42) {
+		} else if (*_code == '*') {
 			lexToken(TokenKind_Star);
-		} else if (*_code == (UInt8)38) {
-			lexToken2(TokenKind_And, (UInt8)38, TokenKind_AndAnd);
-		} else if (*_code == (UInt8)124) {
-			lexToken2(TokenKind_Invalid, (UInt8)124, TokenKind_OrOr);
-		} else if (*_code == (UInt8)43) {
+		} else if (*_code == '&') {
+			lexToken2(TokenKind_And, '&', TokenKind_AndAnd);
+		} else if (*_code == '|') {
+			lexToken2(TokenKind_Invalid, '|', TokenKind_OrOr);
+		} else if (*_code == '+') {
 			lexToken(TokenKind_Plus);
-		} else if (*_code == (UInt8)45) {
-			lexToken2(TokenKind_Minus, (UInt8)62, TokenKind_Arrow);
-		} else if (*_code == (UInt8)47) {
+		} else if (*_code == '-') {
+			lexToken2(TokenKind_Minus, '>', TokenKind_Arrow);
+		} else if (*_code == '/') {
 			lexToken(TokenKind_Slash);
-		} else if (*_code == (UInt8)33) {
-			lexToken2(TokenKind_Not, (UInt8)61, TokenKind_NotEqual);
-		} else if (*_code == (UInt8)61) {
-			lexToken2(TokenKind_Assign, (UInt8)61, TokenKind_Equal);
-		} else if (*_code == (UInt8)60) {
-			lexToken2(TokenKind_LessThan, (UInt8)61, TokenKind_LessThanEqual);
-		} else if (*_code == (UInt8)46) {
-			if (_code[1] == (UInt8)46 && _code[2] == (UInt8)46) {
+		} else if (*_code == '!') {
+			lexToken2(TokenKind_Not, '=', TokenKind_NotEqual);
+		} else if (*_code == '=') {
+			lexToken2(TokenKind_Assign, '=', TokenKind_Equal);
+		} else if (*_code == '<') {
+			lexToken2(TokenKind_LessThan, '=', TokenKind_LessThanEqual);
+		} else if (*_code == '.') {
+			if (_code[1] == '.' && _code[2] == '.') {
 				token = newToken();
 				token->kind = TokenKind_Ellipses;
 				token->value = _code;
@@ -87,7 +87,7 @@ func Lex() {
 			lexIdentifier();
 		} else if ('a' <= *_code && *_code <= 'z') {
 			lexIdentifier();
-		} else if (*_code == (UInt8)'_') {
+		} else if (*_code == '_') {
 			lexIdentifier();
 		} else if (*_code == (UInt8)0) {
 			lexToken(TokenKind_EOF);
@@ -154,7 +154,7 @@ func lexCharacterLiteral() {
 func lexIdentifier() {
 	var token = newToken();
 	token->value = _code;
-	while (isalnum(*_code) || *_code == (UInt8)'_') { _code = (UInt8*)((UInt)_code + 1); };
+	while (isalnum(*_code) || *_code == '_') { _code = (UInt8*)((UInt)_code + 1); };
 	token->length = (UInt)_code - (UInt)token->value;
 	if (token->length == 4 && strncmp((char*)token->value, (char*)"NULL", token->length) == (int)0) {
 		token->kind = TokenKind_NULL;
