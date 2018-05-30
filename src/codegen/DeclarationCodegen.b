@@ -21,7 +21,7 @@ func codegenDeclarationDeclaration(declaration: Declaration*) {
 
 func CodegenDeclarationDeclarations() {
 	var i = 0;
-	while (i < _declarationCount) {
+	while (i < bufferCount((Void**)_declarations)) {
 		codegenDeclarationDeclaration(_declarations[i]);
 		i = i + 1;
 	};
@@ -119,7 +119,7 @@ func codegenDeclarationDefinition(declaration: Declaration*) {
 
 func CodegenDeclarationDefinitions() {
 	var i = 0;
-	while (i < _declarationCount) {
+	while (i < bufferCount((Void**)_declarations)) {
 		codegenDeclarationDefinition(_declarations[i]);
 		i = i + 1;
 	};
@@ -156,7 +156,7 @@ func codegenDeclarationImplementation(declaration: Declaration*) {
 
 func CodegenDeclarationImplementations() {
 	var i = 0;
-	while (i < _declarationCount) {
+	while (i < bufferCount((Void**)_declarations)) {
 		codegenDeclarationImplementation(_declarations[i]);
 		i = i + 1;
 	};

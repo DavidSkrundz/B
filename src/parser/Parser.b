@@ -1,5 +1,4 @@
 var _declarations: Declaration**;
-var _declarationCount = 0;
 
 func Parse() {
 	InitTypespecKinds();
@@ -8,9 +7,6 @@ func Parse() {
 	InitStatementKinds();
 	InitExpressionKinds();
 	
-	_declarations = (Declaration**)xcalloc(bufferCount((Void**)_tokens), sizeof(Declaration*));
-	_declarationCount = 0;
-	
 	var t = &_tokens;
 	var loop = true;
 	while (loop) {
@@ -18,8 +14,7 @@ func Parse() {
 		if (declaration == NULL) {
 			loop = false;
 		} else {
-			_declarations[_declarationCount] = declaration;
-			_declarationCount = _declarationCount + 1;
+			append((Void***)&_declarations, (Void*)declaration);
 		};
 	};
 	
@@ -27,14 +22,14 @@ func Parse() {
 		fprintf(stderr, (char*)"Unexpected token: ");
 		printToken_error(*_tokens);
 		fprintf(stderr, (char*)"%c%c", 10, 10);
-		printDeclarations(_declarations, _declarationCount);
+		printDeclarations();
 		exit(EXIT_FAILURE);
 	};
 };
 
 func expectToken(kind: UInt) {
 	if ((*_tokens)->kind != kind) {
-		printDeclarations(_declarations, _declarationCount);
+		printDeclarations();
 		fprintf(stderr, (char*)"%c", 10);
 		fprintf(stderr, (char*)"Unexpected token: ");
 		printToken_error(*_tokens);

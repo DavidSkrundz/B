@@ -28,7 +28,7 @@ func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Ty
 	var structType = resolveTypespec(expression->type);
 	var structDeclaration: DeclarationStruct*;
 	var i = 0;
-	while (i < _declarationCount) {
+	while (i < bufferCount((Void**)_declarations)) {
 		if (_declarations[i]->kind == DeclarationKind_Struct) {
 			if (_declarations[i]->resolvedType == structType) {
 				structDeclaration = (DeclarationStruct*)_declarations[i]->declaration;
@@ -133,7 +133,7 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 	var baseType = getPointerBase(pointerType);
 	var structDeclaration: DeclarationStruct*;
 	var i = 0;
-	while (i < _declarationCount) {
+	while (i < bufferCount((Void**)_declarations)) {
 		if (_declarations[i]->kind == DeclarationKind_Struct) {
 			if (_declarations[i]->resolvedType == baseType) {
 				structDeclaration = (DeclarationStruct*)_declarations[i]->declaration;

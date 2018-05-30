@@ -7,7 +7,7 @@ func resolveTypespecIdentifier(typespec: TypespecIdentifier*): Type* {
 	var type = resolveTypeIdentifier(typespec->name);
 	if (type == NULL) {
 		var i = 0;
-		while (i < _declarationCount) {
+		while (i < bufferCount((Void**)_declarations)) {
 			if (_declarations[i]->name->length == typespec->name->length) {
 				if (strncmp((char*)_declarations[i]->name->name, (char*)typespec->name->name, typespec->name->length) == (int)0) {
 					resolveDeclarationType(_declarations[i]);

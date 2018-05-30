@@ -119,9 +119,9 @@ func printDeclaration(declaration: Declaration*) {
 	};;;
 };
 
-func printDeclarations(declarations: Declaration**, count: UInt) {
+func printDeclarations() {
 	var i = 0;
-	while (i < count) {
+	while (i < bufferCount((Void**)_declarations)) {
 		printDeclaration(_declarations[i]);
 		printf((char*)"%c%c", 10, 10);
 		i = i + 1;

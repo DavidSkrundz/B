@@ -47,7 +47,7 @@ func bmain(files: char**, fileCount: UInt, flags: UInt8) {
 	if (flags == (UInt8)0) { return; };
 	
 	Parse();
-	if (flags & (UInt8)1 != (UInt8)0) { printDeclarations(_declarations, _declarationCount); };
+	if (flags & (UInt8)1 != (UInt8)0) { printDeclarations(); };
 	flags = flags / (UInt8)2;
 	if (flags == (UInt8)0) { return; };
 	
