@@ -26,9 +26,18 @@ cd docs
 make
 ```
 
-Then bootstrap the compiler:
+Bootstrap the compiler (`bin/bc`):
 
 ```Bash
-make install
+git checkout bootstrap
+./bootstrap.sh [--update]
 ```
-(note: only builds to `bin/` does not actually install)
+
+While developing:
+
+```Bash
+make clean    # Remove build/
+make          # Build stage1, stage2, and the new bc
+make test     # Run the new bc against the test cases
+make install  # Copy build/bc to bin/bc (if the tests pass)
+```
