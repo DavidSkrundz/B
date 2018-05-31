@@ -20,11 +20,9 @@ typedef uint32_t UInt32;
 typedef int64_t Int64;
 typedef uint64_t UInt64;
 
-typedef enum ExitStatus {
-	ExitStatus_Success,
-	ExitStatus_Failure,
-} ExitStatus;
+typedef enum Enum {
+	Enum_Case,
+} Enum;
 
-ExitStatus a = (ExitStatus_Success);
-ExitStatus b = (ExitStatus_Failure);
+Enum a = (Enum_Case);
 

@@ -9,7 +9,9 @@ func codegenDeclarationStructDeclaration(declaration: Declaration*, decl: Declar
 func codegenDeclarationEnumDeclaration(declaration: Declaration*, decl: DeclarationEnum*) {
 	printf((char*)"typedef enum ");
 	codegenIdentifier(declaration->name);
-	printf((char*)" ");
+	printf((char*)" {%c", 10);
+	codegenDeclarationEnumCasesDefinition(decl->cases, declaration->name);
+	printf((char*)"} ");
 	codegenIdentifier(declaration->name);
 	printf((char*)";%c", 10);
 };
@@ -124,14 +126,6 @@ func codegenDeclarationEnumCasesDefinition(cases: DeclarationEnumCase**, name: I
 	};
 };
 
-func codegenDeclarationEnumDefinition(declaration: Declaration*, decl: DeclarationEnum*) {
-	printf((char*)"enum ");
-	codegenIdentifier(declaration->name);
-	printf((char*)" {%c", 10);
-	codegenDeclarationEnumCasesDefinition(decl->cases, declaration->name);
-	printf((char*)"};%c", 10);
-};
-
 func codegenDeclarationDefinition(declaration: Declaration*) {
 	if (declaration->attribute != NULL) { return; };
 	
@@ -142,7 +136,6 @@ func codegenDeclarationDefinition(declaration: Declaration*) {
 	} else if (declaration->kind == DeclarationKind_Struct) {
 		codegenDeclarationStructDefinition(declaration, (DeclarationStruct*)declaration->declaration);
 	} else if (declaration->kind == DeclarationKind_Enum) {
-		codegenDeclarationEnumDefinition(declaration, (DeclarationEnum*)declaration->declaration);
 	} else {
 		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
 		abort();

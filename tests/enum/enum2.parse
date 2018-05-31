@@ -1,0 +1,12 @@
+(var (identifier a) (expression
+  (dot
+   (identifier Enum)
+   (identifier Case)
+  )
+))
+
+(enum
+ (identifier Enum)
+ (case (identifier Case))
+)
+
