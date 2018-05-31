@@ -82,6 +82,22 @@ func codegenExpressionArrow(expression: Expression*, expr: ExpressionArrow*) {
 	printf((char*)")");
 };
 
+func codegenExpressionDot(expression: Expression*, expr: ExpressionDot*) {
+	printf((char*)"(");
+	var i = 0;
+	while (i < bufferCount((Void**)_declarations)) {
+		if (_declarations[i]->kind == DeclarationKind_Enum) {
+			if (_declarations[i]->resolvedType == expression->resolvedType) {
+				codegenIdentifier(_declarations[i]->name);
+			};
+		};
+		i = i + 1;
+	};
+	printf((char*)"_");
+	codegenIdentifier(expr->field);
+	printf((char*)")");
+};
+
 func codegenExpressionInfixOperator(expression: Expression*, expr: ExpressionInfix*) {
 	printf((char*)"(");
 	codegenExpression(expr->lhs);
@@ -139,6 +155,8 @@ func codegenExpression(expression: Expression*) {
 		codegenExpressionSubscript(expression, (ExpressionSubscript*)expression->expression);
 	} else if (expression->kind == ExpressionKind_Arrow) {
 		codegenExpressionArrow(expression, (ExpressionArrow*)expression->expression);
+	} else if (expression->kind == ExpressionKind_Dot) {
+		codegenExpressionDot(expression, (ExpressionDot*)expression->expression);
 	} else if (expression->kind == ExpressionKind_InfixOperator) {
 		codegenExpressionInfixOperator(expression, (ExpressionInfix*)expression->expression);
 	} else if (expression->kind == ExpressionKind_Identifier) {
@@ -156,5 +174,5 @@ func codegenExpression(expression: Expression*) {
 	} else {
 		fprintf(stderr, (char*)"Invalid expression kind %zu%c", expression->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;
 };

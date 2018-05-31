@@ -8,6 +8,7 @@ var ExpressionKind_Reference = 0;
 var ExpressionKind_FunctionCall = 0;
 var ExpressionKind_Subscript = 0;
 var ExpressionKind_Arrow = 0;
+var ExpressionKind_Dot = 0;
 var ExpressionKind_InfixOperator = 0;
 var ExpressionKind_Identifier = 0;
 var ExpressionKind_NULL = 0;
@@ -29,6 +30,7 @@ func InitExpressionKinds() {
 	ExpressionKind_FunctionCall = counter; counter = counter + 1;
 	ExpressionKind_Subscript = counter; counter = counter + 1;
 	ExpressionKind_Arrow = counter; counter = counter + 1;
+	ExpressionKind_Dot = counter; counter = counter + 1;
 	ExpressionKind_InfixOperator = counter; counter = counter + 1;
 	ExpressionKind_Identifier = counter; counter = counter + 1;
 	ExpressionKind_NULL = counter; counter = counter + 1;

@@ -102,6 +102,30 @@ func printDeclarationStruct(declaration: DeclarationStruct*, name: Identifier*) 
 	printf((char*)")");
 };
 
+func printDeclarationEnumCase(enumCase: DeclarationEnumCase*) {
+	printf((char*)"(case ");
+	printIdentifier(enumCase->name);
+	printf((char*)")");
+};
+
+func printDeclarationEnum(declaration: DeclarationEnum*, name: Identifier*) {
+	printf((char*)"(enum%c", 10);
+	depth = depth + 1;
+	printDepth();
+	printIdentifier(name);
+	printf((char*)"%c", 10);
+	var i = 0;
+	while (i < bufferCount((Void**)declaration->cases)) {
+		printDepth();
+		printDeclarationEnumCase((declaration->cases)[i]);
+		printf((char*)"%c", 10);
+		i = i + 1;
+	};
+	depth = depth - 1;
+	printDepth();
+	printf((char*)")");
+};
+
 func printDeclaration(declaration: Declaration*) {
 	if (declaration->attribute != NULL) {
 		printAttribute(declaration->attribute);
@@ -113,10 +137,12 @@ func printDeclaration(declaration: Declaration*) {
 		printDeclarationFunc((DeclarationFunc*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == DeclarationKind_Struct) {
 		printDeclarationStruct((DeclarationStruct*)declaration->declaration, declaration->name);
+	} else if (declaration->kind == DeclarationKind_Enum) {
+		printDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
 	} else {
 		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
 		abort();
-	};;;
+	};;;;
 };
 
 func printDeclarations() {

@@ -39,6 +39,14 @@ struct DeclarationStruct {
 	var fields: DeclarationStructFields*;
 };
 
+struct DeclarationEnumCase {
+	var name: Identifier*;
+};
+
+struct DeclarationEnum {
+	var cases: DeclarationEnumCase**;
+};
+
 func newDeclaration(): Declaration* {
 	return (Declaration*)xcalloc(1, sizeof(Declaration));
 };
@@ -65,4 +73,12 @@ func newDeclarationStructFields(): DeclarationStructFields* {
 
 func newDeclarationStruct(): DeclarationStruct* {
 	return (DeclarationStruct*)xcalloc(1, sizeof(DeclarationStruct));
+};
+
+func newDeclarationEnumCase(): DeclarationEnumCase* {
+	return (DeclarationEnumCase*)xcalloc(1, sizeof(DeclarationEnumCase));
+};
+
+func newDeclarationEnum(): DeclarationEnum* {
+	return (DeclarationEnum*)xcalloc(1, sizeof(DeclarationEnum));
 };

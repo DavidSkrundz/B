@@ -6,6 +6,14 @@ func codegenDeclarationStructDeclaration(declaration: Declaration*, decl: Declar
 	printf((char*)";%c", 10);
 };
 
+func codegenDeclarationEnumDeclaration(declaration: Declaration*, decl: DeclarationEnum*) {
+	printf((char*)"typedef enum ");
+	codegenIdentifier(declaration->name);
+	printf((char*)" ");
+	codegenIdentifier(declaration->name);
+	printf((char*)";%c", 10);
+};
+
 func codegenDeclarationDeclaration(declaration: Declaration*) {
 	if (declaration->attribute != NULL) { return; };
 	
@@ -13,10 +21,12 @@ func codegenDeclarationDeclaration(declaration: Declaration*) {
 	} else if (declaration->kind == DeclarationKind_Func) {
 	} else if (declaration->kind == DeclarationKind_Struct) {
 		codegenDeclarationStructDeclaration(declaration, (DeclarationStruct*)declaration->declaration);
+	} else if (declaration->kind == DeclarationKind_Enum) {
+		codegenDeclarationEnumDeclaration(declaration, (DeclarationEnum*)declaration->declaration);
 	} else {
 		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
 		abort();
-	};;;
+	};;;;
 };
 
 func CodegenDeclarationDeclarations() {
@@ -102,6 +112,26 @@ func codegenDeclarationStructDefinition(declaration: Declaration*, decl: Declara
 	printf((char*)"};%c", 10);
 };
 
+func codegenDeclarationEnumCasesDefinition(cases: DeclarationEnumCase**, name: Identifier*) {
+	var i = 0;
+	while (i < bufferCount((Void**)cases)) {
+		printf((char*)"%c", 9);
+		codegenIdentifier(name);
+		printf((char*)"_");
+		codegenIdentifier(cases[i]->name);
+		printf((char*)",%c", 10);
+		i = i + 1;
+	};
+};
+
+func codegenDeclarationEnumDefinition(declaration: Declaration*, decl: DeclarationEnum*) {
+	printf((char*)"enum ");
+	codegenIdentifier(declaration->name);
+	printf((char*)" {%c", 10);
+	codegenDeclarationEnumCasesDefinition(decl->cases, declaration->name);
+	printf((char*)"};%c", 10);
+};
+
 func codegenDeclarationDefinition(declaration: Declaration*) {
 	if (declaration->attribute != NULL) { return; };
 	
@@ -111,10 +141,12 @@ func codegenDeclarationDefinition(declaration: Declaration*) {
 		codegenDeclarationFuncDefinition(declaration, (DeclarationFunc*)declaration->declaration);
 	} else if (declaration->kind == DeclarationKind_Struct) {
 		codegenDeclarationStructDefinition(declaration, (DeclarationStruct*)declaration->declaration);
+	} else if (declaration->kind == DeclarationKind_Enum) {
+		codegenDeclarationEnumDefinition(declaration, (DeclarationEnum*)declaration->declaration);
 	} else {
 		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
 		abort();
-	};;;
+	};;;;
 };
 
 func CodegenDeclarationDefinitions() {
@@ -148,10 +180,11 @@ func codegenDeclarationImplementation(declaration: Declaration*) {
 	} else if (declaration->kind == DeclarationKind_Func) {
 		codegenDeclarationFuncImplementation(declaration, (DeclarationFunc*)declaration->declaration);
 	} else if (declaration->kind == DeclarationKind_Struct) {
+	} else if (declaration->kind == DeclarationKind_Enum) {
 	} else {
 		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
 		abort();
-	};;;
+	};;;;
 };
 
 func CodegenDeclarationImplementations() {

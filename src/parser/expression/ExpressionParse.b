@@ -78,6 +78,14 @@ func parseExpressionArrow(tokens: Token***): ExpressionArrow* {
 	return expression;
 };
 
+func parseExpressionDot(tokens: Token***): ExpressionDot* {
+	var expression = newExpressionDot();
+	expectToken(TokenKind_Dot);
+	expression->field = parseIdentifier(tokens);
+	if (expression->field == NULL) { return NULL; };
+	return expression;
+};
+
 func parseExpressionPostfix(tokens: Token***): Expression* {
 	var expression = parseExpressionPrimary(tokens);
 	if (expression == NULL) { return NULL; };
@@ -104,7 +112,15 @@ func parseExpressionPostfix(tokens: Token***): Expression* {
 			expression = newExpression();
 			expression->kind = ExpressionKind_Arrow;
 			expression->expression = (Void*)arrow;
-		} else { loop = false; };;;
+		} else if ((**tokens)->kind == TokenKind_Dot) {
+			if (expression->kind != ExpressionKind_Identifier) { return NULL; };
+			var dot = parseExpressionDot(tokens);
+			if (dot == NULL) { return NULL; };
+			dot->base = ((ExpressionIdentifier*)expression->expression)->identifier;
+			expression = newExpression();
+			expression->kind = ExpressionKind_Dot;
+			expression->expression = (Void*)dot;
+		} else { loop = false; };;;;
 	};
 	return expression;
 };
@@ -149,9 +165,16 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 		expression->kind = ExpressionKind_Reference;
 		expression->expression = (Void*)expr;
 		return expression;
+	} else if (isToken(TokenKind_Dot)) {
+		var expr = parseExpressionDot(tokens);
+		if (expr == NULL) { return parseExpressionPostfix(tokens); };
+		var expression = newExpression();
+		expression->kind = ExpressionKind_Dot;
+		expression->expression = (Void*)expr;
+		return expression;
 	} else {
 		return parseExpressionPostfix(tokens);
-	};;;;
+	};;;;;
 };
 
 func parseExpressionCast(tokens: Token***): Expression* {

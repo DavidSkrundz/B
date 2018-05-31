@@ -25,6 +25,8 @@ func _printToken(token: Token*, stream: FILE*) {
 		fprintf(stream, (char*)"OFFSETOF");
 	} else if (token->kind == TokenKind_Struct) {
 		fprintf(stream, (char*)"STRUCT");
+	} else if (token->kind == TokenKind_Enum) {
+		fprintf(stream, (char*)"ENUM");
 	} else if (token->kind == TokenKind_Var) {
 		fprintf(stream, (char*)"VAR");
 	} else if (token->kind == TokenKind_Func) {
@@ -37,6 +39,8 @@ func _printToken(token: Token*, stream: FILE*) {
 		fprintf(stream, (char*)"WHILE");
 	} else if (token->kind == TokenKind_Return) {
 		fprintf(stream, (char*)"RETURN");
+	} else if (token->kind == TokenKind_Case) {
+		fprintf(stream, (char*)"CASE");
 	} else if (token->kind == TokenKind_Comma) {
 		fprintf(stream, (char*)"COMMA (,)");
 	} else if (token->kind == TokenKind_Colon) {
@@ -81,6 +85,8 @@ func _printToken(token: Token*, stream: FILE*) {
 		fprintf(stream, (char*)"ELLIPSES (...)");
 	} else if (token->kind == TokenKind_Arrow) {
 		fprintf(stream, (char*)"ARROW (->)");
+	} else if (token->kind == TokenKind_Dot) {
+		fprintf(stream, (char*)"DOT (.)");
 	} else if (token->kind == TokenKind_Equal) {
 		fprintf(stream, (char*)"EQUAL (==)");
 	} else if (token->kind == TokenKind_LessThan) {
@@ -102,5 +108,5 @@ func _printToken(token: Token*, stream: FILE*) {
 	} else {
 		fprintf(stderr, (char*)"Unknown token kind: %zd%c", token->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 };

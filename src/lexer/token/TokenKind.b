@@ -8,11 +8,13 @@ var TokenKind_Offsetof = 0;
 var TokenKind_Var = 0;
 var TokenKind_Func = 0;
 var TokenKind_Struct = 0;
+var TokenKind_Enum = 0;
 
 var TokenKind_If = 0;
 var TokenKind_Else = 0;
 var TokenKind_While = 0;
 var TokenKind_Return = 0;
+var TokenKind_Case = 0;
 
 var TokenKind_Comma = 0;
 var TokenKind_Colon = 0;
@@ -30,6 +32,7 @@ var TokenKind_And = 0;
 var TokenKind_Assign = 0;
 var TokenKind_Ellipses = 0;
 var TokenKind_Arrow = 0;
+var TokenKind_Dot = 0;
 
 var TokenKind_AndAnd = 0;
 var TokenKind_OrOr = 0;
@@ -62,11 +65,13 @@ func InitTokenKinds() {
 	TokenKind_Var = counter; counter = counter + 1;
 	TokenKind_Func = counter; counter = counter + 1;
 	TokenKind_Struct = counter; counter = counter + 1;
+	TokenKind_Enum = counter; counter = counter + 1;
 	
 	TokenKind_If = counter; counter = counter + 1;
 	TokenKind_Else = counter; counter = counter + 1;
 	TokenKind_While = counter; counter = counter + 1;
 	TokenKind_Return = counter; counter = counter + 1;
+	TokenKind_Case = counter; counter = counter + 1;
 	
 	TokenKind_Comma = counter; counter = counter + 1;
 	TokenKind_Colon = counter; counter = counter + 1;
@@ -84,6 +89,7 @@ func InitTokenKinds() {
 	TokenKind_Assign = counter; counter = counter + 1;
 	TokenKind_Ellipses = counter; counter = counter + 1;
 	TokenKind_Arrow = counter; counter = counter + 1;
+	TokenKind_Dot = counter; counter = counter + 1;
 	
 	TokenKind_AndAnd = counter; counter = counter + 1;
 	TokenKind_OrOr = counter; counter = counter + 1;

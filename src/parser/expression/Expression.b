@@ -44,6 +44,11 @@ struct ExpressionArrow {
 	var field: Identifier*;
 };
 
+struct ExpressionDot {
+	var base: Identifier*;
+	var field: Identifier*;
+};
+
 struct ExpressionInfix {
 	var lhs: Expression*;
 	var rhs: Expression*;
@@ -104,6 +109,10 @@ func newExpressionSubscript(): ExpressionSubscript* {
 
 func newExpressionArrow(): ExpressionArrow* {
 	return (ExpressionArrow*)xcalloc(1, sizeof(ExpressionArrow));
+};
+
+func newExpressionDot(): ExpressionDot* {
+	return (ExpressionDot*)xcalloc(1, sizeof(ExpressionDot));
 };
 
 func newExpressionInfixOperator(): ExpressionInfix* {

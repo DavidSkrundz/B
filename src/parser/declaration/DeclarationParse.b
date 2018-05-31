@@ -110,6 +110,36 @@ func parseDeclarationStruct(tokens: Token***, declaration: Declaration*): Declar
 	return decl;
 };
 
+func parseDeclarationEnum(tokens: Token***, declaration: Declaration*): DeclarationEnum* {
+	expectToken(TokenKind_Enum);
+	declaration->name = parseIdentifier(tokens);
+	if (declaration->name == NULL) { return NULL; };
+	var decl = newDeclarationEnum();
+	expectToken(TokenKind_OpenCurly);
+	while ((**tokens)->kind != TokenKind_CloseCurly) {
+		expectToken(TokenKind_Case);
+		var caseName = parseIdentifier(tokens);
+		if (caseName == NULL) { return NULL; };
+		expectToken(TokenKind_Semicolon);
+		var i = 0;
+		while (i < bufferCount((Void**)decl->cases)) {
+			if (caseName->length == decl->cases[i]->name->length) {
+				if (strncmp((char*)decl->cases[i]->name->name, (char*)caseName->name, caseName->length) == (int)0) {
+					fprintf(stderr, (char*)"Duplicate enum case %.*s%c", (int)caseName->length, caseName->name, 10);
+					exit(EXIT_FAILURE);
+				};
+			};
+			i = i + 1;
+		};
+		var enumCase = newDeclarationEnumCase();
+		enumCase->name = caseName;
+		append((Void***)&decl->cases, (Void*)enumCase);
+	};
+	expectToken(TokenKind_CloseCurly);
+	expectToken(TokenKind_Semicolon);
+	return decl;
+};
+
 func parseDeclaration(tokens: Token***): Declaration* {
 	var declaration = newDeclaration();
 	declaration->attribute = parseAttribute(tokens);
@@ -123,7 +153,10 @@ func parseDeclaration(tokens: Token***): Declaration* {
 	} else if ((**tokens)->kind == TokenKind_Struct) {
 		declaration->kind = DeclarationKind_Struct;
 		declaration->declaration = (Void*)parseDeclarationStruct(tokens, declaration);
-	};;;
+	} else if ((**tokens)->kind == TokenKind_Enum) {
+		declaration->kind = DeclarationKind_Enum;
+		declaration->declaration = (Void*)parseDeclarationEnum(tokens, declaration);
+	};;;;
 	if (declaration->declaration == NULL) { return NULL; };
 	return declaration;
 };

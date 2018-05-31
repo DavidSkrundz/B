@@ -163,6 +163,22 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 	exit(EXIT_FAILURE);
 };
 
+func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type* {
+	var i = 0;
+	while (i < bufferCount((Void**)_declarations)) {
+		if (_declarations[i]->kind == DeclarationKind_Enum) {
+			if (expression->base == NULL || (expression->base->length == _declarations[i]->name->length && strncmp((char*)expression->base->name, (char*)_declarations[i]->name->name, _declarations[i]->name->length) == (int)0)) {
+				if (expectedType == NULL || _declarations[i]->resolvedType == expectedType) {
+					return _declarations[i]->resolvedType;
+				};
+			};
+		};
+		i = i + 1;
+	};
+	fprintf(stderr, (char*)"Enum does not exist%c", 10);
+	exit(EXIT_FAILURE);
+};
+
 func resolveExpressionInfixComparison(expression: ExpressionInfix*, expectedType: Type*): Type* {
 	if (expectedType != NULL && expectedType != TypeBool) {
 		fprintf(stderr, (char*)"Not expecting bool from comparison%c", 10);
@@ -293,6 +309,8 @@ func resolveExpression(expression: Expression*, expectedType: Type*): Type* {
 		expression->resolvedType = resolveExpressionSubscript((ExpressionSubscript*)expression->expression, expectedType);
 	} else if (expression->kind == ExpressionKind_Arrow) {
 		expression->resolvedType = resolveExpressionArrow((ExpressionArrow*)expression->expression, expectedType);
+	} else if (expression->kind == ExpressionKind_Dot) {
+		expression->resolvedType = resolveExpressionDot((ExpressionDot*)expression->expression, expectedType);
 	} else if (expression->kind == ExpressionKind_InfixOperator) {
 		expression->resolvedType = resolveExpressionInfix((ExpressionInfix*)expression->expression, expectedType);
 	} else if (expression->kind == ExpressionKind_Identifier) {
@@ -310,7 +328,7 @@ func resolveExpression(expression: Expression*, expectedType: Type*): Type* {
 	} else {
 		fprintf(stderr, (char*)"Invalid expression kind %zu%c", expression->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;
 	if (expression->resolvedType == NULL) {
 		abort();
 	};

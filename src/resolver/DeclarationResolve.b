@@ -52,6 +52,10 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Identifier*
 	return createTypeIdentifier(name);
 };
 
+func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Identifier*): Type* {
+	return createTypeIdentifier(name);
+};
+
 func resolveDeclarationDefinitionStruct(declaration: DeclarationStruct*, name: Identifier*) {
 	var before = bufferCount((Void**)_context->names);
 	if (declaration->fields != NULL) {
@@ -66,10 +70,12 @@ func resolveDeclarationType(declaration: Declaration*) {
 	} else if (declaration->kind == DeclarationKind_Func) {
 	} else if (declaration->kind == DeclarationKind_Struct) {
 		declaration->resolvedType = resolveDeclarationStruct((DeclarationStruct*)declaration->declaration, declaration->name);
+	} else if (declaration->kind == DeclarationKind_Enum) {
+		declaration->resolvedType = resolveDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
 	} else {
 		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
 		abort();
-	};;;
+	};;;;
 };
 
 func resolveDeclarationDefinition(declaration: Declaration*) {
@@ -90,10 +96,11 @@ func resolveDeclarationDefinition(declaration: Declaration*) {
 		declaration->resolvedType = resolveDeclarationTypeFunc((DeclarationFunc*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == DeclarationKind_Struct) {
 		resolveDeclarationDefinitionStruct((DeclarationStruct*)declaration->declaration, declaration->name);
+	} else if (declaration->kind == DeclarationKind_Enum) {
 	} else {
 		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
 		abort();
-	};;;
+	};;;;
 	declaration->state = DeclarationState_Resolved;
 };
 
@@ -131,8 +138,9 @@ func resolveDeclarationImplementation(declaration: Declaration*) {
 	} else if (declaration->kind == DeclarationKind_Func) {
 		declaration->resolvedType = resolveDeclarationImplementationFunc((DeclarationFunc*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == DeclarationKind_Struct) {
+	} else if (declaration->kind == DeclarationKind_Enum) {
 	} else {
 		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
 		abort();
-	};;;
+	};;;;
 };

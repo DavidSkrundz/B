@@ -46,3 +46,7 @@ func checkToken(kind: UInt): Bool {
 	_tokens = (Token**)((UInt)_tokens + sizeof(Token*));
 	return true;
 };
+
+func isToken(kind: UInt): Bool {
+	return (*_tokens)->kind == kind;
+};

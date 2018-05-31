@@ -83,6 +83,22 @@ func printExpressionArrow(expression: ExpressionArrow*) {
 	printf((char*)")");
 };
 
+func printExpressionDot(expression: ExpressionDot*) {
+	printf((char*)"(dot%c", 10);
+	depth = depth + 1;
+	if (expression->base != NULL) {
+		printDepth();
+		printIdentifier(expression->base);
+		printf((char*)"%c", 10);
+	};
+	printDepth();
+	printIdentifier(expression->field);
+	printf((char*)"%c", 10);
+	depth = depth - 1;
+	printDepth();
+	printf((char*)")");
+};
+
 func printExpressionInfix(expression: ExpressionInfix*) {
 	printf((char*)"(");
 	printToken(expression->operator);
@@ -138,6 +154,8 @@ func printExpression(expression: Expression*) {
 		printExpressionSubscript((ExpressionSubscript*)expression->expression);
 	} else if (expression->kind == ExpressionKind_Arrow) {
 		printExpressionArrow((ExpressionArrow*)expression->expression);
+	} else if (expression->kind == ExpressionKind_Dot) {
+		printExpressionDot((ExpressionDot*)expression->expression);
 	} else if (expression->kind == ExpressionKind_InfixOperator) {
 		printExpressionInfix((ExpressionInfix*)expression->expression);
 	} else if (expression->kind == ExpressionKind_Identifier) {
@@ -155,5 +173,5 @@ func printExpression(expression: Expression*) {
 	} else {
 		fprintf(stderr, (char*)"Invalid expression kind %zu%c", expression->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;
 };

@@ -105,14 +105,18 @@ func lexToken2(kind: UInt, character2: UInt8, kind2: UInt) {
 };
 
 func lexElipses() {
+	var token = newToken();
+	token->value = _code;
 	if (_code[1] == '.' && _code[2] == '.') {
-		var token = newToken();
 		token->kind = TokenKind_Ellipses;
-		token->value = _code;
 		_code = (UInt8*)((UInt)_code + 3);
 		token->length = 3;
-		append((Void***)&_tokens, (Void*)token);
+	} else {
+		token->kind = TokenKind_Dot;
+		_code = (UInt8*)((UInt)_code + 1);
+		token->length = 1;
 	};
+	append((Void***)&_tokens, (Void*)token);
 };
 
 func lexIntegerLiteral() {
@@ -165,6 +169,8 @@ func lexIdentifier() {
 		token->kind = TokenKind_Func;
 	} else if (token->length == 6 && strncmp((char*)token->value, (char*)"struct", token->length) == (int)0) {
 		token->kind = TokenKind_Struct;
+	} else if (token->length == 4 && strncmp((char*)token->value, (char*)"enum", token->length) == (int)0) {
+		token->kind = TokenKind_Enum;
 	} else if (token->length == 2 && strncmp((char*)token->value, (char*)"if", token->length) == (int)0) {
 		token->kind = TokenKind_If;
 	} else if (token->length == 4 && strncmp((char*)token->value, (char*)"else", token->length) == (int)0) {
@@ -173,12 +179,14 @@ func lexIdentifier() {
 		token->kind = TokenKind_While;
 	} else if (token->length == 6 && strncmp((char*)token->value, (char*)"return",  token->length) == (int)0) {
 		token->kind = TokenKind_Return;
+	} else if (token->length == 4 && strncmp((char*)token->value, (char*)"case", token->length) == (int)0) {
+		token->kind = TokenKind_Case;
 	} else if (token->length == 4 && strncmp((char*)token->value, (char*)"true",  token->length) == (int)0) {
 		token->kind = TokenKind_BooleanLiteral;
 	} else if (token->length == 5 && strncmp((char*)token->value, (char*)"false",  token->length) == (int)0) {
 		token->kind = TokenKind_BooleanLiteral;
 	} else {
 		token->kind = TokenKind_Identifier;
-	};;;;;;;;;;;;
+	};;;;;;;;;;;;;;
 	append((Void***)&_tokens, (Void*)token);
 };
