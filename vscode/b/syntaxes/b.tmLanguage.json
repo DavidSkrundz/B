@@ -20,11 +20,11 @@
 			"patterns": [
 				{
 					"name": "keyword.b",
-					"match": "\\b(var|struct|func)\\b"
+					"match": "\\b(var|struct|enum|func)\\b"
 				},
 				{
 					"name": "keyword.control.b",
-					"match": "\\b(if|else|while|return)\\b"
+					"match": "\\b(if|else|while|return|case)\\b"
 				},
 				{
 					"name": "support.type.b",
