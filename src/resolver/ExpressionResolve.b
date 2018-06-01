@@ -212,30 +212,30 @@ func resolveExpressionInfixLogical(expression: ExpressionInfix*, expectedType: T
 };
 
 func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): Type* {
-	if (expression->operator->kind == TokenKind_Equal) {
+	if (expression->operator->kind == .Equal) {
 		return resolveExpressionInfixComparison(expression, expectedType);
-	} else if (expression->operator->kind == TokenKind_NotEqual) {
+	} else if (expression->operator->kind == .NotEqual) {
 		return resolveExpressionInfixComparison(expression, expectedType);
-	} else if (expression->operator->kind == TokenKind_LessThan) {
+	} else if (expression->operator->kind == .LessThan) {
 		return resolveExpressionInfixComparison(expression, expectedType);
-	} else if (expression->operator->kind == TokenKind_LessThanEqual) {
+	} else if (expression->operator->kind == .LessThanEqual) {
 		return resolveExpressionInfixComparison(expression, expectedType);
-	} else if (expression->operator->kind == TokenKind_Plus) {
+	} else if (expression->operator->kind == .Plus) {
 		return resolveExpressionInfixAddition(expression, expectedType);
-	} else if (expression->operator->kind == TokenKind_Minus) {
+	} else if (expression->operator->kind == .Minus) {
 		return resolveExpressionInfixAddition(expression, expectedType);
-	} else if (expression->operator->kind == TokenKind_Star) {
+	} else if (expression->operator->kind == .Star) {
 		return resolveExpressionInfixMultiplication(expression, expectedType);
-	} else if (expression->operator->kind == TokenKind_Slash) {
+	} else if (expression->operator->kind == .Slash) {
 		return resolveExpressionInfixMultiplication(expression, expectedType);
-	} else if (expression->operator->kind == TokenKind_And) {
+	} else if (expression->operator->kind == .And) {
 		return resolveExpressionInfixMultiplication(expression, expectedType);
-	} else if (expression->operator->kind == TokenKind_AndAnd) {
+	} else if (expression->operator->kind == .AndAnd) {
 		return resolveExpressionInfixLogical(expression, expectedType);
-	} else if (expression->operator->kind == TokenKind_OrOr) {
+	} else if (expression->operator->kind == .OrOr) {
 		return resolveExpressionInfixLogical(expression, expectedType);
 	} else {
-		fprintf(stderr, (char*)"Invalid operator %zu%c", expression->operator->kind, 10);
+		fprintf(stderr, (char*)"Invalid operator %u%c", expression->operator->kind, 10);
 		abort();
 	};;;;;;;;;;;
 };

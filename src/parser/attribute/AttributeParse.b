@@ -1,6 +1,6 @@
 func parseAttribute(tokens: Token***): Attribute* {
 	var attribute: Attribute*;
-	if (checkToken(TokenKind_At)) {
+	if (checkToken(.At)) {
 		attribute = newAttribute();
 		attribute->name = parseIdentifier(tokens);
 	};

@@ -18,7 +18,7 @@ func Parse() {
 		};
 	};
 	
-	if ((*_tokens)->kind != TokenKind_EOF) {
+	if ((*_tokens)->kind != .EOF) {
 		fprintf(stderr, (char*)"Unexpected token: ");
 		printToken_error(*_tokens);
 		fprintf(stderr, (char*)"%c%c", 10, 10);
@@ -27,19 +27,19 @@ func Parse() {
 	};
 };
 
-func expectToken(kind: UInt) {
+func expectToken(kind: TokenKind) {
 	if ((*_tokens)->kind != kind) {
 		printDeclarations();
 		fprintf(stderr, (char*)"%c", 10);
 		fprintf(stderr, (char*)"Unexpected token: ");
 		printToken_error(*_tokens);
-		fprintf(stderr, (char*)", expecting %zu%c", kind, 10);
+		fprintf(stderr, (char*)", expecting %u%c", kind, 10);
 		exit(EXIT_FAILURE);
 	};
 	_tokens = (Token**)((UInt)_tokens + sizeof(Token*));
 };
 
-func checkToken(kind: UInt): Bool {
+func checkToken(kind: TokenKind): Bool {
 	if ((*_tokens)->kind != kind) {
 		return false;
 	};
@@ -47,6 +47,6 @@ func checkToken(kind: UInt): Bool {
 	return true;
 };
 
-func isToken(kind: UInt): Bool {
+func isToken(kind: TokenKind): Bool {
 	return (*_tokens)->kind == kind;
 };

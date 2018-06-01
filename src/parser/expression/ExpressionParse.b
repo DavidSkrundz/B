@@ -1,36 +1,36 @@
 func parseExpressionPrimary(tokens: Token***): Expression* {
 	var expression = newExpression();
-	if (checkToken(TokenKind_OpenParenthesis)) {
+	if (checkToken(.OpenParenthesis)) {
 		expression->kind = ExpressionKind_Group;
 		expression->expression = (Void*)parseExpression(tokens);
-		if ((**tokens)->kind != TokenKind_CloseParenthesis) { return NULL; };
+		if ((**tokens)->kind != .CloseParenthesis) { return NULL; };
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
-	} else if ((**tokens)->kind == TokenKind_Identifier) {
+	} else if ((**tokens)->kind == .Identifier) {
 		expression->kind = ExpressionKind_Identifier;
 		var identifier = newExpressionIdentifier();
 		identifier->identifier = parseIdentifier(tokens);
 		expression->expression = (Void*)identifier;
-	} else if (checkToken(TokenKind_NULL)) {
+	} else if (checkToken(._NULL)) {
 		expression->kind = ExpressionKind_NULL;
-	} else if ((**tokens)->kind == TokenKind_BooleanLiteral) {
+	} else if ((**tokens)->kind == .BooleanLiteral) {
 		expression->kind = ExpressionKind_BooleanLiteral;
 		var literal = newExpressionBooleanLiteral();
 		literal->literal = **tokens;
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		expression->expression = (Void*)literal;
-	} else if ((**tokens)->kind == TokenKind_IntegerLiteral) {
+	} else if ((**tokens)->kind == .IntegerLiteral) {
 		expression->kind = ExpressionKind_IntegerLiteral;
 		var literal = newExpressionIntegerLiteral();
 		literal->literal = **tokens;
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		expression->expression = (Void*)literal;
-	} else if ((**tokens)->kind == TokenKind_CharacterLiteral) {
+	} else if ((**tokens)->kind == .CharacterLiteral) {
 		expression->kind = ExpressionKind_CharacterLiteral;
 		var literal = newExpressionCharacterLiteral();
 		literal->literal = **tokens;
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		expression->expression = (Void*)literal;
-	} else if ((**tokens)->kind == TokenKind_StringLiteral) {
+	} else if ((**tokens)->kind == .StringLiteral) {
 		expression->kind = ExpressionKind_StringLiteral;
 		var literal = newExpressionStringLiteral();
 		literal->literal = **tokens;
@@ -42,11 +42,11 @@ func parseExpressionPrimary(tokens: Token***): Expression* {
 
 func parseExpressionFunctionCallArguments(tokens: Token***): ExpressionFunctionCall* {
 	var expression = newExpressionFunctionCall();
-	expectToken(TokenKind_OpenParenthesis);
+	expectToken(.OpenParenthesis);
 	expression->arguments = (Expression**)xcalloc(MAX_FUNC_ARGUMENT_COUNT, sizeof(Expression*));
 	expression->count = 0;
 	var loop = true;
-	while ((**tokens)->kind != TokenKind_CloseParenthesis && loop) {
+	while ((**tokens)->kind != .CloseParenthesis && loop) {
 		if (expression->count == MAX_FUNC_ARGUMENT_COUNT) {
 			fprintf(stderr, (char*)"Too many arguments in function call%c", 10);
 			exit(EXIT_FAILURE);
@@ -55,24 +55,24 @@ func parseExpressionFunctionCallArguments(tokens: Token***): ExpressionFunctionC
 		if (argument == NULL) { return NULL; };
 		expression->arguments[expression->count] = argument;
 		expression->count = expression->count + 1;
-		loop = checkToken(TokenKind_Comma);
+		loop = checkToken(.Comma);
 	};
-	expectToken(TokenKind_CloseParenthesis);
+	expectToken(.CloseParenthesis);
 	return expression;
 };
 
 func parseExpressionSubscript(tokens: Token***): ExpressionSubscript* {
 	var expression = newExpressionSubscript();
-	expectToken(TokenKind_OpenBracket);
+	expectToken(.OpenBracket);
 	expression->subscript = parseExpression(tokens);
 	if (expression->subscript == NULL) { return NULL; };
-	expectToken(TokenKind_CloseBracket);
+	expectToken(.CloseBracket);
 	return expression;
 };
 
 func parseExpressionArrow(tokens: Token***): ExpressionArrow* {
 	var expression = newExpressionArrow();
-	expectToken(TokenKind_Arrow);
+	expectToken(.Arrow);
 	expression->field = parseIdentifier(tokens);
 	if (expression->field == NULL) { return NULL; };
 	return expression;
@@ -80,7 +80,7 @@ func parseExpressionArrow(tokens: Token***): ExpressionArrow* {
 
 func parseExpressionDot(tokens: Token***): ExpressionDot* {
 	var expression = newExpressionDot();
-	expectToken(TokenKind_Dot);
+	expectToken(.Dot);
 	expression->field = parseIdentifier(tokens);
 	if (expression->field == NULL) { return NULL; };
 	return expression;
@@ -91,28 +91,28 @@ func parseExpressionPostfix(tokens: Token***): Expression* {
 	if (expression == NULL) { return NULL; };
 	var loop = true;
 	while (loop) {
-		if ((**tokens)->kind == TokenKind_OpenParenthesis) {
+		if ((**tokens)->kind == .OpenParenthesis) {
 			var f = parseExpressionFunctionCallArguments(tokens);
 			if (f == NULL) { return NULL; };
 			f->function = expression;
 			expression = newExpression();
 			expression->kind = ExpressionKind_FunctionCall;
 			expression->expression = (Void*)f;
-		} else if ((**tokens)->kind == TokenKind_OpenBracket) {
+		} else if ((**tokens)->kind == .OpenBracket) {
 			var subscript = parseExpressionSubscript(tokens);
 			if (subscript == NULL) { return NULL; };
 			subscript->base = expression;
 			expression = newExpression();
 			expression->kind = ExpressionKind_Subscript;
 			expression->expression = (Void*)subscript;
-		} else if ((**tokens)->kind == TokenKind_Arrow) {
+		} else if ((**tokens)->kind == .Arrow) {
 			var arrow = parseExpressionArrow(tokens);
 			if (arrow == NULL) { return NULL; };
 			arrow->base = expression;
 			expression = newExpression();
 			expression->kind = ExpressionKind_Arrow;
 			expression->expression = (Void*)arrow;
-		} else if ((**tokens)->kind == TokenKind_Dot) {
+		} else if ((**tokens)->kind == .Dot) {
 			if (expression->kind != ExpressionKind_Identifier) { return NULL; };
 			var dot = parseExpressionDot(tokens);
 			if (dot == NULL) { return NULL; };
@@ -126,30 +126,30 @@ func parseExpressionPostfix(tokens: Token***): Expression* {
 };
 
 func parseExpressionUnary(tokens: Token***): Expression* {
-	if (checkToken(TokenKind_Sizeof)) {
-		expectToken(TokenKind_OpenParenthesis);
+	if (checkToken(.Sizeof)) {
+		expectToken(.OpenParenthesis);
 		var expr = newExpressionSizeof();
 		expr->type = parseTypespec(tokens);
 		if (expr->type == NULL) { return NULL; };
-		expectToken(TokenKind_CloseParenthesis);
+		expectToken(.CloseParenthesis);
 		var expression = newExpression();
 		expression->kind = ExpressionKind_Sizeof;
 		expression->expression = (Void*)expr;
 		return expression;
-	} else if (checkToken(TokenKind_Offsetof)) {
-		expectToken(TokenKind_OpenParenthesis);
+	} else if (checkToken(.Offsetof)) {
+		expectToken(.OpenParenthesis);
 		var expr = newExpressionOffsetof();
 		expr->type = parseTypespec(tokens);
 		if (expr->type == NULL) { return NULL; };
-		expectToken(TokenKind_Comma);
+		expectToken(.Comma);
 		expr->field = parseIdentifier(tokens);
 		if (expr->field == NULL) { return NULL; };
-		expectToken(TokenKind_CloseParenthesis);
+		expectToken(.CloseParenthesis);
 		var expression = newExpression();
 		expression->kind = ExpressionKind_Offsetof;
 		expression->expression = (Void*)expr;
 		return expression;
-	} else if (checkToken(TokenKind_Star)) {
+	} else if (checkToken(.Star)) {
 		var expr = newExpressionDereference();
 		expr->expression = parseExpressionCast(tokens);
 		if (expr->expression == NULL) { return NULL; };
@@ -157,7 +157,7 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 		expression->kind = ExpressionKind_Dereference;
 		expression->expression = (Void*)expr;
 		return expression;
-	} else if (checkToken(TokenKind_And)) {
+	} else if (checkToken(.And)) {
 		var expr = newExpressionReference();
 		expr->expression = parseExpressionCast(tokens);
 		if (expr->expression == NULL) { return NULL; };
@@ -165,7 +165,7 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 		expression->kind = ExpressionKind_Reference;
 		expression->expression = (Void*)expr;
 		return expression;
-	} else if (isToken(TokenKind_Dot)) {
+	} else if (isToken(.Dot)) {
 		var expr = parseExpressionDot(tokens);
 		if (expr == NULL) { return parseExpressionPostfix(tokens); };
 		var expression = newExpression();
@@ -179,7 +179,7 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 
 func parseExpressionCast(tokens: Token***): Expression* {
 	var save = *tokens;
-	if (checkToken(TokenKind_OpenParenthesis)) {
+	if (checkToken(.OpenParenthesis)) {
 		var expression = newExpression();
 		expression->kind = ExpressionKind_Cast;
 		var expressionCast = newExpressionCast();
@@ -189,7 +189,7 @@ func parseExpressionCast(tokens: Token***): Expression* {
 			*tokens = save;
 			return parseExpressionUnary(tokens);
 		};
-		if (checkToken(TokenKind_CloseParenthesis) == false) {
+		if (checkToken(.CloseParenthesis) == false) {
 			*tokens = save;
 			return parseExpressionUnary(tokens);
 		};
@@ -207,13 +207,13 @@ func parseExpressionMultiplicative(tokens: Token***): Expression* {
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
-		if ((**tokens)->kind == TokenKind_Star) {
+		if ((**tokens)->kind == .Star) {
 			infix->operator = **tokens;
 			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
-		} else if ((**tokens)->kind == TokenKind_Slash) {
+		} else if ((**tokens)->kind == .Slash) {
 			infix->operator = **tokens;
 			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
-		} else if ((**tokens)->kind == TokenKind_And) {
+		} else if ((**tokens)->kind == .And) {
 			infix->operator = **tokens;
 			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		} else { loop = false; };;;
@@ -235,10 +235,10 @@ func parseExpressionAdditive(tokens: Token***): Expression* {
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
-		if ((**tokens)->kind == TokenKind_Plus) {
+		if ((**tokens)->kind == .Plus) {
 			infix->operator = **tokens;
 			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
-		} else if ((**tokens)->kind == TokenKind_Minus) {
+		} else if ((**tokens)->kind == .Minus) {
 			infix->operator = **tokens;
 			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		} else { loop = false; };;
@@ -260,10 +260,10 @@ func parseExpressionComparison(tokens: Token***): Expression* {
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
-		if ((**tokens)->kind == TokenKind_LessThan) {
+		if ((**tokens)->kind == .LessThan) {
 			infix->operator = **tokens;
 			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
-		} else if ((**tokens)->kind == TokenKind_LessThanEqual) {
+		} else if ((**tokens)->kind == .LessThanEqual) {
 			infix->operator = **tokens;
 			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		} else { loop = false; };;
@@ -285,10 +285,10 @@ func parseExpressionEquality(tokens: Token***): Expression* {
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
-		if ((**tokens)->kind == TokenKind_Equal) {
+		if ((**tokens)->kind == .Equal) {
 			infix->operator = **tokens;
 			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
-		} else if ((**tokens)->kind == TokenKind_NotEqual) {
+		} else if ((**tokens)->kind == .NotEqual) {
 			infix->operator = **tokens;
 			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		} else { loop = false; };;
@@ -310,7 +310,7 @@ func parseExpressionLogicalAND(tokens: Token***): Expression* {
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
-		if ((**tokens)->kind == TokenKind_AndAnd) {
+		if ((**tokens)->kind == .AndAnd) {
 			infix->operator = **tokens;
 			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		} else { loop = false; };
@@ -332,7 +332,7 @@ func parseExpressionLogicalOR(tokens: Token***): Expression* {
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
-		if ((**tokens)->kind == TokenKind_OrOr) {
+		if ((**tokens)->kind == .OrOr) {
 			infix->operator = **tokens;
 			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		} else { loop = false; };

@@ -1,5 +1,5 @@
 struct Token {
-	var kind: UInt;
+	var kind: TokenKind;
 	var value: UInt8*;
 	var length: UInt;
 };
