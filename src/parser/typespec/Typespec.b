@@ -1,5 +1,5 @@
 struct Typespec {
-	var kind: UInt;
+	var kind: TypespecKind;
 	var spec: Void*;
 };
 

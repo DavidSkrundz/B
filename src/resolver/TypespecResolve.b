@@ -25,12 +25,12 @@ func resolveTypespecIdentifier(typespec: TypespecIdentifier*): Type* {
 };
 
 func resolveTypespec(typespec: Typespec*): Type* {
-	if (typespec->kind == TypespecKind_Pointer) {
+	if (typespec->kind == .Pointer) {
 		return (Type*)resolveTypespecPointer((TypespecPointer*)typespec->spec);
-	} else if (typespec->kind == TypespecKind_Identifier) {
+	} else if (typespec->kind == .Identifier) {
 		return (Type*)resolveTypespecIdentifier((TypespecIdentifier*)typespec->spec);
 	} else {
-		fprintf(stderr, (char*)"Invalid typespec kind %zu%c", typespec->kind, 10);
+		fprintf(stderr, (char*)"Invalid typespec kind %u%c", typespec->kind, 10);
 		abort();
 	};;
 };
