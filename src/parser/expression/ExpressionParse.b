@@ -1,37 +1,37 @@
 func parseExpressionPrimary(tokens: Token***): Expression* {
 	var expression = newExpression();
 	if (checkToken(.OpenParenthesis)) {
-		expression->kind = ExpressionKind_Group;
+		expression->kind = .Group;
 		expression->expression = (Void*)parseExpression(tokens);
 		if ((**tokens)->kind != .CloseParenthesis) { return NULL; };
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 	} else if ((**tokens)->kind == .Identifier) {
-		expression->kind = ExpressionKind_Identifier;
+		expression->kind = .Identifier;
 		var identifier = newExpressionIdentifier();
 		identifier->identifier = parseIdentifier(tokens);
 		expression->expression = (Void*)identifier;
 	} else if (checkToken(._NULL)) {
-		expression->kind = ExpressionKind_NULL;
+		expression->kind = ._NULL;
 	} else if ((**tokens)->kind == .BooleanLiteral) {
-		expression->kind = ExpressionKind_BooleanLiteral;
+		expression->kind = .BooleanLiteral;
 		var literal = newExpressionBooleanLiteral();
 		literal->literal = **tokens;
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		expression->expression = (Void*)literal;
 	} else if ((**tokens)->kind == .IntegerLiteral) {
-		expression->kind = ExpressionKind_IntegerLiteral;
+		expression->kind = .IntegerLiteral;
 		var literal = newExpressionIntegerLiteral();
 		literal->literal = **tokens;
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		expression->expression = (Void*)literal;
 	} else if ((**tokens)->kind == .CharacterLiteral) {
-		expression->kind = ExpressionKind_CharacterLiteral;
+		expression->kind = .CharacterLiteral;
 		var literal = newExpressionCharacterLiteral();
 		literal->literal = **tokens;
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		expression->expression = (Void*)literal;
 	} else if ((**tokens)->kind == .StringLiteral) {
-		expression->kind = ExpressionKind_StringLiteral;
+		expression->kind = .StringLiteral;
 		var literal = newExpressionStringLiteral();
 		literal->literal = **tokens;
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
@@ -96,29 +96,29 @@ func parseExpressionPostfix(tokens: Token***): Expression* {
 			if (f == NULL) { return NULL; };
 			f->function = expression;
 			expression = newExpression();
-			expression->kind = ExpressionKind_FunctionCall;
+			expression->kind = .FunctionCall;
 			expression->expression = (Void*)f;
 		} else if ((**tokens)->kind == .OpenBracket) {
 			var subscript = parseExpressionSubscript(tokens);
 			if (subscript == NULL) { return NULL; };
 			subscript->base = expression;
 			expression = newExpression();
-			expression->kind = ExpressionKind_Subscript;
+			expression->kind = .Subscript;
 			expression->expression = (Void*)subscript;
 		} else if ((**tokens)->kind == .Arrow) {
 			var arrow = parseExpressionArrow(tokens);
 			if (arrow == NULL) { return NULL; };
 			arrow->base = expression;
 			expression = newExpression();
-			expression->kind = ExpressionKind_Arrow;
+			expression->kind = .Arrow;
 			expression->expression = (Void*)arrow;
 		} else if ((**tokens)->kind == .Dot) {
-			if (expression->kind != ExpressionKind_Identifier) { return NULL; };
+			if (expression->kind != .Identifier) { return NULL; };
 			var dot = parseExpressionDot(tokens);
 			if (dot == NULL) { return NULL; };
 			dot->base = ((ExpressionIdentifier*)expression->expression)->identifier;
 			expression = newExpression();
-			expression->kind = ExpressionKind_Dot;
+			expression->kind = .Dot;
 			expression->expression = (Void*)dot;
 		} else { loop = false; };;;;
 	};
@@ -133,7 +133,7 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 		if (expr->type == NULL) { return NULL; };
 		expectToken(.CloseParenthesis);
 		var expression = newExpression();
-		expression->kind = ExpressionKind_Sizeof;
+		expression->kind = .Sizeof;
 		expression->expression = (Void*)expr;
 		return expression;
 	} else if (checkToken(.Offsetof)) {
@@ -146,7 +146,7 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 		if (expr->field == NULL) { return NULL; };
 		expectToken(.CloseParenthesis);
 		var expression = newExpression();
-		expression->kind = ExpressionKind_Offsetof;
+		expression->kind = .Offsetof;
 		expression->expression = (Void*)expr;
 		return expression;
 	} else if (checkToken(.Star)) {
@@ -154,7 +154,7 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 		expr->expression = parseExpressionCast(tokens);
 		if (expr->expression == NULL) { return NULL; };
 		var expression = newExpression();
-		expression->kind = ExpressionKind_Dereference;
+		expression->kind = .Dereference;
 		expression->expression = (Void*)expr;
 		return expression;
 	} else if (checkToken(.And)) {
@@ -162,14 +162,14 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 		expr->expression = parseExpressionCast(tokens);
 		if (expr->expression == NULL) { return NULL; };
 		var expression = newExpression();
-		expression->kind = ExpressionKind_Reference;
+		expression->kind = .Reference;
 		expression->expression = (Void*)expr;
 		return expression;
 	} else if (isToken(.Dot)) {
 		var expr = parseExpressionDot(tokens);
 		if (expr == NULL) { return parseExpressionPostfix(tokens); };
 		var expression = newExpression();
-		expression->kind = ExpressionKind_Dot;
+		expression->kind = .Dot;
 		expression->expression = (Void*)expr;
 		return expression;
 	} else {
@@ -181,7 +181,7 @@ func parseExpressionCast(tokens: Token***): Expression* {
 	var save = *tokens;
 	if (checkToken(.OpenParenthesis)) {
 		var expression = newExpression();
-		expression->kind = ExpressionKind_Cast;
+		expression->kind = .Cast;
 		var expressionCast = newExpressionCast();
 		expression->expression = (Void*)expressionCast;
 		expressionCast->type = parseTypespec(tokens);
@@ -222,7 +222,7 @@ func parseExpressionMultiplicative(tokens: Token***): Expression* {
 			infix->rhs = parseExpressionCast(tokens);
 			if (infix->rhs == NULL) { return NULL; };
 			expression = newExpression();
-			expression->kind = ExpressionKind_InfixOperator;
+			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
 		};
 	};
@@ -247,7 +247,7 @@ func parseExpressionAdditive(tokens: Token***): Expression* {
 			infix->rhs = parseExpressionMultiplicative(tokens);
 			if (infix->rhs == NULL) { return NULL; };
 			expression = newExpression();
-			expression->kind = ExpressionKind_InfixOperator;
+			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
 		};
 	};
@@ -272,7 +272,7 @@ func parseExpressionComparison(tokens: Token***): Expression* {
 			infix->rhs = parseExpressionAdditive(tokens);
 			if (infix->rhs == NULL) { return NULL; };
 			expression = newExpression();
-			expression->kind = ExpressionKind_InfixOperator;
+			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
 		};
 	};
@@ -297,7 +297,7 @@ func parseExpressionEquality(tokens: Token***): Expression* {
 			infix->rhs = parseExpressionComparison(tokens);
 			if (infix->rhs == NULL) { return NULL; };
 			expression = newExpression();
-			expression->kind = ExpressionKind_InfixOperator;
+			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
 		};
 	};
@@ -319,7 +319,7 @@ func parseExpressionLogicalAND(tokens: Token***): Expression* {
 			infix->rhs = parseExpressionEquality(tokens);
 			if (infix->rhs == NULL) { return NULL; };
 			expression = newExpression();
-			expression->kind = ExpressionKind_InfixOperator;
+			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
 		};
 	};
@@ -341,7 +341,7 @@ func parseExpressionLogicalOR(tokens: Token***): Expression* {
 			infix->rhs = parseExpressionLogicalAND(tokens);
 			if (infix->rhs == NULL) { return NULL; };
 			expression = newExpression();
-			expression->kind = ExpressionKind_InfixOperator;
+			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
 		};
 	};

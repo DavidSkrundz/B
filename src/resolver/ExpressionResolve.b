@@ -291,42 +291,42 @@ func resolveExpressionStringLiteral(expression: ExpressionStringLiteral*, expect
 };
 
 func resolveExpression(expression: Expression*, expectedType: Type*): Type* {
-	if (expression->kind == ExpressionKind_Group) {
+	if (expression->kind == .Group) {
 		expression->resolvedType = resolveExpression((Expression*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_Cast) {
+	} else if (expression->kind == .Cast) {
 		expression->resolvedType = resolveExpressionCast((ExpressionCast*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_Sizeof) {
+	} else if (expression->kind == .Sizeof) {
 		expression->resolvedType = resolveExpressionSizeof((ExpressionSizeof*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_Offsetof) {
+	} else if (expression->kind == .Offsetof) {
 		expression->resolvedType = resolveExpressionOffsetof((ExpressionOffsetof*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_Dereference) {
+	} else if (expression->kind == .Dereference) {
 		expression->resolvedType = resolveExpressionDereference((ExpressionDereference*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_Reference) {
+	} else if (expression->kind == .Reference) {
 		expression->resolvedType = resolveExpressionReference((ExpressionReference*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_FunctionCall) {
+	} else if (expression->kind == .FunctionCall) {
 		expression->resolvedType = resolveExpressionFunctionCall((ExpressionFunctionCall*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_Subscript) {
+	} else if (expression->kind == .Subscript) {
 		expression->resolvedType = resolveExpressionSubscript((ExpressionSubscript*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_Arrow) {
+	} else if (expression->kind == .Arrow) {
 		expression->resolvedType = resolveExpressionArrow((ExpressionArrow*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_Dot) {
+	} else if (expression->kind == .Dot) {
 		expression->resolvedType = resolveExpressionDot((ExpressionDot*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_InfixOperator) {
+	} else if (expression->kind == .InfixOperator) {
 		expression->resolvedType = resolveExpressionInfix((ExpressionInfix*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_Identifier) {
+	} else if (expression->kind == .Identifier) {
 		expression->resolvedType = resolveExpressionIdentifier((ExpressionIdentifier*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_NULL) {
+	} else if (expression->kind == ._NULL) {
 		expression->resolvedType = TypeAny;
-	} else if (expression->kind == ExpressionKind_BooleanLiteral) {
+	} else if (expression->kind == .BooleanLiteral) {
 		expression->resolvedType = resolveExpressionBooleanLiteral((ExpressionBooleanLiteral*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_IntegerLiteral) {
+	} else if (expression->kind == .IntegerLiteral) {
 		expression->resolvedType = resolveExpressionIntegerLiteral((ExpressionIntegerLiteral*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_CharacterLiteral) {
+	} else if (expression->kind == .CharacterLiteral) {
 		expression->resolvedType = resolveExpressionCharacterLiteral((ExpressionCharacterLiteral*)expression->expression, expectedType);
-	} else if (expression->kind == ExpressionKind_StringLiteral) {
+	} else if (expression->kind == .StringLiteral) {
 		expression->resolvedType = resolveExpressionStringLiteral((ExpressionStringLiteral*)expression->expression, expectedType);
 	} else {
-		fprintf(stderr, (char*)"Invalid expression kind %zu%c", expression->kind, 10);
+		fprintf(stderr, (char*)"Invalid expression kind %u%c", expression->kind, 10);
 		abort();
 	};;;;;;;;;;;;;;;;;
 	if (expression->resolvedType == NULL) {

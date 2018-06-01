@@ -1,5 +1,5 @@
 struct Expression {
-	var kind: UInt;
+	var kind: ExpressionKind;
 	var expression: Void*;
 	var resolvedType: Type*;
 };

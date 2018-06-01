@@ -3,7 +3,6 @@ var _declarations: Declaration**;
 func Parse() {
 	InitTypespecKinds();
 	InitStatementKinds();
-	InitExpressionKinds();
 	
 	var t = &_tokens;
 	var loop = true;

@@ -137,42 +137,42 @@ func codegenExpressionStringLiteral(expression: Expression*, expr: ExpressionStr
 };
 
 func codegenExpression(expression: Expression*) {
-	if (expression->kind == ExpressionKind_Group) {
+	if (expression->kind == .Group) {
 		codegenExpressionGroup(expression, (Expression*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Cast) {
+	} else if (expression->kind == .Cast) {
 		codegenExpressionCast(expression, (ExpressionCast*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Sizeof) {
+	} else if (expression->kind == .Sizeof) {
 		codegenExpressionSizeof(expression, (ExpressionSizeof*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Offsetof) {
+	} else if (expression->kind == .Offsetof) {
 		codegenExpressionOffsetof(expression, (ExpressionOffsetof*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Dereference) {
+	} else if (expression->kind == .Dereference) {
 		codegenExpressionDereference(expression, (ExpressionDereference*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Reference) {
+	} else if (expression->kind == .Reference) {
 		codegenExpressionReference(expression, (ExpressionReference*)expression->expression);
-	} else if (expression->kind == ExpressionKind_FunctionCall) {
+	} else if (expression->kind == .FunctionCall) {
 		codegenExpressionFunctionCall(expression, (ExpressionFunctionCall*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Subscript) {
+	} else if (expression->kind == .Subscript) {
 		codegenExpressionSubscript(expression, (ExpressionSubscript*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Arrow) {
+	} else if (expression->kind == .Arrow) {
 		codegenExpressionArrow(expression, (ExpressionArrow*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Dot) {
+	} else if (expression->kind == .Dot) {
 		codegenExpressionDot(expression, (ExpressionDot*)expression->expression);
-	} else if (expression->kind == ExpressionKind_InfixOperator) {
+	} else if (expression->kind == .InfixOperator) {
 		codegenExpressionInfixOperator(expression, (ExpressionInfix*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Identifier) {
+	} else if (expression->kind == .Identifier) {
 		codegenExpressionIdentifier(expression, (ExpressionIdentifier*)expression->expression);
-	} else if (expression->kind == ExpressionKind_NULL) {
+	} else if (expression->kind == ._NULL) {
 		printf((char*)"NULL");
-	} else if (expression->kind == ExpressionKind_BooleanLiteral) {
+	} else if (expression->kind == .BooleanLiteral) {
 		codegenExpressionBooleanLiteral(expression, (ExpressionBooleanLiteral*)expression->expression);
-	} else if (expression->kind == ExpressionKind_IntegerLiteral) {
+	} else if (expression->kind == .IntegerLiteral) {
 		codegenExpressionIntegerLiteral(expression, (ExpressionIntegerLiteral*)expression->expression);
-	} else if (expression->kind == ExpressionKind_CharacterLiteral) {
+	} else if (expression->kind == .CharacterLiteral) {
 		codegenExpressionCharacterLiteral(expression, (ExpressionCharacterLiteral*)expression->expression);
-	} else if (expression->kind == ExpressionKind_StringLiteral) {
+	} else if (expression->kind == .StringLiteral) {
 		codegenExpressionStringLiteral(expression, (ExpressionStringLiteral*)expression->expression);
 	} else {
-		fprintf(stderr, (char*)"Invalid expression kind %zu%c", expression->kind, 10);
+		fprintf(stderr, (char*)"Invalid expression kind %u%c", expression->kind, 10);
 		abort();
 	};;;;;;;;;;;;;;;;;
 };

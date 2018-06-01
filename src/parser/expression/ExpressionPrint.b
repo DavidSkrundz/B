@@ -136,42 +136,42 @@ func printExpressionStringLiteral(expression: ExpressionStringLiteral*) {
 };
 
 func printExpression(expression: Expression*) {
-	if (expression->kind == ExpressionKind_Group) {
+	if (expression->kind == .Group) {
 		printExpressionGroup((Expression*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Cast) {
+	} else if (expression->kind == .Cast) {
 		printExpressionCast((ExpressionCast*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Sizeof) {
+	} else if (expression->kind == .Sizeof) {
 		printExpressionSizeof((ExpressionSizeof*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Offsetof) {
+	} else if (expression->kind == .Offsetof) {
 		printExpressionOffsetOf((ExpressionOffsetof*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Dereference) {
+	} else if (expression->kind == .Dereference) {
 		printExpressionDereference((ExpressionDereference*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Reference) {
+	} else if (expression->kind == .Reference) {
 		printExpressionReference((ExpressionReference*)expression->expression);
-	} else if (expression->kind == ExpressionKind_FunctionCall) {
+	} else if (expression->kind == .FunctionCall) {
 		printExpressionFunctionCall((ExpressionFunctionCall*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Subscript) {
+	} else if (expression->kind == .Subscript) {
 		printExpressionSubscript((ExpressionSubscript*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Arrow) {
+	} else if (expression->kind == .Arrow) {
 		printExpressionArrow((ExpressionArrow*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Dot) {
+	} else if (expression->kind == .Dot) {
 		printExpressionDot((ExpressionDot*)expression->expression);
-	} else if (expression->kind == ExpressionKind_InfixOperator) {
+	} else if (expression->kind == .InfixOperator) {
 		printExpressionInfix((ExpressionInfix*)expression->expression);
-	} else if (expression->kind == ExpressionKind_Identifier) {
+	} else if (expression->kind == .Identifier) {
 		printExpressionIdentifier((ExpressionIdentifier*)expression->expression);
-	} else if (expression->kind == ExpressionKind_NULL) {
+	} else if (expression->kind == ._NULL) {
 		printf((char*)"NULL");
-	} else if (expression->kind == ExpressionKind_BooleanLiteral) {
+	} else if (expression->kind == .BooleanLiteral) {
 		printExpressionBooleanLiteral((ExpressionBooleanLiteral*)expression->expression);
-	} else if (expression->kind == ExpressionKind_IntegerLiteral) {
+	} else if (expression->kind == .IntegerLiteral) {
 		printExpressionIntegerLiteral((ExpressionIntegerLiteral*)expression->expression);
-	} else if (expression->kind == ExpressionKind_CharacterLiteral) {
+	} else if (expression->kind == .CharacterLiteral) {
 		printExpressionCharacterLiteral((ExpressionCharacterLiteral*)expression->expression);
-	} else if (expression->kind == ExpressionKind_StringLiteral) {
+	} else if (expression->kind == .StringLiteral) {
 		printExpressionStringLiteral((ExpressionStringLiteral*)expression->expression);
 	} else {
-		fprintf(stderr, (char*)"Invalid expression kind %zu%c", expression->kind, 10);
+		fprintf(stderr, (char*)"Invalid expression kind %u%c", expression->kind, 10);
 		abort();
 	};;;;;;;;;;;;;;;;;
 };
