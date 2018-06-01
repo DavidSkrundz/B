@@ -131,16 +131,16 @@ func printDeclaration(declaration: Declaration*) {
 		printAttribute(declaration->attribute);
 	};
 	
-	if (declaration->kind == DeclarationKind_Var) {
+	if (declaration->kind == .Var) {
 		printDeclarationVar((DeclarationVar*)declaration->declaration, declaration->name);
-	} else if (declaration->kind == DeclarationKind_Func) {
+	} else if (declaration->kind == .Func) {
 		printDeclarationFunc((DeclarationFunc*)declaration->declaration, declaration->name);
-	} else if (declaration->kind == DeclarationKind_Struct) {
+	} else if (declaration->kind == .Struct) {
 		printDeclarationStruct((DeclarationStruct*)declaration->declaration, declaration->name);
-	} else if (declaration->kind == DeclarationKind_Enum) {
+	} else if (declaration->kind == .Enum) {
 		printDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
 		abort();
 	};;;;
 };

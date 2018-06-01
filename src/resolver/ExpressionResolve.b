@@ -29,7 +29,7 @@ func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Ty
 	var structDeclaration: DeclarationStruct*;
 	var i = 0;
 	while (i < bufferCount((Void**)_declarations)) {
-		if (_declarations[i]->kind == DeclarationKind_Struct) {
+		if (_declarations[i]->kind == .Struct) {
 			if (_declarations[i]->resolvedType == structType) {
 				structDeclaration = (DeclarationStruct*)_declarations[i]->declaration;
 			};
@@ -134,7 +134,7 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 	var structDeclaration: DeclarationStruct*;
 	var i = 0;
 	while (i < bufferCount((Void**)_declarations)) {
-		if (_declarations[i]->kind == DeclarationKind_Struct) {
+		if (_declarations[i]->kind == .Struct) {
 			if (_declarations[i]->resolvedType == baseType) {
 				structDeclaration = (DeclarationStruct*)_declarations[i]->declaration;
 			};
@@ -166,7 +166,7 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type* {
 	var i = 0;
 	while (i < bufferCount((Void**)_declarations)) {
-		if (_declarations[i]->kind == DeclarationKind_Enum) {
+		if (_declarations[i]->kind == .Enum) {
 			if (expression->base == NULL || (expression->base->length == _declarations[i]->name->length && strncmp((char*)expression->base->name, (char*)_declarations[i]->name->name, _declarations[i]->name->length) == (int)0)) {
 				if (expectedType == NULL || _declarations[i]->resolvedType == expectedType) {
 					return _declarations[i]->resolvedType;

@@ -66,14 +66,14 @@ func resolveDeclarationDefinitionStruct(declaration: DeclarationStruct*, name: I
 };
 
 func resolveDeclarationType(declaration: Declaration*) {
-	if (declaration->kind == DeclarationKind_Var) {
-	} else if (declaration->kind == DeclarationKind_Func) {
-	} else if (declaration->kind == DeclarationKind_Struct) {
+	if (declaration->kind == .Var) {
+	} else if (declaration->kind == .Func) {
+	} else if (declaration->kind == .Struct) {
 		declaration->resolvedType = resolveDeclarationStruct((DeclarationStruct*)declaration->declaration, declaration->name);
-	} else if (declaration->kind == DeclarationKind_Enum) {
+	} else if (declaration->kind == .Enum) {
 		declaration->resolvedType = resolveDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
 		abort();
 	};;;;
 };
@@ -90,15 +90,15 @@ func resolveDeclarationDefinition(declaration: Declaration*) {
 	};;;
 	
 	declaration->state = DeclarationState_Resolving;
-	if (declaration->kind == DeclarationKind_Var) {
+	if (declaration->kind == .Var) {
 		declaration->resolvedType = resolveDeclarationVar((DeclarationVar*)declaration->declaration, declaration->name);
-	} else if (declaration->kind == DeclarationKind_Func) {
+	} else if (declaration->kind == .Func) {
 		declaration->resolvedType = resolveDeclarationTypeFunc((DeclarationFunc*)declaration->declaration, declaration->name);
-	} else if (declaration->kind == DeclarationKind_Struct) {
+	} else if (declaration->kind == .Struct) {
 		resolveDeclarationDefinitionStruct((DeclarationStruct*)declaration->declaration, declaration->name);
-	} else if (declaration->kind == DeclarationKind_Enum) {
+	} else if (declaration->kind == .Enum) {
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
 		abort();
 	};;;;
 	declaration->state = DeclarationState_Resolved;
@@ -134,13 +134,13 @@ func resolveDeclarationImplementation(declaration: Declaration*) {
 		fprintf(stderr, (char*)"Declaration not resolved before resolving implementation");
 		abort();
 	};
-	if (declaration->kind == DeclarationKind_Var) {
-	} else if (declaration->kind == DeclarationKind_Func) {
+	if (declaration->kind == .Var) {
+	} else if (declaration->kind == .Func) {
 		declaration->resolvedType = resolveDeclarationImplementationFunc((DeclarationFunc*)declaration->declaration, declaration->name);
-	} else if (declaration->kind == DeclarationKind_Struct) {
-	} else if (declaration->kind == DeclarationKind_Enum) {
+	} else if (declaration->kind == .Struct) {
+	} else if (declaration->kind == .Enum) {
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
 		abort();
 	};;;;
 };

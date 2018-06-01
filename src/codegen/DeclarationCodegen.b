@@ -19,14 +19,14 @@ func codegenDeclarationEnumDeclaration(declaration: Declaration*, decl: Declarat
 func codegenDeclarationDeclaration(declaration: Declaration*) {
 	if (declaration->attribute != NULL) { return; };
 	
-	if (declaration->kind == DeclarationKind_Var) {
-	} else if (declaration->kind == DeclarationKind_Func) {
-	} else if (declaration->kind == DeclarationKind_Struct) {
+	if (declaration->kind == .Var) {
+	} else if (declaration->kind == .Func) {
+	} else if (declaration->kind == .Struct) {
 		codegenDeclarationStructDeclaration(declaration, (DeclarationStruct*)declaration->declaration);
-	} else if (declaration->kind == DeclarationKind_Enum) {
+	} else if (declaration->kind == .Enum) {
 		codegenDeclarationEnumDeclaration(declaration, (DeclarationEnum*)declaration->declaration);
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
 		abort();
 	};;;;
 };
@@ -87,8 +87,8 @@ func codegenDeclarationFuncDefinition(declaration: Declaration*, decl: Declarati
 };
 
 func codegenDeclarationStructFieldDefinition(field: Declaration*) {
-	if (field->kind != DeclarationKind_Var) {
-		fprintf(stderr, (char*)"Bad declaration kind (%zu) in struct fields%c", field->kind, 10);
+	if (field->kind != .Var) {
+		fprintf(stderr, (char*)"Bad declaration kind (%u) in struct fields%c", field->kind, 10);
 		abort();
 	};
 	printf((char*)"%c", 9);
@@ -129,15 +129,15 @@ func codegenDeclarationEnumCasesDefinition(cases: DeclarationEnumCase**, name: I
 func codegenDeclarationDefinition(declaration: Declaration*) {
 	if (declaration->attribute != NULL) { return; };
 	
-	if (declaration->kind == DeclarationKind_Var) {
+	if (declaration->kind == .Var) {
 		codegenDeclarationVarDefinition(declaration, (DeclarationVar*)declaration->declaration);
-	} else if (declaration->kind == DeclarationKind_Func) {
+	} else if (declaration->kind == .Func) {
 		codegenDeclarationFuncDefinition(declaration, (DeclarationFunc*)declaration->declaration);
-	} else if (declaration->kind == DeclarationKind_Struct) {
+	} else if (declaration->kind == .Struct) {
 		codegenDeclarationStructDefinition(declaration, (DeclarationStruct*)declaration->declaration);
-	} else if (declaration->kind == DeclarationKind_Enum) {
+	} else if (declaration->kind == .Enum) {
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
 		abort();
 	};;;;
 };
@@ -169,13 +169,13 @@ func codegenDeclarationFuncImplementation(declaration: Declaration*, decl: Decla
 func codegenDeclarationImplementation(declaration: Declaration*) {
 	if (declaration->attribute != NULL) { return; };
 	
-	if (declaration->kind == DeclarationKind_Var) {
-	} else if (declaration->kind == DeclarationKind_Func) {
+	if (declaration->kind == .Var) {
+	} else if (declaration->kind == .Func) {
 		codegenDeclarationFuncImplementation(declaration, (DeclarationFunc*)declaration->declaration);
-	} else if (declaration->kind == DeclarationKind_Struct) {
-	} else if (declaration->kind == DeclarationKind_Enum) {
+	} else if (declaration->kind == .Struct) {
+	} else if (declaration->kind == .Enum) {
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %zu%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
 		abort();
 	};;;;
 };

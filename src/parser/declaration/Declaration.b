@@ -1,5 +1,5 @@
 struct Declaration {
-	var kind: UInt;
+	var kind: DeclarationKind;
 	var state: UInt;
 	var attribute: Attribute*;
 	var name: Identifier*;

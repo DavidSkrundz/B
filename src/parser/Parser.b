@@ -2,7 +2,6 @@ var _declarations: Declaration**;
 
 func Parse() {
 	InitTypespecKinds();
-	InitDeclarationKinds();
 	InitDeclarationStates();
 	InitStatementKinds();
 	InitExpressionKinds();

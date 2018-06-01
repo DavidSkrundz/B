@@ -41,7 +41,7 @@ func parseStatementVar(tokens: Token***): StatementVar* {
 	var statement = newStatementVar();
 	statement->declaration = parseDeclaration(tokens);
 	if (statement->declaration == NULL) { return NULL; };
-	if (statement->declaration->kind != DeclarationKind_Var) { return NULL; };
+	if (statement->declaration->kind != .Var) { return NULL; };
 	return statement;
 };
 

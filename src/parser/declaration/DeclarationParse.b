@@ -27,7 +27,7 @@ func parseDeclarationStructFields(tokens: Token***): DeclarationStructFields* {
 		};
 		var varDecl = parseDeclaration(tokens);
 		if (varDecl == NULL) { return NULL; };
-		if (varDecl->kind != DeclarationKind_Var) { return NULL; };
+		if (varDecl->kind != .Var) { return NULL; };
 		fields->fields[fields->count] = varDecl;
 		fields->count = fields->count + 1;
 	};
@@ -145,16 +145,16 @@ func parseDeclaration(tokens: Token***): Declaration* {
 	declaration->attribute = parseAttribute(tokens);
 	declaration->state = DeclarationState_Unresolved;
 	if ((**tokens)->kind == .Var) {
-		declaration->kind = DeclarationKind_Var;
+		declaration->kind = .Var;
 		declaration->declaration = (Void*)parseDeclarationVar(tokens, declaration);
 	} else if ((**tokens)->kind == .Func) {
-		declaration->kind = DeclarationKind_Func;
+		declaration->kind = .Func;
 		declaration->declaration = (Void*)parseDeclarationFunc(tokens, declaration);
 	} else if ((**tokens)->kind == .Struct) {
-		declaration->kind = DeclarationKind_Struct;
+		declaration->kind = .Struct;
 		declaration->declaration = (Void*)parseDeclarationStruct(tokens, declaration);
 	} else if ((**tokens)->kind == .Enum) {
-		declaration->kind = DeclarationKind_Enum;
+		declaration->kind = .Enum;
 		declaration->declaration = (Void*)parseDeclarationEnum(tokens, declaration);
 	};;;;
 	if (declaration->declaration == NULL) { return NULL; };

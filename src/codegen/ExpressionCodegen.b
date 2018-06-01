@@ -86,7 +86,7 @@ func codegenExpressionDot(expression: Expression*, expr: ExpressionDot*) {
 	printf((char*)"(");
 	var i = 0;
 	while (i < bufferCount((Void**)_declarations)) {
-		if (_declarations[i]->kind == DeclarationKind_Enum) {
+		if (_declarations[i]->kind == .Enum) {
 			if (_declarations[i]->resolvedType == expression->resolvedType) {
 				codegenIdentifier(_declarations[i]->name);
 			};
