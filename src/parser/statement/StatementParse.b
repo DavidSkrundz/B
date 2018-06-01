@@ -67,27 +67,27 @@ func parseStatementAssign(tokens: Token***): StatementAssign* {
 func parseStatement(tokens: Token***): Statement* {
 	var statement = newStatement();
 	if ((**tokens)->kind == .If) {
-		statement->kind = StatementKind_If;
+		statement->kind = .If;
 		statement->statement = (Void*)parseStatementIf(tokens);
 	} else if ((**tokens)->kind == .While) {
-		statement->kind = StatementKind_While;
+		statement->kind = .While;
 		statement->statement = (Void*)parseStatementWhile(tokens);
 	} else if ((**tokens)->kind == .Return) {
-		statement->kind = StatementKind_Return;
+		statement->kind = .Return;
 		statement->statement = (Void*)parseStatementReturn(tokens);
 	} else if ((**tokens)->kind == .Var) {
-		statement->kind = StatementKind_Var;
+		statement->kind = .Var;
 		statement->statement = (Void*)parseStatementVar(tokens);
 	} else if ((**tokens)->kind == .OpenCurly) {
-		statement->kind = StatementKind_Block;
+		statement->kind = .Block;
 		statement->statement = (Void*)parseStatementBlock(tokens);
 	} else {
 		var before = *tokens;
-		statement->kind = StatementKind_Expression;
+		statement->kind = .Expression;
 		statement->statement = (Void*)parseStatementExpression(tokens);
 		if (statement->statement == NULL) {
 			*tokens = before;
-			statement->kind = StatementKind_Assign;
+			statement->kind = .Assign;
 			statement->statement = (Void*)parseStatementAssign(tokens);
 		};
 	};;;;;

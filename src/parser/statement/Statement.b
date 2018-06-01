@@ -1,5 +1,5 @@
 struct Statement {
-	var kind: UInt;
+	var kind: StatementKind;
 	var statement: Void*;
 };
 

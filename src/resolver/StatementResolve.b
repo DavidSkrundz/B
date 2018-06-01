@@ -37,22 +37,22 @@ func resolveStatementReturn(statement: StatementReturn*, expectedType: Type*) {
 };
 
 func resolveStatement(statement: Statement*, expectedType: Type*) {
-	if (statement->kind == StatementKind_Block) {
+	if (statement->kind == .Block) {
 		resolveStatementBlock((StatementBlock*)statement->statement, expectedType);
-	} else if (statement->kind == StatementKind_Expression) {
+	} else if (statement->kind == .Expression) {
 		resolveStatementExpression((StatementExpression*)statement->statement, expectedType);
-	} else if (statement->kind == StatementKind_Assign) {
+	} else if (statement->kind == .Assign) {
 		resolveStatementAssign((StatementAssign*)statement->statement, expectedType);
-	} else if (statement->kind == StatementKind_Var) {
+	} else if (statement->kind == .Var) {
 		resolveStatementVar((StatementVar*)statement->statement, expectedType);
-	} else if (statement->kind == StatementKind_If) {
+	} else if (statement->kind == .If) {
 		resolveStatementIf((StatementIf*)statement->statement, expectedType);
-	} else if (statement->kind == StatementKind_While) {
+	} else if (statement->kind == .While) {
 		resolveStatementWhile((StatementWhile*)statement->statement, expectedType);
-	} else if (statement->kind == StatementKind_Return) {
+	} else if (statement->kind == .Return) {
 		resolveStatementReturn((StatementReturn*)statement->statement, expectedType);
 	} else {
-		fprintf(stderr, (char*)"Invalid statement kind %zu%c", statement->kind, 10);
+		fprintf(stderr, (char*)"Invalid statement kind %u%c", statement->kind, 10);
 		abort();
 	};;;;;;;
 };

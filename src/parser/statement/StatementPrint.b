@@ -61,22 +61,22 @@ func printStatementReturn(statement: StatementReturn*) {
 };
 
 func printStatement(statement: Statement*) {
-	if (statement->kind == StatementKind_Block) {
+	if (statement->kind == .Block) {
 		printStatementBlock((StatementBlock*)statement->statement);
-	} else if (statement->kind == StatementKind_Expression) {
+	} else if (statement->kind == .Expression) {
 		printStatementExpression((StatementExpression*)statement->statement);
-	} else if (statement->kind == StatementKind_Assign) {
+	} else if (statement->kind == .Assign) {
 		printStatementAssign((StatementAssign*)statement->statement);
-	} else if (statement->kind == StatementKind_Var) {
+	} else if (statement->kind == .Var) {
 		printStatementVar((StatementVar*)statement->statement);
-	} else if (statement->kind == StatementKind_If) {
+	} else if (statement->kind == .If) {
 		printStatementIf((StatementIf*)statement->statement);
-	} else if (statement->kind == StatementKind_While) {
+	} else if (statement->kind == .While) {
 		printStatementWhile((StatementWhile*)statement->statement);
-	} else if (statement->kind == StatementKind_Return) {
+	} else if (statement->kind == .Return) {
 		printStatementReturn((StatementReturn*)statement->statement);
 	} else {
-		fprintf(stderr, (char*)"Invalid statement kind %zu%c", statement->kind, 10);
+		fprintf(stderr, (char*)"Invalid statement kind %u%c", statement->kind, 10);
 		abort();
 	};;;;;;;
 };

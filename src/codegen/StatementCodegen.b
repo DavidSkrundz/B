@@ -44,22 +44,22 @@ func codegenStatementReturn(statement: StatementReturn*) {
 };
 
 func codegenStatement(statement: Statement*) {
-	if (statement->kind == StatementKind_Block) {
+	if (statement->kind == .Block) {
 		codegenStatementBlock((StatementBlock*)statement->statement);
-	} else if (statement->kind == StatementKind_Expression) {
+	} else if (statement->kind == .Expression) {
 		codegenStatementExpression((StatementExpression*)statement->statement);
-	} else if (statement->kind == StatementKind_Assign) {
+	} else if (statement->kind == .Assign) {
 		codegenStatementAssign((StatementAssign*)statement->statement);
-	} else if (statement->kind == StatementKind_Var) {
+	} else if (statement->kind == .Var) {
 		codegenStatementVar((StatementVar*)statement->statement);
-	} else if (statement->kind == StatementKind_If) {
+	} else if (statement->kind == .If) {
 		codegenStatementIf((StatementIf*)statement->statement);
-	} else if (statement->kind == StatementKind_While) {
+	} else if (statement->kind == .While) {
 		codegenStatementWhile((StatementWhile*)statement->statement);
-	} else if (statement->kind == StatementKind_Return) {
+	} else if (statement->kind == .Return) {
 		codegenStatementReturn((StatementReturn*)statement->statement);
 	} else {
-		fprintf(stderr, (char*)"Invalid statement kind %zu%c", statement->kind, 10);
+		fprintf(stderr, (char*)"Invalid statement kind %u%c", statement->kind, 10);
 		abort();
 	};;;;;;;
 };
