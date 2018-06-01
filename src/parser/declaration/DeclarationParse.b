@@ -143,7 +143,7 @@ func parseDeclarationEnum(tokens: Token***, declaration: Declaration*): Declarat
 func parseDeclaration(tokens: Token***): Declaration* {
 	var declaration = newDeclaration();
 	declaration->attribute = parseAttribute(tokens);
-	declaration->state = DeclarationState_Unresolved;
+	declaration->state = .Unresolved;
 	if ((**tokens)->kind == .Var) {
 		declaration->kind = .Var;
 		declaration->declaration = (Void*)parseDeclarationVar(tokens, declaration);

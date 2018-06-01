@@ -1,6 +1,6 @@
 struct Declaration {
 	var kind: DeclarationKind;
-	var state: UInt;
+	var state: DeclarationState;
 	var attribute: Attribute*;
 	var name: Identifier*;
 	var declaration: Void*;

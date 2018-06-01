@@ -79,17 +79,17 @@ func resolveDeclarationType(declaration: Declaration*) {
 };
 
 func resolveDeclarationDefinition(declaration: Declaration*) {
-	if (declaration->state == DeclarationState_Resolved) { return; }
-	else if (declaration->state == DeclarationState_Unresolved) {}
-	else if (declaration->state == DeclarationState_Resolving) {
+	if (declaration->state == .Resolved) { return; }
+	else if (declaration->state == .Unresolved) {}
+	else if (declaration->state == .Resolving) {
 		fprintf(stderr, (char*)"Cyclic dependency%c", 10);
 		exit(EXIT_FAILURE);
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration state %zu%c", declaration->state, 10);
+		fprintf(stderr, (char*)"Invalid declaration state %u%c", declaration->state, 10);
 		abort();
 	};;;
 	
-	declaration->state = DeclarationState_Resolving;
+	declaration->state = .Resolving;
 	if (declaration->kind == .Var) {
 		declaration->resolvedType = resolveDeclarationVar((DeclarationVar*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Func) {
@@ -101,7 +101,7 @@ func resolveDeclarationDefinition(declaration: Declaration*) {
 		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
 		abort();
 	};;;;
-	declaration->state = DeclarationState_Resolved;
+	declaration->state = .Resolved;
 };
 
 func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: Identifier*): Type* {
@@ -130,7 +130,7 @@ func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: I
 };
 
 func resolveDeclarationImplementation(declaration: Declaration*) {
-	if (declaration->state != DeclarationState_Resolved) {
+	if (declaration->state != .Resolved) {
 		fprintf(stderr, (char*)"Declaration not resolved before resolving implementation");
 		abort();
 	};
