@@ -1,8 +1,6 @@
 var _context: Context*;
 
 func Resolve() {
-	InitTypeKinds();
-	
 	_context = newContext();
 	
 	InitBuiltinTypes();

@@ -8,12 +8,12 @@ func codegenTypePointer(type: TypePointer*) {
 };
 
 func codegenType(type: Type*) {
-	if (type->kind == TypeKind_Identifier) {
+	if (type->kind == .Identifier) {
 		codegenTypeIdentifier((TypeIdentifier*)type->type);
-	} else if (type->kind == TypeKind_Pointer) {
+	} else if (type->kind == .Pointer) {
 		codegenTypePointer((TypePointer*)type->type);
 	} else {
-		fprintf(stderr, (char*)"Invalid type kind %zu%c", type->kind, 10);
+		fprintf(stderr, (char*)"Invalid type kind %u%c", type->kind, 10);
 		abort();
 	};;
 };

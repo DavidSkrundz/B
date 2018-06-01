@@ -82,7 +82,7 @@ func resolveExpressionReference(expression: ExpressionReference*, expectedType: 
 
 func resolveExpressionFunctionCall(expression: ExpressionFunctionCall*, expectedType: Type*): Type* {
 	var functionType = resolveExpression(expression->function, NULL);
-	if (functionType->kind != TypeKind_Function) {
+	if (functionType->kind != .Function) {
 		fprintf(stderr, (char*)"Can't call non-function%c", 10);
 		exit(EXIT_FAILURE);
 	};

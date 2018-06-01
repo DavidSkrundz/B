@@ -3,10 +3,10 @@ func codegenNullExpressionPointer(type: TypePointer*) {
 };
 
 func codegenNullExpression(type: Type*) {
-	if (type->kind == TypeKind_Pointer) {
+	if (type->kind == .Pointer) {
 		codegenNullExpressionPointer((TypePointer*)type->type);
 	} else {
-		fprintf(stderr, (char*)"Invalid type kind %zu%c", type->kind, 10);
+		fprintf(stderr, (char*)"Invalid type kind %u%c", type->kind, 10);
 		abort();
 	};
 };

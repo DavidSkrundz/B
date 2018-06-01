@@ -1,5 +1,5 @@
 struct Type {
-	var kind: UInt;
+	var kind: TypeKind;
 	var type: Void*;
 };
 

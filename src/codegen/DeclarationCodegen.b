@@ -74,7 +74,7 @@ func codegenDeclarationFuncArgs(args: DeclarationFuncArgs*) {
 };
 
 func codegenDeclarationFuncDefinition(declaration: Declaration*, decl: DeclarationFunc*) {
-	if (declaration->resolvedType->kind != TypeKind_Function) {
+	if (declaration->resolvedType->kind != .Function) {
 		fprintf(stderr, (char*)"Function declaration has non function type%c", 10);
 		abort();
 	};
@@ -152,7 +152,7 @@ func CodegenDeclarationDefinitions() {
 };
 
 func codegenDeclarationFuncImplementation(declaration: Declaration*, decl: DeclarationFunc*) {
-	if (declaration->resolvedType->kind != TypeKind_Function) {
+	if (declaration->resolvedType->kind != .Function) {
 		fprintf(stderr, (char*)"Function declaration has non function type%c", 10);
 		abort();
 	};
