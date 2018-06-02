@@ -57,3 +57,11 @@ List of things so I don't forget.
 - Static arrays (lookup tables)
 - Integer conversion for literals
 - Convert the C codegen into a module to allow multiple targets
+- Escape characters for string and character literals
+- Automatic conversion to and from `Void*`, `Void**`, etc.
+- Ensure all paths in a function returns
+- Add `@noreturn` attribute
+- Improve `@foreign` to allow specifying the language and a header to import
+- Unused declaration detection
+- Add `let` keyword to prevent mutation
+- `for` loops
