@@ -40,6 +40,7 @@ func parseExpressionPrimary(tokens: Token***): Expression* {
 	return expression;
 };
 
+var MAX_FUNC_ARGUMENT_COUNT = 10;
 func parseExpressionFunctionCallArguments(tokens: Token***): ExpressionFunctionCall* {
 	var expression = newExpressionFunctionCall();
 	expectToken(.OpenParenthesis);

@@ -61,14 +61,14 @@ func codegenDeclarationFuncArg(argument: DeclarationFuncArg*) {
 
 func codegenDeclarationFuncArgs(args: DeclarationFuncArgs*) {
 	printf((char*)"(");
-	if (args->count == 0) {
+	if (bufferCount((Void**)args->args) == 0) {
 		printf((char*)"void");
 	};
 	var i = 0;
-	while (i < args->count) {
+	while (i < bufferCount((Void**)args->args)) {
 		codegenDeclarationFuncArg(args->args[i]);
 		i = i + 1;
-		if (i < args->count) { printf((char*)", "); };
+		if (i < bufferCount((Void**)args->args)) { printf((char*)", "); };
 	};
 	printf((char*)")");
 };

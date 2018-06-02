@@ -24,30 +24,17 @@ func parseDeclarationFuncArgument(tokens: Token***): DeclarationFuncArg* {
 	return arg;
 };
 
-var MAX_FUNC_ARGUMENT_COUNT = 10;
 func parseDeclarationFuncArguments(tokens: Token***): DeclarationFuncArgs* {
 	expectToken(.OpenParenthesis);
 	var args = newDeclarationFuncArgs();
-	args->args = (DeclarationFuncArg**)xcalloc(MAX_FUNC_ARGUMENT_COUNT, sizeof(DeclarationFuncArg*));
-	args->count = 0;
-	if (args->count == MAX_FUNC_ARGUMENT_COUNT) {
-		fprintf(stderr, (char*)"Too many arguments in func%c", 10);
-		exit(EXIT_FAILURE);
-	};
 	var arg = parseDeclarationFuncArgument(tokens);
 	if (arg != NULL) {
-		args->args[args->count] = arg;
-		args->count = args->count + 1;
+		append((Void***)&args->args, (Void*)arg);
 	};
 	while (checkToken(.Comma)) {
-		if (args->count == MAX_FUNC_ARGUMENT_COUNT) {
-			fprintf(stderr, (char*)"Too many arguments in func%c", 10);
-			exit(EXIT_FAILURE);
-		};
 		var arg2 = parseDeclarationFuncArgument(tokens);
 		if (arg2 != NULL) {
-			args->args[args->count] = arg2;
-			args->count = args->count + 1;
+			append((Void***)&args->args, (Void*)arg2);
 		};
 	};
 	if (checkToken(.Ellipses)) {

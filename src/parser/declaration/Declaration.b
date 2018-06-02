@@ -20,7 +20,6 @@ struct DeclarationFuncArg {
 
 struct DeclarationFuncArgs {
 	var args: DeclarationFuncArg**;
-	var count: UInt;
 	var isVariadic: Bool;
 };
 

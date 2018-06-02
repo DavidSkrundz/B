@@ -32,7 +32,7 @@ func printDeclarationFuncArgs(args: DeclarationFuncArgs*) {
 	printf((char*)"(arguments%c", 10);
 	depth = depth + 1;
 	var i = 0;
-	while (i < args->count) {
+	while (i < bufferCount((Void**)args->args)) {
 		printDepth();
 		printDeclarationFuncArg(args->args[i]);
 		printf((char*)"%c", 10);

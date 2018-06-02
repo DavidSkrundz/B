@@ -19,7 +19,7 @@ func resolveDeclarationFuncArg(argument: DeclarationFuncArg*): Type* {
 func resolveDeclarationFuncArgs(args: DeclarationFuncArgs*): Type** {
 	var argumentTypes = (Type**)xcalloc(MAX_FUNC_ARGUMENT_COUNT, sizeof(Type*));
 	var i = 0;
-	while (i < args->count) {
+	while (i < bufferCount((Void**)args->args)) {
 		argumentTypes[i] = resolveDeclarationFuncArg(args->args[i]);
 		i = i + 1;
 	};
@@ -32,9 +32,9 @@ func resolveDeclarationTypeFunc(declaration: DeclarationFunc*, name: Identifier*
 	if (declaration->returnType != NULL) {
 		returnType = resolveTypespec(declaration->returnType);
 	};
-	var type = resolveTypeFunction(returnType, argumentTypes, declaration->args->count, declaration->args->isVariadic);
+	var type = resolveTypeFunction(returnType, argumentTypes, bufferCount((Void**)declaration->args->args), declaration->args->isVariadic);
 	if (type == NULL) {
-		type = createTypeFunction(returnType, argumentTypes, declaration->args->count, declaration->args->isVariadic);
+		type = createTypeFunction(returnType, argumentTypes, bufferCount((Void**)declaration->args->args), declaration->args->isVariadic);
 	};
 	addTo(_context, name, type);
 	return type;
@@ -109,7 +109,7 @@ func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: I
 	if (declaration->block != NULL) {
 		var oldContextCount = bufferCount((Void**)_context->names);
 		var i = 0;
-		while (i < declaration->args->count) {
+		while (i < bufferCount((Void**)declaration->args->args)) {
 			var argument = declaration->args->args[i];
 			addTo(_context, argument->name, argument->resolvedType);
 			i = i + 1;
@@ -118,9 +118,9 @@ func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: I
 		setBufferCount((Void**)_context->names, oldContextCount);
 		setBufferCount((Void**)_context->types, oldContextCount);
 	};
-	var type = resolveTypeFunction(returnType, argumentTypes, declaration->args->count, declaration->args->isVariadic);
+	var type = resolveTypeFunction(returnType, argumentTypes, bufferCount((Void**)declaration->args->args), declaration->args->isVariadic);
 	if (type == NULL) {
-		type = createTypeFunction(returnType, argumentTypes, declaration->args->count, declaration->args->isVariadic);
+		type = createTypeFunction(returnType, argumentTypes, bufferCount((Void**)declaration->args->args), declaration->args->isVariadic);
 	};
 	return type;
 };
