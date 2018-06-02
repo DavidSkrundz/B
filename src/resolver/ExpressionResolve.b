@@ -41,11 +41,11 @@ func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Ty
 		exit(EXIT_FAILURE);
 	};
 	i = 0;
-	while (i < structDeclaration->fields->count) {
-		var name = structDeclaration->fields->fields[i]->name;
+	while (i < bufferCount((Void**)structDeclaration->fields)) {
+		var name = structDeclaration->fields[i]->name;
 		if (name->length == expression->field->length) {
 			if (strncmp((char*)name->name, (char*)expression->field->name, name->length) == (int)0) {
-				expression->resolvedType = structDeclaration->fields->fields[i]->resolvedType;
+				expression->resolvedType = structDeclaration->fields[i]->resolvedType;
 			};
 		};
 		i = i + 1;
@@ -146,15 +146,15 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 		exit(EXIT_FAILURE);
 	};
 	i = 0;
-	while (i < structDeclaration->fields->count) {
-		var name = structDeclaration->fields->fields[i]->name;
+	while (i < bufferCount((Void**)structDeclaration->fields)) {
+		var name = structDeclaration->fields[i]->name;
 		if (name->length == expression->field->length) {
 			if (strncmp((char*)name->name, (char*)expression->field->name, name->length) == (int)0) {
-				if (expectedType != NULL && expectedType != structDeclaration->fields->fields[i]->resolvedType) {
+				if (expectedType != NULL && expectedType != structDeclaration->fields[i]->resolvedType) {
 					fprintf(stderr, (char*)"Struct field has wrong type: %.*s%c", (int)name->length, (char*)name->name, 10);
 					exit(EXIT_FAILURE);
 				};
-				return structDeclaration->fields->fields[i]->resolvedType;
+				return structDeclaration->fields[i]->resolvedType;
 			};
 		};
 		i = i + 1;

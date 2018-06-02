@@ -40,14 +40,6 @@ func resolveDeclarationTypeFunc(declaration: DeclarationFunc*, name: Identifier*
 	return type;
 };
 
-func resolveDeclarationStructFields(fields: DeclarationStructFields*) {
-	var i = 0;
-	while (i < fields->count) {
-		resolveDeclarationDefinition(fields->fields[i]);
-		i = i + 1;
-	};
-};
-
 func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Identifier*): Type* {
 	return createTypeIdentifier(name);
 };
@@ -59,7 +51,11 @@ func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Identifier*): T
 func resolveDeclarationDefinitionStruct(declaration: DeclarationStruct*, name: Identifier*) {
 	var before = bufferCount((Void**)_context->names);
 	if (declaration->fields != NULL) {
-		resolveDeclarationStructFields(declaration->fields);
+		var i = 0;
+		while (i < bufferCount((Void**)declaration->fields)) {
+			resolveDeclarationDefinition(declaration->fields[i]);
+			i = i + 1;
+		};
 	};
 	setBufferCount((Void**)_context->names, before);
 	setBufferCount((Void**)_context->types, before);

@@ -1,6 +1,4 @@
 (struct
  (identifier MyStruct)
- (fields
- )
 )
 

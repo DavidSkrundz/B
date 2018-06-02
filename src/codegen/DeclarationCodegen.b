@@ -98,19 +98,15 @@ func codegenDeclarationStructFieldDefinition(field: Declaration*) {
 	printf((char*)";%c", 10);
 };
 
-func codegenDeclarationStructFieldsDefinition(fields: DeclarationStructFields*) {
-	var i = 0;
-	while (i < fields->count) {
-		codegenDeclarationStructFieldDefinition(fields->fields[i]);
-		i = i + 1;
-	};
-};
-
 func codegenDeclarationStructDefinition(declaration: Declaration*, decl: DeclarationStruct*) {
 	printf((char*)"struct ");
 	codegenIdentifier(declaration->name);
 	printf((char*)" {%c", 10);
-	codegenDeclarationStructFieldsDefinition(decl->fields);
+	var i = 0;
+	while (i < bufferCount((Void**)decl->fields)) {
+		codegenDeclarationStructFieldDefinition(decl->fields[i]);
+		i = i + 1;
+	};
 	printf((char*)"};%c", 10);
 };
 

@@ -30,13 +30,8 @@ struct DeclarationFunc {
 	var block: StatementBlock*;
 };
 
-struct DeclarationStructFields {
-	var fields: Declaration**;
-	var count: UInt;
-};
-
 struct DeclarationStruct {
-	var fields: DeclarationStructFields*;
+	var fields: Declaration**;
 };
 
 struct DeclarationEnumCase {
@@ -65,10 +60,6 @@ func newDeclarationFuncArgs(): DeclarationFuncArgs* {
 
 func newDeclarationFunc(): DeclarationFunc* {
 	return (DeclarationFunc*)xcalloc(1, sizeof(DeclarationFunc));
-};
-
-func newDeclarationStructFields(): DeclarationStructFields* {
-	return (DeclarationStructFields*)xcalloc(1, sizeof(DeclarationStructFields));
 };
 
 func newDeclarationStruct(): DeclarationStruct* {

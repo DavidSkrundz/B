@@ -20,21 +20,6 @@ func printDeclarationVar(declaration: DeclarationVar*, name: Identifier*) {
 	printf((char*)")");
 };
 
-func printDeclarationStructFields(fields: DeclarationStructFields*) {
-	printf((char*)"(fields%c", 10);
-	depth = depth + 1;
-	var i = 0;
-	while (i < fields->count) {
-		printDepth();
-		printDeclaration(fields->fields[i]);
-		printf((char*)"%c", 10);
-		i = i + 1;
-	};
-	depth = depth - 1;
-	printDepth();
-	printf((char*)")");
-};
-
 func printDeclarationFuncArg(arg: DeclarationFuncArg*) {
 	printf((char*)"(");
 	printIdentifier(arg->name);
@@ -94,7 +79,18 @@ func printDeclarationStruct(declaration: DeclarationStruct*, name: Identifier*) 
 	printf((char*)"%c", 10);
 	if (declaration->fields != NULL) {
 		printDepth();
-		printDeclarationStructFields(declaration->fields);
+		printf((char*)"(fields%c", 10);
+		depth = depth + 1;
+		var i = 0;
+		while (i < bufferCount((Void**)declaration->fields)) {
+			printDepth();
+			printDeclaration(declaration->fields[i]);
+			printf((char*)"%c", 10);
+			i = i + 1;
+		};
+		depth = depth - 1;
+		printDepth();
+		printf((char*)")");
 		printf((char*)"%c", 10);
 	};
 	depth = depth - 1;

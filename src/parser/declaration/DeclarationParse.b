@@ -14,27 +14,6 @@ func parseDeclarationVar(tokens: Token***, declaration: Declaration*): Declarati
 	return decl;
 };
 
-var MAX_STRUCT_FIELD_COUNT = 100;
-func parseDeclarationStructFields(tokens: Token***): DeclarationStructFields* {
-	expectToken(.OpenCurly);
-	var fields = newDeclarationStructFields();
-	fields->fields = (Declaration**)xcalloc(MAX_STRUCT_FIELD_COUNT, sizeof(Declaration*));
-	fields->count = 0;
-	while ((**tokens)->kind != .CloseCurly) {
-		if (fields->count == MAX_STRUCT_FIELD_COUNT) {
-			fprintf(stderr, (char*)"Too many fields in struct%c", 10);
-			exit(EXIT_FAILURE);
-		};
-		var varDecl = parseDeclaration(tokens);
-		if (varDecl == NULL) { return NULL; };
-		if (varDecl->kind != .Var) { return NULL; };
-		fields->fields[fields->count] = varDecl;
-		fields->count = fields->count + 1;
-	};
-	expectToken(.CloseCurly);
-	return fields;
-};
-
 func parseDeclarationFuncArgument(tokens: Token***): DeclarationFuncArg* {
 	var arg = newDeclarationFuncArg();
 	arg->name = parseIdentifier(tokens);
@@ -102,9 +81,14 @@ func parseDeclarationStruct(tokens: Token***, declaration: Declaration*): Declar
 	declaration->name = parseIdentifier(tokens);
 	if (declaration->name == NULL) { return NULL; };
 	var decl = newDeclarationStruct();
-	if ((**tokens)->kind == .OpenCurly) {
-		decl->fields = parseDeclarationStructFields(tokens);
-		if (decl->fields == NULL) { return NULL; };
+	if (checkToken(.OpenCurly)) {
+		while ((**tokens)->kind != .CloseCurly) {
+			var varDecl = parseDeclaration(tokens);
+			if (varDecl == NULL) { return NULL; };
+			if (varDecl->kind != .Var) { return NULL; };
+			append((Void***)&decl->fields, (Void*)varDecl);
+		};
+		expectToken(.CloseCurly);
 	};
 	expectToken(.Semicolon);
 	return decl;
