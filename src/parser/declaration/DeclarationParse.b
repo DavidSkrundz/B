@@ -1,7 +1,6 @@
 func parseDeclarationVar(tokens: Token***, declaration: Declaration*): DeclarationVar* {
 	expectToken(.Var);
-	declaration->name = parseIdentifier(tokens);
-	if (declaration->name == NULL) { return NULL; };
+	declaration->name = expectIdentifier();
 	var decl = newDeclarationVar();
 	if (checkToken(.Colon)) {
 		decl->type = parseTypespec(tokens);

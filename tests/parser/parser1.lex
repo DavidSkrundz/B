@@ -1,0 +1,3 @@
+VAR
+INTEGER (1)
+EOF

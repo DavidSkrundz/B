@@ -13,7 +13,7 @@ func Parse() {
 	};
 	
 	if ((*_tokens)->kind != .EOF) {
-		fprintf(stderr, (char*)"Unexpected token: ");
+		fprintf(stderr, (char*)"DEPRECATED ERROR - Unexpected token: ");
 		printToken_error(*_tokens);
 		fprintf(stderr, (char*)"%c%c", 10, 10);
 		printDeclarations();
@@ -24,11 +24,7 @@ func Parse() {
 func expectToken(kind: TokenKind) {
 	if ((*_tokens)->kind != kind) {
 		printDeclarations();
-		fprintf(stderr, (char*)"%c", 10);
-		fprintf(stderr, (char*)"Unexpected token: ");
-		printToken_error(*_tokens);
-		fprintf(stderr, (char*)", expecting %u%c", kind, 10);
-		exit(EXIT_FAILURE);
+		ParserError(kind);
 	};
 	_tokens = (Token**)((UInt)_tokens + sizeof(Token*));
 };

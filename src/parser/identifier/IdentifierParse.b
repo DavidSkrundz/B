@@ -6,3 +6,12 @@ func parseIdentifier(tokens: Token***): Identifier* {
 	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 	return identifier;
 };
+
+func expectIdentifier(): Identifier* {
+	var token = *_tokens;
+	expectToken(.Identifier);
+	var identifier = newIdentifier();
+	identifier->name = token->value;
+	identifier->length = token->length;
+	return identifier;
+};

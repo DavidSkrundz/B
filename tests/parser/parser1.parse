@@ -1,0 +1,3 @@
+tests/parser/parser1.b:1:5: error: unexpected token 'INTEGER (1)' expecting 'IDENTIFIER (_)'
+var 1
+    ^
