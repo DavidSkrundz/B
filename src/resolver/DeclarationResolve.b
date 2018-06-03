@@ -16,12 +16,11 @@ func resolveDeclarationFuncArg(argument: DeclarationFuncArg*): Type* {
 	return argument->resolvedType;
 };
 
-var MAX_FUNC_ARGUMENT_COUNT = 10;
 func resolveDeclarationFuncArgs(args: DeclarationFuncArgs*): Type** {
-	var argumentTypes = (Type**)xcalloc(MAX_FUNC_ARGUMENT_COUNT, sizeof(Type*));
+	var argumentTypes: Type**;
 	var i = 0;
 	while (i < bufferCount((Void**)args->args)) {
-		argumentTypes[i] = resolveDeclarationFuncArg(args->args[i]);
+		append((Void***)&argumentTypes, (Void*)resolveDeclarationFuncArg(args->args[i]));
 		i = i + 1;
 	};
 	return argumentTypes;
@@ -33,9 +32,9 @@ func resolveDeclarationTypeFunc(declaration: DeclarationFunc*, name: Identifier*
 	if (declaration->returnType != NULL) {
 		returnType = resolveTypespec(declaration->returnType);
 	};
-	var type = resolveTypeFunction(returnType, argumentTypes, bufferCount((Void**)declaration->args->args), declaration->args->isVariadic);
+	var type = resolveTypeFunction(returnType, argumentTypes, declaration->args->isVariadic);
 	if (type == NULL) {
-		type = createTypeFunction(returnType, argumentTypes, bufferCount((Void**)declaration->args->args), declaration->args->isVariadic);
+		type = createTypeFunction(returnType, argumentTypes, declaration->args->isVariadic);
 	};
 	addTo(_context, name, type);
 	return type;
@@ -119,9 +118,9 @@ func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: I
 		setBufferCount((Void**)_context->names, oldContextCount);
 		setBufferCount((Void**)_context->types, oldContextCount);
 	};
-	var type = resolveTypeFunction(returnType, argumentTypes, bufferCount((Void**)declaration->args->args), declaration->args->isVariadic);
+	var type = resolveTypeFunction(returnType, argumentTypes, declaration->args->isVariadic);
 	if (type == NULL) {
-		type = createTypeFunction(returnType, argumentTypes, bufferCount((Void**)declaration->args->args), declaration->args->isVariadic);
+		type = createTypeFunction(returnType, argumentTypes, declaration->args->isVariadic);
 	};
 	return type;
 };

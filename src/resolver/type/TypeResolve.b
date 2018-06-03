@@ -60,7 +60,7 @@ func resolveTypePointer(base: Type*): Type* {
 	return type;
 };
 
-func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, argumentCount: UInt, isVariadic: Bool): Type* {
+func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: Bool): Type* {
 	var i = 0;
 	while (i < bufferCount((Void**)_types)) {
 		var type = _types[i];
@@ -68,10 +68,10 @@ func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, argumentCount
 			var funcType = (TypeFunction*)type->type;
 			if (funcType->isVariadic == isVariadic) {
 				if (funcType->returnType == returnType) {
-					if (funcType->count == argumentCount) {
+					if (bufferCount((Void**)funcType->argumentTypes) == bufferCount((Void**)argumentTypes)) {
 						var isMatch = true;
 						var j = 0;
-						while (j < argumentCount) {
+						while (j < bufferCount((Void**)funcType->argumentTypes)) {
 							if (funcType->argumentTypes[j] != argumentTypes[j]) {
 								isMatch = false;
 							};
@@ -108,15 +108,14 @@ func createTypeIdentifier(name: Identifier*): Type* {
 	return type;
 };
 
-func createTypeFunction(returnType: Type*, argumentTypes: Type**, argumentCount: UInt, isVariadic: Bool): Type* {
-	if (resolveTypeFunction(returnType, argumentTypes, argumentCount, isVariadic) != NULL) {
+func createTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: Bool): Type* {
+	if (resolveTypeFunction(returnType, argumentTypes, isVariadic) != NULL) {
 		fprintf(stderr, (char*)"Function type already created%c", 10);
 		abort();
 	};
 	var funcType = newTypeFunction();
 	funcType->returnType = returnType;
 	funcType->argumentTypes = argumentTypes;
-	funcType->count = argumentCount;
 	funcType->isVariadic = isVariadic;
 	var type = newType();
 	type->kind = .Function;

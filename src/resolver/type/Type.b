@@ -14,7 +14,6 @@ struct TypePointer {
 struct TypeFunction {
 	var returnType: Type*;
 	var argumentTypes: Type**;
-	var count: UInt;
 	var isVariadic: Bool;
 };
 

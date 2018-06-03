@@ -92,16 +92,16 @@ func resolveExpressionFunctionCall(expression: ExpressionFunctionCall*, expected
 		exit(EXIT_FAILURE);
 	};
 	
-	if (bufferCount((Void**)expression->arguments) < funcType->count) {
+	if (bufferCount((Void**)expression->arguments) < bufferCount((Void**)funcType->argumentTypes)) {
 		fprintf(stderr, (char*)"Not enough arguments in function call%c", 10);
 		exit(EXIT_FAILURE);
 	};
-	if (funcType->count < bufferCount((Void**)expression->arguments) && funcType->isVariadic == false) {
+	if (bufferCount((Void**)funcType->argumentTypes) < bufferCount((Void**)expression->arguments) && funcType->isVariadic == false) {
 		fprintf(stderr, (char*)"Too many arguments in function call%c", 10);
 		exit(EXIT_FAILURE);
 	};
 	var i = 0;
-	while (i < funcType->count) {
+	while (i < bufferCount((Void**)funcType->argumentTypes)) {
 		resolveExpression(expression->arguments[i], funcType->argumentTypes[i]);
 		i = i + 1;
 	};
