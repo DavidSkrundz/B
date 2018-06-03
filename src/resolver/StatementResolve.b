@@ -60,7 +60,7 @@ func resolveStatement(statement: Statement*, expectedType: Type*) {
 func resolveStatementBlock(block: StatementBlock*, expectedType: Type*) {
 	var oldContextCount = bufferCount((Void**)_context->names);
 	var i = 0;
-	while (i < block->count) {
+	while (i < bufferCount((Void**)block->statements)) {
 		resolveStatement(block->statements[i], expectedType);
 		i = i + 1;
 	};

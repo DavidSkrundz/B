@@ -68,7 +68,7 @@ func codegenStatementBlock(block: StatementBlock*) {
 	printf((char*)"{%c", 10);
 	genDepth = genDepth + 1;
 	var i = 0;
-	while (i < block->count) {
+	while (i < bufferCount((Void**)block->statements)) {
 		codegenDepth();
 		codegenStatement(block->statements[i]);
 		i = i + 1;

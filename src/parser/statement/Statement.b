@@ -5,7 +5,6 @@ struct Statement {
 
 struct StatementBlock {
 	var statements: Statement**;
-	var count: UInt;
 };
 
 struct StatementExpression {

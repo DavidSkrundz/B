@@ -95,21 +95,13 @@ func parseStatement(tokens: Token***): Statement* {
 	return statement;
 };
 
-var MAX_STATEMENT_BLOCK_SIZE = 100;
 func parseStatementBlock(tokens: Token***): StatementBlock* {
 	expectToken(.OpenCurly);
 	var block = newStatementBlock();
-	block->statements = (Statement**)xcalloc(MAX_STATEMENT_BLOCK_SIZE, sizeof(Statement*));
-	block->count = 0;
 	while ((**tokens)->kind != .CloseCurly) {
-		if (MAX_STATEMENT_BLOCK_SIZE < block->count) {
-			fprintf(stderr, (char*)"Too many statements in block%c", 10);
-			exit(EXIT_FAILURE);
-		};
 		var statement = parseStatement(tokens);
 		if (statement == NULL) { return NULL; };
-		block->statements[block->count] = statement;
-		block->count = block->count + 1;
+		append((Void***)&block->statements, (Void*)statement);
 	};
 	expectToken(.CloseCurly);
 	return block;
