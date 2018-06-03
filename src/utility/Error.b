@@ -6,8 +6,8 @@ func LexerError() {
 	} else {
 		fprintf(stderr, (char*)"%02X%c", *_code, 10);
 	};
-	_printUpToNewline((UInt8*)((UInt)_code - _column + 1));
-	_printErrorLocation((UInt8*)((UInt)_code - _column + 1), _column);
+	_printUpToNewline(_start);
+	_printErrorLocation(_start, _column);
 	exit(EXIT_FAILURE);
 };
 
@@ -20,8 +20,8 @@ func ParserError(kind: TokenKind) {
 	fprintf(stderr, (char*)"' expecting '");
 	printTokenKind_error(kind);
 	fprintf(stderr, (char*)"'%c", 10);
-	_printUpToNewline((UInt8*)((UInt)token->value - pos->column + 1));
-	_printErrorLocation((UInt8*)((UInt)token->value - pos->column + 1), pos->column);
+	_printUpToNewline(pos->start);
+	_printErrorLocation(pos->start, pos->column);
 	exit(EXIT_FAILURE);
 };
 

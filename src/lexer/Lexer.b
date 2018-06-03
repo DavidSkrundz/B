@@ -4,6 +4,7 @@ var _codeLength = 0;
 var _tokens: Token**;
 
 var _file: UInt8*;
+var _start: UInt8*;
 var _line = 0;
 var _column = 0;
 
@@ -12,6 +13,7 @@ func Lex() {
 	
 	_line = 1;
 	_column = 1;
+	_start = _code;
 	
 	while (true) {
 		if (*_code == ' ' || *_code == (UInt8)9 || *_code == (UInt8)10) {
@@ -19,6 +21,7 @@ func Lex() {
 				if (*_code == (UInt8)10) {
 					_line = _line + 1;
 					_column = 0;
+					_start = (UInt8*)((UInt)_code + sizeof(UInt8));
 				};
 				_column = _column + 1;
 				_code = (UInt8*)((UInt)_code + sizeof(UInt8));
@@ -87,7 +90,7 @@ func Lex() {
 func lexToken(kind: TokenKind) {
 	var token = newToken();
 	token->kind = kind;
-	token->pos = newSrcPos(_file, _line, _column);
+	token->pos = newSrcPos(_file, _start, _line, _column);
 	token->value = _code;
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	token->length = 1;
@@ -98,7 +101,7 @@ func lexToken(kind: TokenKind) {
 func lexToken2(kind: TokenKind, character2: UInt8, kind2: TokenKind) {
 	var token = newToken();
 	token->kind = kind;
-	token->pos = newSrcPos(_file, _line, _column);
+	token->pos = newSrcPos(_file, _start, _line, _column);
 	token->value = _code;
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	token->length = 1;
@@ -113,7 +116,7 @@ func lexToken2(kind: TokenKind, character2: UInt8, kind2: TokenKind) {
 
 func lexElipses() {
 	var token = newToken();
-	token->pos = newSrcPos(_file, _line, _column);
+	token->pos = newSrcPos(_file, _start, _line, _column);
 	token->value = _code;
 	if (_code[1] == '.' && _code[2] == '.') {
 		token->kind = .Ellipses;
@@ -131,7 +134,7 @@ func lexElipses() {
 func lexIntegerLiteral() {
 	var token = newToken();
 	token->kind = .IntegerLiteral;
-	token->pos = newSrcPos(_file, _line, _column);
+	token->pos = newSrcPos(_file, _start, _line, _column);
 	token->value = _code;
 	while (isdigit(*_code)) { _code = (UInt8*)((UInt)_code + sizeof(UInt8)); };
 	token->length = (UInt)_code - (UInt)token->value;
@@ -142,7 +145,7 @@ func lexIntegerLiteral() {
 func lexStringLiteral() {
 	var token = newToken();
 	token->kind = .StringLiteral;
-	token->pos = newSrcPos(_file, _line, _column);
+	token->pos = newSrcPos(_file, _start, _line, _column);
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	token->value = _code;
 	while (*_code != (UInt8)34 && *_code != (UInt8)92 && isprint(*_code)) {
@@ -157,7 +160,7 @@ func lexStringLiteral() {
 func lexCharacterLiteral() {
 	var token = newToken();
 	token->kind = .CharacterLiteral;
-	token->pos = newSrcPos(_file, _line, _column);
+	token->pos = newSrcPos(_file, _start, _line, _column);
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	token->value = _code;
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
@@ -170,7 +173,7 @@ func lexCharacterLiteral() {
 func lexIdentifier() {
 	var token = newToken();
 	token->value = _code;
-	token->pos = newSrcPos(_file, _line, _column);
+	token->pos = newSrcPos(_file, _start, _line, _column);
 	while (isalnum(*_code) || *_code == '_') { _code = (UInt8*)((UInt)_code + 1); };
 	token->length = (UInt)_code - (UInt)token->value;
 	_column = _column + token->length;
