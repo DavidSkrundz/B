@@ -16,6 +16,7 @@ func resolveDeclarationFuncArg(argument: DeclarationFuncArg*): Type* {
 	return argument->resolvedType;
 };
 
+var MAX_FUNC_ARGUMENT_COUNT = 10;
 func resolveDeclarationFuncArgs(args: DeclarationFuncArgs*): Type** {
 	var argumentTypes = (Type**)xcalloc(MAX_FUNC_ARGUMENT_COUNT, sizeof(Type*));
 	var i = 0;

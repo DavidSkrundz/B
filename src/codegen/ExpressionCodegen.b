@@ -56,10 +56,10 @@ func codegenExpressionFunctionCall(expression: Expression*, expr: ExpressionFunc
 	codegenExpression(expr->function);
 	printf((char*)"(");
 	var i = 0;
-	while (i < expr->count) {
+	while (i < bufferCount((Void**)expr->arguments)) {
 		codegenExpression(expr->arguments[i]);
 		i = i + 1;
-		if (i < expr->count) { printf((char*)", "); };
+		if (i < bufferCount((Void**)expr->arguments)) { printf((char*)", "); };
 	};
 	printf((char*)")");
 	printf((char*)")");

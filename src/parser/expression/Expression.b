@@ -31,7 +31,6 @@ struct ExpressionReference {
 struct ExpressionFunctionCall {
 	var function: Expression*;
 	var arguments: Expression**;
-	var count: UInt;
 };
 
 struct ExpressionSubscript {

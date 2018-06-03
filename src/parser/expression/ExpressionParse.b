@@ -40,22 +40,15 @@ func parseExpressionPrimary(tokens: Token***): Expression* {
 	return expression;
 };
 
-var MAX_FUNC_ARGUMENT_COUNT = 10;
+
 func parseExpressionFunctionCallArguments(tokens: Token***): ExpressionFunctionCall* {
 	var expression = newExpressionFunctionCall();
 	expectToken(.OpenParenthesis);
-	expression->arguments = (Expression**)xcalloc(MAX_FUNC_ARGUMENT_COUNT, sizeof(Expression*));
-	expression->count = 0;
 	var loop = true;
 	while ((**tokens)->kind != .CloseParenthesis && loop) {
-		if (expression->count == MAX_FUNC_ARGUMENT_COUNT) {
-			fprintf(stderr, (char*)"Too many arguments in function call%c", 10);
-			exit(EXIT_FAILURE);
-		};
 		var argument = parseExpression(tokens);
 		if (argument == NULL) { return NULL; };
-		expression->arguments[expression->count] = argument;
-		expression->count = expression->count + 1;
+		append((Void***)&expression->arguments, (Void*)argument);
 		loop = checkToken(.Comma);
 	};
 	expectToken(.CloseParenthesis);
