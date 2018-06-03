@@ -24,6 +24,7 @@
 @foreign var SEEK_END: SeekPosition;
 @foreign func fseek(file: FILE*, distance: UInt, from: SeekPosition);
 
+@foreign func strchr(string: char*, character: UInt8): char*;
 @foreign func strcmp(str1: char*, str2: char*): int;
 @foreign func strncmp(str1: char*, str2: char*, length: UInt): int;
 @foreign func strlen(str: char*): UInt;
