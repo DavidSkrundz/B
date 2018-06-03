@@ -66,3 +66,4 @@ List of things so I don't forget.
 - Add `let` keyword to prevent mutation
 - `for` loops
 - Fix C codegen to allow having structs in struct (only pointer work now)
+- Floating point number support
