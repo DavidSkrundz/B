@@ -30,7 +30,7 @@ func resolveTypeIdentifier(name: Identifier*): Type* {
 		var type = _types[i];
 		if (type->kind == .Identifier) {
 			var identifier = (TypeIdentifier*)type->type;
-			if (name->length == strlen((char*)identifier->name)) {
+			if (name->length == stringLength(identifier->name)) {
 				if (strncmp((char*)identifier->name, (char*)name->name, name->length) == (int)0) {
 					return type;
 				};
@@ -90,7 +90,7 @@ func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: B
 func createTypeIdentifierString(name: UInt8*): Type* {
 	var identifier = newIdentifier();
 	identifier->name = name;
-	identifier->length = strlen((char*)name);
+	identifier->length = stringLength(name);
 	return createTypeIdentifier(identifier);
 };
 
