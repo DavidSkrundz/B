@@ -17,30 +17,6 @@ func _printToken(token: Token*, stream: FILE*) {
 	};
 	if (token->kind == .EOF) {
 		fprintf(stream, (char*)"EOF");
-	} else if (token->kind == ._NULL) {
-		fprintf(stream, (char*)"NULL");
-	} else if (token->kind == .Sizeof) {
-		fprintf(stream, (char*)"SIZEOF");
-	} else if (token->kind == .Offsetof) {
-		fprintf(stream, (char*)"OFFSETOF");
-	} else if (token->kind == .Struct) {
-		fprintf(stream, (char*)"STRUCT");
-	} else if (token->kind == .Enum) {
-		fprintf(stream, (char*)"ENUM");
-	} else if (token->kind == .Var) {
-		fprintf(stream, (char*)"VAR");
-	} else if (token->kind == .Func) {
-		fprintf(stream, (char*)"FUNC");
-	} else if (token->kind == .If) {
-		fprintf(stream, (char*)"IF");
-	} else if (token->kind == .Else) {
-		fprintf(stream, (char*)"ELSE");
-	} else if (token->kind == .While) {
-		fprintf(stream, (char*)"WHILE");
-	} else if (token->kind == .Return) {
-		fprintf(stream, (char*)"RETURN");
-	} else if (token->kind == .Case) {
-		fprintf(stream, (char*)"CASE");
 	} else if (token->kind == .Comma) {
 		fprintf(stream, (char*)"COMMA (,)");
 	} else if (token->kind == .Colon) {
@@ -108,5 +84,5 @@ func _printToken(token: Token*, stream: FILE*) {
 	} else {
 		fprintf(stderr, (char*)"Unknown token kind: %u%c", token->kind, 10);
 		abort();
-	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 };

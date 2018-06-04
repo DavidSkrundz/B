@@ -1,22 +1,7 @@
 enum TokenKind {
 	case Invalid;
 	case EOF;
-	case _NULL;
-
-	case Sizeof;
-	case Offsetof;
-
-	case Var;
-	case Func;
-	case Struct;
-	case Enum;
-
-	case If;
-	case Else;
-	case While;
-	case Return;
-	case Case;
-
+	
 	case Comma;
 	case Colon;
 	case Semicolon;
@@ -26,7 +11,7 @@ enum TokenKind {
 	case CloseBracket;
 	case OpenParenthesis;
 	case CloseParenthesis;
-
+	
 	case At;
 	case Star;
 	case And;
@@ -34,10 +19,10 @@ enum TokenKind {
 	case Ellipses;
 	case Arrow;
 	case Dot;
-
+	
 	case AndAnd;
 	case OrOr;
-
+	
 	case Plus;
 	case Minus;
 	case Slash;
@@ -46,7 +31,7 @@ enum TokenKind {
 	case LessThan;
 	case LessThanEqual;
 	case NotEqual;
-
+	
 	case Identifier;
 	case BooleanLiteral;
 	case IntegerLiteral;
@@ -57,30 +42,6 @@ enum TokenKind {
 func printTokenKind_error(kind: TokenKind) {
 	if (kind == .EOF) {
 		fprintf(stderr, (char*)"EOF");
-	} else if (kind == ._NULL) {
-		fprintf(stderr, (char*)"NULL");
-	} else if (kind == .Sizeof) {
-		fprintf(stderr, (char*)"SIZEOF");
-	} else if (kind == .Offsetof) {
-		fprintf(stderr, (char*)"OFFSETOF");
-	} else if (kind == .Struct) {
-		fprintf(stderr, (char*)"STRUCT");
-	} else if (kind == .Enum) {
-		fprintf(stderr, (char*)"ENUM");
-	} else if (kind == .Var) {
-		fprintf(stderr, (char*)"VAR");
-	} else if (kind == .Func) {
-		fprintf(stderr, (char*)"FUNC");
-	} else if (kind == .If) {
-		fprintf(stderr, (char*)"IF");
-	} else if (kind == .Else) {
-		fprintf(stderr, (char*)"ELSE");
-	} else if (kind == .While) {
-		fprintf(stderr, (char*)"WHILE");
-	} else if (kind == .Return) {
-		fprintf(stderr, (char*)"RETURN");
-	} else if (kind == .Case) {
-		fprintf(stderr, (char*)"CASE");
 	} else if (kind == .Comma) {
 		fprintf(stderr, (char*)"COMMA (,)");
 	} else if (kind == .Colon) {
@@ -148,5 +109,5 @@ func printTokenKind_error(kind: TokenKind) {
 	} else {
 		fprintf(stderr, (char*)"Unknown token kind: %u%c", kind, 10);
 		abort();
-	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 };
