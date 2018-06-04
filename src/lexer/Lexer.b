@@ -10,6 +10,7 @@ var _column = 0;
 
 func Lex() {
 	_tokens = NULL;
+	InternKeywords();
 	
 	_line = 1;
 	_column = 1;
@@ -91,7 +92,7 @@ func lexToken(kind: TokenKind) {
 	var token = newToken();
 	token->kind = kind;
 	token->pos = newSrcPos(_file, _start, _line, _column);
-	token->value = _code;
+	token->value = intern(_code, 1);
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	token->length = 1;
 	_column = _column + token->length;
@@ -102,13 +103,16 @@ func lexToken2(kind: TokenKind, character2: UInt8, kind2: TokenKind) {
 	var token = newToken();
 	token->kind = kind;
 	token->pos = newSrcPos(_file, _start, _line, _column);
-	token->value = _code;
+	var start = _code;
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	token->length = 1;
 	if (*_code == character2) {
 		_code = (UInt8*)((UInt)_code + sizeof(UInt8));
+		token->value = intern(start, 2);
 		token->kind = kind2;
 		token->length = 2;
+	} else {
+		token->value = intern(start, 1);
 	};
 	_column = _column + token->length;
 	append((Void***)&_tokens, (Void*)token);
@@ -117,13 +121,14 @@ func lexToken2(kind: TokenKind, character2: UInt8, kind2: TokenKind) {
 func lexElipses() {
 	var token = newToken();
 	token->pos = newSrcPos(_file, _start, _line, _column);
-	token->value = _code;
 	if (_code[1] == '.' && _code[2] == '.') {
 		token->kind = .Ellipses;
+		token->value = intern(_code, 3);
 		_code = (UInt8*)((UInt)_code + 3);
 		token->length = 3;
 	} else {
 		token->kind = .Dot;
+		token->value = intern(_code, 1);
 		_code = (UInt8*)((UInt)_code + 1);
 		token->length = 1;
 	};
@@ -135,9 +140,10 @@ func lexIntegerLiteral() {
 	var token = newToken();
 	token->kind = .IntegerLiteral;
 	token->pos = newSrcPos(_file, _start, _line, _column);
-	token->value = _code;
+	var start = _code;
 	while (isdigit(*_code)) { _code = (UInt8*)((UInt)_code + sizeof(UInt8)); };
-	token->length = (UInt)_code - (UInt)token->value;
+	token->length = (UInt)_code - (UInt)start;
+	token->value = intern(start, token->length);
 	_column = _column + token->length;
 	append((Void***)&_tokens, (Void*)token);
 };
@@ -147,11 +153,12 @@ func lexStringLiteral() {
 	token->kind = .StringLiteral;
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-	token->value = _code;
+	var start = _code;
 	while (*_code != (UInt8)34 && *_code != (UInt8)92 && isprint(*_code)) {
 		_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	};
-	token->length = (UInt)_code - (UInt)token->value;
+	token->length = (UInt)_code - (UInt)start;
+	token->value = intern(start, token->length);
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	_column = _column + token->length + 2;
 	append((Void***)&_tokens, (Void*)token);
@@ -162,7 +169,7 @@ func lexCharacterLiteral() {
 	token->kind = .CharacterLiteral;
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-	token->value = _code;
+	token->value = intern(_code, 1);
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	token->length = 1;
@@ -172,38 +179,39 @@ func lexCharacterLiteral() {
 
 func lexIdentifier() {
 	var token = newToken();
-	token->value = _code;
+	var start = _code;
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	while (isalnum(*_code) || *_code == '_') { _code = (UInt8*)((UInt)_code + 1); };
-	token->length = (UInt)_code - (UInt)token->value;
+	token->length = (UInt)_code - (UInt)start;
+	token->value = intern(start, token->length);
 	_column = _column + token->length;
-	if (token->length == 4 && strncmp((char*)token->value, (char*)"NULL", token->length) == (int)0) {
+	if (token->value == Keyword_NULL) {
 		token->kind = ._NULL;
-	} else if (token->length == 6 && strncmp((char*)token->value, (char*)"sizeof",  token->length) == (int)0) {
+	} else if (token->value == Keyword_Sizeof) {
 		token->kind = .Sizeof;
-	} else if (token->length == 8 && strncmp((char*)token->value, (char*)"offsetof",  token->length) == (int)0) {
+	} else if (token->value == Keyword_Offsetof) {
 		token->kind = .Offsetof;
-	} else if (token->length == 3 && strncmp((char*)token->value, (char*)"var",  token->length) == (int)0) {
+	} else if (token->value == Keyword_Var) {
 		token->kind = .Var;
-	} else if (token->length == 4 && strncmp((char*)token->value, (char*)"func",  token->length) == (int)0) {
+	} else if (token->value == Keyword_Func) {
 		token->kind = .Func;
-	} else if (token->length == 6 && strncmp((char*)token->value, (char*)"struct", token->length) == (int)0) {
+	} else if (token->value == Keyword_Struct) {
 		token->kind = .Struct;
-	} else if (token->length == 4 && strncmp((char*)token->value, (char*)"enum", token->length) == (int)0) {
+	} else if (token->value == Keyword_Enum) {
 		token->kind = .Enum;
-	} else if (token->length == 2 && strncmp((char*)token->value, (char*)"if", token->length) == (int)0) {
+	} else if (token->value == Keyword_If) {
 		token->kind = .If;
-	} else if (token->length == 4 && strncmp((char*)token->value, (char*)"else", token->length) == (int)0) {
+	} else if (token->value == Keyword_Else) {
 		token->kind = .Else;
-	} else if (token->length == 5 && strncmp((char*)token->value, (char*)"while", token->length) == (int)0) {
+	} else if (token->value == Keyword_While) {
 		token->kind = .While;
-	} else if (token->length == 6 && strncmp((char*)token->value, (char*)"return",  token->length) == (int)0) {
+	} else if (token->value == Keyword_Return) {
 		token->kind = .Return;
-	} else if (token->length == 4 && strncmp((char*)token->value, (char*)"case", token->length) == (int)0) {
+	} else if (token->value == Keyword_Case) {
 		token->kind = .Case;
-	} else if (token->length == 4 && strncmp((char*)token->value, (char*)"true",  token->length) == (int)0) {
+	} else if (token->value == Keyword_True) {
 		token->kind = .BooleanLiteral;
-	} else if (token->length == 5 && strncmp((char*)token->value, (char*)"false",  token->length) == (int)0) {
+	} else if (token->value == Keyword_False) {
 		token->kind = .BooleanLiteral;
 	} else {
 		token->kind = .Identifier;
