@@ -1,5 +1,5 @@
 func parseDeclarationVar(tokens: Token***, declaration: Declaration*): DeclarationVar* {
-	expectToken(.Var);
+	expectKeyword(Keyword_Var);
 	declaration->name = expectIdentifier();
 	var decl = newDeclarationVar();
 	if (checkToken(.Colon)) {
@@ -44,7 +44,7 @@ func parseDeclarationFuncArguments(tokens: Token***): DeclarationFuncArgs* {
 };
 
 func parseDeclarationFunc(tokens: Token***, declaration: Declaration*): DeclarationFunc* {
-	expectToken(.Func);
+	expectKeyword(Keyword_Func);
 	declaration->name = parseIdentifier(tokens);
 	if (declaration->name == NULL) { return NULL; };
 	var decl = newDeclarationFunc();
@@ -63,7 +63,7 @@ func parseDeclarationFunc(tokens: Token***, declaration: Declaration*): Declarat
 };
 
 func parseDeclarationStruct(tokens: Token***, declaration: Declaration*): DeclarationStruct* {
-	expectToken(.Struct);
+	expectKeyword(Keyword_Struct);
 	declaration->name = parseIdentifier(tokens);
 	if (declaration->name == NULL) { return NULL; };
 	var decl = newDeclarationStruct();
@@ -81,13 +81,13 @@ func parseDeclarationStruct(tokens: Token***, declaration: Declaration*): Declar
 };
 
 func parseDeclarationEnum(tokens: Token***, declaration: Declaration*): DeclarationEnum* {
-	expectToken(.Enum);
+	expectKeyword(Keyword_Enum);
 	declaration->name = parseIdentifier(tokens);
 	if (declaration->name == NULL) { return NULL; };
 	var decl = newDeclarationEnum();
 	expectToken(.OpenCurly);
 	while ((**tokens)->kind != .CloseCurly) {
-		expectToken(.Case);
+		expectKeyword(Keyword_Case);
 		var caseName = parseIdentifier(tokens);
 		if (caseName == NULL) { return NULL; };
 		expectToken(.Semicolon);
@@ -114,16 +114,16 @@ func parseDeclaration(tokens: Token***): Declaration* {
 	var declaration = newDeclaration();
 	declaration->attribute = parseAttribute(tokens);
 	declaration->state = .Unresolved;
-	if ((**tokens)->kind == .Var) {
+	if (isTokenKeyword(Keyword_Var)) {
 		declaration->kind = .Var;
 		declaration->declaration = (Void*)parseDeclarationVar(tokens, declaration);
-	} else if ((**tokens)->kind == .Func) {
+	} else if (isTokenKeyword(Keyword_Func)) {
 		declaration->kind = .Func;
 		declaration->declaration = (Void*)parseDeclarationFunc(tokens, declaration);
-	} else if ((**tokens)->kind == .Struct) {
+	} else if (isTokenKeyword(Keyword_Struct)) {
 		declaration->kind = .Struct;
 		declaration->declaration = (Void*)parseDeclarationStruct(tokens, declaration);
-	} else if ((**tokens)->kind == .Enum) {
+	} else if (isTokenKeyword(Keyword_Enum)) {
 		declaration->kind = .Enum;
 		declaration->declaration = (Void*)parseDeclarationEnum(tokens, declaration);
 	};;;;

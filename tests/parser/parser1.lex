@@ -1,3 +1,3 @@
-VAR
+IDENTIFIER (var)
 INTEGER (1)
 EOF

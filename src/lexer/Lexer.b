@@ -185,36 +185,6 @@ func lexIdentifier() {
 	token->length = (UInt)_code - (UInt)start;
 	token->value = intern(start, token->length);
 	_column = _column + token->length;
-	if (token->value == Keyword_NULL) {
-		token->kind = ._NULL;
-	} else if (token->value == Keyword_Sizeof) {
-		token->kind = .Sizeof;
-	} else if (token->value == Keyword_Offsetof) {
-		token->kind = .Offsetof;
-	} else if (token->value == Keyword_Var) {
-		token->kind = .Var;
-	} else if (token->value == Keyword_Func) {
-		token->kind = .Func;
-	} else if (token->value == Keyword_Struct) {
-		token->kind = .Struct;
-	} else if (token->value == Keyword_Enum) {
-		token->kind = .Enum;
-	} else if (token->value == Keyword_If) {
-		token->kind = .If;
-	} else if (token->value == Keyword_Else) {
-		token->kind = .Else;
-	} else if (token->value == Keyword_While) {
-		token->kind = .While;
-	} else if (token->value == Keyword_Return) {
-		token->kind = .Return;
-	} else if (token->value == Keyword_Case) {
-		token->kind = .Case;
-	} else if (token->value == Keyword_True) {
-		token->kind = .BooleanLiteral;
-	} else if (token->value == Keyword_False) {
-		token->kind = .BooleanLiteral;
-	} else {
-		token->kind = .Identifier;
-	};;;;;;;;;;;;;;
+	token->kind = .Identifier;
 	append((Void***)&_tokens, (Void*)token);
 };

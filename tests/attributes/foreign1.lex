@@ -1,9 +1,9 @@
 AT (@)
 IDENTIFIER (foreign)
-STRUCT
+IDENTIFIER (struct)
 IDENTIFIER (char)
 SEMICOLON (;)
-VAR
+IDENTIFIER (var)
 IDENTIFIER (c)
 COLON (:)
 IDENTIFIER (char)

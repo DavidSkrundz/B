@@ -5,14 +5,9 @@ func parseExpressionPrimary(tokens: Token***): Expression* {
 		expression->expression = (Void*)parseExpression(tokens);
 		if ((**tokens)->kind != .CloseParenthesis) { return NULL; };
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
-	} else if ((**tokens)->kind == .Identifier) {
-		expression->kind = .Identifier;
-		var identifier = newExpressionIdentifier();
-		identifier->identifier = parseIdentifier(tokens);
-		expression->expression = (Void*)identifier;
-	} else if (checkToken(._NULL)) {
+	} else if (checkKeyword(Keyword_NULL)) {
 		expression->kind = ._NULL;
-	} else if ((**tokens)->kind == .BooleanLiteral) {
+	} else if (isTokenKeyword(Keyword_True) || isTokenKeyword(Keyword_False)) {
 		expression->kind = .BooleanLiteral;
 		var literal = newExpressionBooleanLiteral();
 		literal->literal = **tokens;
@@ -36,6 +31,11 @@ func parseExpressionPrimary(tokens: Token***): Expression* {
 		literal->literal = **tokens;
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 		expression->expression = (Void*)literal;
+	} else if ((**tokens)->kind == .Identifier) {
+		expression->kind = .Identifier;
+		var identifier = newExpressionIdentifier();
+		identifier->identifier = parseIdentifier(tokens);
+		expression->expression = (Void*)identifier;
 	} else { return NULL; };;;;;;;
 	return expression;
 };
@@ -120,7 +120,7 @@ func parseExpressionPostfix(tokens: Token***): Expression* {
 };
 
 func parseExpressionUnary(tokens: Token***): Expression* {
-	if (checkToken(.Sizeof)) {
+	if (checkKeyword(Keyword_Sizeof)) {
 		expectToken(.OpenParenthesis);
 		var expr = newExpressionSizeof();
 		expr->type = parseTypespec(tokens);
@@ -130,7 +130,7 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 		expression->kind = .Sizeof;
 		expression->expression = (Void*)expr;
 		return expression;
-	} else if (checkToken(.Offsetof)) {
+	} else if (checkKeyword(Keyword_Offsetof)) {
 		expectToken(.OpenParenthesis);
 		var expr = newExpressionOffsetof();
 		expr->type = parseTypespec(tokens);

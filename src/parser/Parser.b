@@ -29,6 +29,15 @@ func expectToken(kind: TokenKind) {
 	_tokens = (Token**)((UInt)_tokens + sizeof(Token*));
 };
 
+func expectKeyword(keyword: UInt8*) {
+	if (isToken(.Identifier) && (*_tokens)->value == keyword) {
+		_tokens = (Token**)((UInt)_tokens + sizeof(Token*));
+	} else {
+		printDeclarations();
+		ParserKeywordError(keyword);
+	};
+};
+
 func checkToken(kind: TokenKind): Bool {
 	if ((*_tokens)->kind != kind) {
 		return false;
@@ -37,6 +46,19 @@ func checkToken(kind: TokenKind): Bool {
 	return true;
 };
 
+func checkKeyword(keyword: UInt8*): Bool {
+	if (isToken(.Identifier) && (*_tokens)->value == keyword) {
+		_tokens = (Token**)((UInt)_tokens + sizeof(Token*));
+		return true;
+	} else {
+		return false;
+	};
+};
+
 func isToken(kind: TokenKind): Bool {
 	return (*_tokens)->kind == kind;
+};
+
+func isTokenKeyword(keyword: UInt8*): Bool {
+	return isToken(.Identifier) && (*_tokens)->value == keyword;
 };

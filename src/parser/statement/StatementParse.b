@@ -1,5 +1,5 @@
 func parseStatementIf(tokens: Token***): StatementIf* {
-	expectToken(.If);
+	expectKeyword(Keyword_If);
 	var statement = newStatementIf();
 	expectToken(.OpenParenthesis);
 	statement->condition = parseExpression(tokens);
@@ -7,8 +7,8 @@ func parseStatementIf(tokens: Token***): StatementIf* {
 	expectToken(.CloseParenthesis);
 	statement->block = parseStatementBlock(tokens);
 	if (statement->block == NULL) { return NULL; };
-	if (checkToken(.Else)) {
-		if ((**tokens)->kind == .If || (**tokens)->kind == .OpenCurly) {
+	if (checkKeyword(Keyword_Else)) {
+		if (isTokenKeyword(Keyword_If) || (**tokens)->kind == .OpenCurly) {
 			statement->elseBlock = parseStatement(tokens);
 			if (statement->elseBlock == NULL) { return NULL; };
 		} else { return NULL; };
@@ -18,7 +18,7 @@ func parseStatementIf(tokens: Token***): StatementIf* {
 };
 
 func parseStatementWhile(tokens: Token***): StatementWhile* {
-	expectToken(.While);
+	expectKeyword(Keyword_While);
 	var statement = newStatementWhile();
 	expectToken(.OpenParenthesis);
 	statement->condition = parseExpression(tokens);
@@ -30,7 +30,7 @@ func parseStatementWhile(tokens: Token***): StatementWhile* {
 };
 
 func parseStatementReturn(tokens: Token***): StatementReturn* {
-	expectToken(.Return);
+	expectKeyword(Keyword_Return);
 	var statement = newStatementReturn();
 	statement->expression = parseExpression(tokens);
 	expectToken(.Semicolon);
@@ -66,16 +66,16 @@ func parseStatementAssign(tokens: Token***): StatementAssign* {
 
 func parseStatement(tokens: Token***): Statement* {
 	var statement = newStatement();
-	if ((**tokens)->kind == .If) {
+	if (isTokenKeyword(Keyword_If)) {
 		statement->kind = .If;
 		statement->statement = (Void*)parseStatementIf(tokens);
-	} else if ((**tokens)->kind == .While) {
+	} else if (isTokenKeyword(Keyword_While)) {
 		statement->kind = .While;
 		statement->statement = (Void*)parseStatementWhile(tokens);
-	} else if ((**tokens)->kind == .Return) {
+	} else if (isTokenKeyword(Keyword_Return)) {
 		statement->kind = .Return;
 		statement->statement = (Void*)parseStatementReturn(tokens);
-	} else if ((**tokens)->kind == .Var) {
+	} else if (isTokenKeyword(Keyword_Var)) {
 		statement->kind = .Var;
 		statement->statement = (Void*)parseStatementVar(tokens);
 	} else if ((**tokens)->kind == .OpenCurly) {
