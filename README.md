@@ -51,7 +51,6 @@ List of things so I don't forget.
 - Struct constructors
 - Structs associated functions
 - Improve `Context` usage to allow enum cases and struct fiels to have the same name as functions
-- Convert all fixed size arrays to `Buffer`
 - Custom operators implemented as functions
 - Allow keywords to be used as second-level identifiers (enum cases, struct fields, ...)
 - Static arrays (lookup tables)
