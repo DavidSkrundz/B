@@ -66,3 +66,5 @@ List of things so I don't forget.
 - `for` loops
 - Fix C codegen to allow having structs in struct (only pointer work now)
 - Floating point number support
+- Support inlined functions
+- Represent the `Int` family as structs that wrap hidden primitives (eg. `__builtin_int`)
