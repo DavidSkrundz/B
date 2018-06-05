@@ -315,7 +315,7 @@ func resolveExpression(expression: Expression*, expectedType: Type*): Type* {
 		expression->resolvedType = resolveExpressionInfix((ExpressionInfix*)expression->expression, expectedType);
 	} else if (expression->kind == .Identifier) {
 		expression->resolvedType = resolveExpressionIdentifier((ExpressionIdentifier*)expression->expression, expectedType);
-	} else if (expression->kind == ._NULL) {
+	} else if (expression->kind == .Null) {
 		expression->resolvedType = TypeAny;
 	} else if (expression->kind == .BooleanLiteral) {
 		expression->resolvedType = resolveExpressionBooleanLiteral((ExpressionBooleanLiteral*)expression->expression, expectedType);

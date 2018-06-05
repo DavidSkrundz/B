@@ -6,7 +6,7 @@ func parseExpressionPrimary(tokens: Token***): Expression* {
 		if ((**tokens)->kind != .CloseParenthesis) { return NULL; };
 		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 	} else if (checkKeyword(Keyword_NULL)) {
-		expression->kind = ._NULL;
+		expression->kind = .Null;
 	} else if (isTokenKeyword(Keyword_True) || isTokenKeyword(Keyword_False)) {
 		expression->kind = .BooleanLiteral;
 		var literal = newExpressionBooleanLiteral();

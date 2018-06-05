@@ -12,7 +12,7 @@ enum ExpressionKind {
 	case Dot;
 	case InfixOperator;
 	case Identifier;
-	case _NULL;
+	case Null;
 	case BooleanLiteral;
 	case IntegerLiteral;
 	case CharacterLiteral;

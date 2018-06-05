@@ -160,7 +160,7 @@ func printExpression(expression: Expression*) {
 		printExpressionInfix((ExpressionInfix*)expression->expression);
 	} else if (expression->kind == .Identifier) {
 		printExpressionIdentifier((ExpressionIdentifier*)expression->expression);
-	} else if (expression->kind == ._NULL) {
+	} else if (expression->kind == .Null) {
 		printf((char*)"NULL");
 	} else if (expression->kind == .BooleanLiteral) {
 		printExpressionBooleanLiteral((ExpressionBooleanLiteral*)expression->expression);

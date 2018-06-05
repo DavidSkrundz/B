@@ -161,7 +161,7 @@ func codegenExpression(expression: Expression*) {
 		codegenExpressionInfixOperator(expression, (ExpressionInfix*)expression->expression);
 	} else if (expression->kind == .Identifier) {
 		codegenExpressionIdentifier(expression, (ExpressionIdentifier*)expression->expression);
-	} else if (expression->kind == ._NULL) {
+	} else if (expression->kind == .Null) {
 		printf((char*)"NULL");
 	} else if (expression->kind == .BooleanLiteral) {
 		codegenExpressionBooleanLiteral(expression, (ExpressionBooleanLiteral*)expression->expression);
