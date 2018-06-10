@@ -1,5 +1,6 @@
 struct Attribute {
 	var name: Identifier*;
+	var parameters: Identifier**;
 };
 
 func newAttribute(): Attribute* {
