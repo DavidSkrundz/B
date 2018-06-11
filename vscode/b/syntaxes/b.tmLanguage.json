@@ -12,7 +12,7 @@
 			"patterns": [
 				{
 					"name": "meta.selector.b",
-					"match": "@\\w+"
+					"match": "@\\w+(\\((\\w+(, \\w+)*)?\\))?"
 				}
 			]
 		},
