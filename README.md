@@ -46,11 +46,12 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 
 List of things so I don't forget.
 
+- Make use of string interning throughout the compiler (Currently only Tokens)
 - Better error messages with file name and line number (~~lexer~~, parser, resolver)
 - C debugging by generating `#line` directives
 - Struct constructors
 - Structs associated functions
-- Improve `Context` usage to allow enum cases and struct fiels to have the same name as functions
+- Improve `Context` usage to allow enum cases and struct fields to have the same name as functions
 - Custom operators implemented as functions
 - Allow keywords to be used as second-level identifiers (enum cases, struct fields, ...)
 - Static arrays (lookup tables)
