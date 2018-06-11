@@ -51,6 +51,8 @@ List of things so I don't forget.
 - C debugging by generating `#line` directives
 - Struct constructors
 - Structs associated functions
+- Unions + nested struct/union
+- Allow `.` to get a struct field (currently only `->` on a pointer works)
 - Improve `Context` usage to allow enum cases and struct fields to have the same name as functions
 - Custom operators implemented as functions
 - Allow keywords to be used as second-level identifiers (enum cases, struct fields, ...)
@@ -68,3 +70,5 @@ List of things so I don't forget.
 - Floating point number support
 - Support inlined functions
 - Represent the `Int` family as structs that wrap hidden primitives (eg. `__builtin_int`)
+- Line comments
+- Block comments (with nesting)
