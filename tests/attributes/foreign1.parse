@@ -1,4 +1,4 @@
-@foreign()
+@foreign(c)
 (struct
  (identifier char)
 )

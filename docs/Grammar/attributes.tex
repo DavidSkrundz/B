@@ -2,6 +2,7 @@
 
 \begin{grammar}
 
-<attribute> ::= `@' <identifier>
+<attribute> ::= `@' <identifier> ( `(' <parameters> `)' )?
+\alt <parameters> ::= <identifier> ( `,' <identifier> )*
 
 \end{grammar}

@@ -60,7 +60,6 @@ List of things so I don't forget.
 - Automatic conversion to and from `Void*`, `Void**`, etc.
 - Ensure all paths in a function returns
 - Add `@noreturn` attribute
-- Improve `@foreign` to allow specifying the language and a header to import
 - Unused declaration detection
 - Add `let` keyword to prevent mutation
 - `for` loops

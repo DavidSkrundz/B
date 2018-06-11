@@ -1,10 +1,6 @@
-#include <ctype.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 
 typedef void Void;
@@ -19,6 +15,7 @@ typedef int32_t Int32;
 typedef uint32_t UInt32;
 typedef int64_t Int64;
 typedef uint64_t UInt64;
+
 
 typedef enum Enum {
 	Enum_Case,

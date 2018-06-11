@@ -7,13 +7,9 @@ func codegenTypedef(name: UInt8*, type: UInt8*) {
 };
 
 func CodegenBuiltins() {
-	codegenInclude("ctype.h");
 	codegenInclude("stdbool.h");
 	codegenInclude("stddef.h");
 	codegenInclude("stdint.h");
-	codegenInclude("stdio.h");
-	codegenInclude("stdlib.h");
-	codegenInclude("string.h");
 	codegenInclude("unistd.h");
 	printf((char*)"%c", 10);
 	codegenTypedef("Void", "void");
@@ -31,8 +27,27 @@ func CodegenBuiltins() {
 	printf((char*)"%c", 10);
 };
 
+var Attribute_Foreign: UInt8*;
+func CodegenForeignImports() {
+	var i = 0;
+	while (i < bufferCount((Void**)_declarations)) {
+		if (_declarations[i]->attribute != NULL) {
+			if (_declarations[i]->attribute->name->name == Attribute_Foreign) {
+				if (bufferCount((Void**)_declarations[i]->attribute->parameters) == 2) {
+					printf((char*)"#include <%s.h>%c", _declarations[i]->attribute->parameters[1]->name, 10);
+				};
+			};
+		};
+		i = i + 1;
+	};
+	printf((char*)"%c", 10);
+};
+
 func Codegen() {
+	Attribute_Foreign = internLiteral("foreign");
+	
 	CodegenBuiltins();
+	CodegenForeignImports();
 	CodegenDeclarationDeclarations();
 	CodegenDeclarationDefinitions();
 	CodegenDeclarationImplementations();
