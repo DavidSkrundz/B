@@ -43,7 +43,7 @@ func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Ty
 	i = 0;
 	while (i < bufferCount((Void**)structDeclaration->fields)) {
 		var name = structDeclaration->fields[i]->name;
-		if (strcmp((char*)name->name, (char*)expression->field->name) == (int)0) {
+		if (name->name == expression->field->name) {
 			expression->resolvedType = structDeclaration->fields[i]->resolvedType;
 		};
 		i = i + 1;
@@ -146,7 +146,7 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 	i = 0;
 	while (i < bufferCount((Void**)structDeclaration->fields)) {
 		var name = structDeclaration->fields[i]->name;
-		if (strcmp((char*)name->name, (char*)expression->field->name) == (int)0) {
+		if (name->name == expression->field->name) {
 			if (expectedType != NULL && expectedType != structDeclaration->fields[i]->resolvedType) {
 				fprintf(stderr, (char*)"Struct field has wrong type: %s%c", (char*)name->name, 10);
 				exit(EXIT_FAILURE);
@@ -163,7 +163,7 @@ func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type
 	var i = 0;
 	while (i < bufferCount((Void**)_declarations)) {
 		if (_declarations[i]->kind == .Enum) {
-			if (expression->base == NULL || strcmp((char*)expression->base->name, (char*)_declarations[i]->name->name) == (int)0) {
+			if (expression->base == NULL || expression->base->name == _declarations[i]->name->name) {
 				if (expectedType == NULL || _declarations[i]->resolvedType == expectedType) {
 					return _declarations[i]->resolvedType;
 				};
@@ -239,7 +239,7 @@ func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): 
 func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType: Type*): Type* {
 	var i = 0;
 	while (i < bufferCount((Void**)_context->names)) {
-		if (strcmp((char*)_context->names[i]->name, (char*)expression->identifier->name) == (int)0) {
+		if (_context->names[i]->name == expression->identifier->name) {
 			if (expectedType != NULL && expectedType != _context->types[i]) {
 				fprintf(stderr, (char*)"Identifier is wrong type: %s%c", (char*)expression->identifier->name, 10);
 				exit(EXIT_FAILURE);

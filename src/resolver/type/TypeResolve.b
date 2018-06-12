@@ -30,7 +30,7 @@ func resolveTypeIdentifier(name: Identifier*): Type* {
 		var type = _types[i];
 		if (type->kind == .Identifier) {
 			var identifier = (TypeIdentifier*)type->type;
-			if (strcmp((char*)identifier->name, (char*)name->name) == (int)0) {
+			if (identifier->name == name->name) {
 				return type;
 			};
 		};
