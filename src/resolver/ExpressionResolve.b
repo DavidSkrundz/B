@@ -159,7 +159,7 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 		};
 		i = i + 1;
 	};
-	fprintf(stderr, (char*)"Struct field does not exist%c", 10);
+	fprintf(stderr, (char*)"Struct field does not exist: %.*s%c", (int)expression->field->length, (char*)expression->field->name, 10);
 	exit(EXIT_FAILURE);
 };
 
