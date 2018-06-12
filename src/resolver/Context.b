@@ -10,11 +10,9 @@ func newContext(): Context* {
 func addTo(context: Context*, name: Identifier*, type: Type*) {
 	var i = 0;
 	while (i < bufferCount((Void**)context->names)) {
-		if (name->length == context->names[i]->length) {
-			if (strncmp((char*)context->names[i]->name, (char*)name->name, name->length) == (int)0) {
-				fprintf(stderr, (char*)"Duplicate definition of %.*s%c", (int)name->length, name->name, 10);
-				exit(EXIT_FAILURE);
-			};
+		if (strcmp((char*)context->names[i]->name, (char*)name->name) == (int)0) {
+			fprintf(stderr, (char*)"Duplicate definition of %s%c", name->name, 10);
+			exit(EXIT_FAILURE);
 		};
 		i = i + 1;
 	};

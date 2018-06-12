@@ -30,10 +30,8 @@ func resolveTypeIdentifier(name: Identifier*): Type* {
 		var type = _types[i];
 		if (type->kind == .Identifier) {
 			var identifier = (TypeIdentifier*)type->type;
-			if (name->length == stringLength(identifier->name)) {
-				if (strncmp((char*)identifier->name, (char*)name->name, name->length) == (int)0) {
-					return type;
-				};
+			if (strcmp((char*)identifier->name, (char*)name->name) == (int)0) {
+				return type;
 			};
 		};
 		i = i + 1;
@@ -90,17 +88,16 @@ func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: B
 func createTypeIdentifierString(name: UInt8*): Type* {
 	var identifier = newIdentifier();
 	identifier->name = name;
-	identifier->length = stringLength(name);
 	return createTypeIdentifier(identifier);
 };
 
 func createTypeIdentifier(name: Identifier*): Type* {
 	if (resolveTypeIdentifier(name) != NULL) {
-		fprintf(stderr, (char*)"Type already exists: %.*s%c", (int)name->length, name->name, 10);
+		fprintf(stderr, (char*)"Type already exists: %s%c", name->name, 10);
 		exit(EXIT_FAILURE);
 	};
 	var typeIdentifier = newTypeIdentifier();
-	typeIdentifier->name = (UInt8*)strndup((char*)name->name, name->length);
+	typeIdentifier->name = name->name;
 	var type = newType();
 	type->kind = .Identifier;
 	type->type = (Void*)typeIdentifier;

@@ -1,6 +1,5 @@
 struct Identifier {
 	var name: UInt8*;
-	var length: UInt;
 };
 
 func newIdentifier(): Identifier* {

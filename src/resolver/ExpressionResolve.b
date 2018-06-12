@@ -43,15 +43,13 @@ func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Ty
 	i = 0;
 	while (i < bufferCount((Void**)structDeclaration->fields)) {
 		var name = structDeclaration->fields[i]->name;
-		if (name->length == expression->field->length) {
-			if (strncmp((char*)name->name, (char*)expression->field->name, name->length) == (int)0) {
-				expression->resolvedType = structDeclaration->fields[i]->resolvedType;
-			};
+		if (strcmp((char*)name->name, (char*)expression->field->name) == (int)0) {
+			expression->resolvedType = structDeclaration->fields[i]->resolvedType;
 		};
 		i = i + 1;
 	};
 	if (expression->resolvedType == NULL) {
-		fprintf(stderr, (char*)"Struct does not have field: %.*s%c", (int)expression->field->length, (char*)expression->field->name, 10);
+		fprintf(stderr, (char*)"Struct does not have field: %s%c", (char*)expression->field->name, 10);
 		exit(EXIT_FAILURE);
 	};
 	expression->resolvedType = structType;
@@ -148,18 +146,16 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 	i = 0;
 	while (i < bufferCount((Void**)structDeclaration->fields)) {
 		var name = structDeclaration->fields[i]->name;
-		if (name->length == expression->field->length) {
-			if (strncmp((char*)name->name, (char*)expression->field->name, name->length) == (int)0) {
-				if (expectedType != NULL && expectedType != structDeclaration->fields[i]->resolvedType) {
-					fprintf(stderr, (char*)"Struct field has wrong type: %.*s%c", (int)name->length, (char*)name->name, 10);
-					exit(EXIT_FAILURE);
-				};
-				return structDeclaration->fields[i]->resolvedType;
+		if (strcmp((char*)name->name, (char*)expression->field->name) == (int)0) {
+			if (expectedType != NULL && expectedType != structDeclaration->fields[i]->resolvedType) {
+				fprintf(stderr, (char*)"Struct field has wrong type: %s%c", (char*)name->name, 10);
+				exit(EXIT_FAILURE);
 			};
+			return structDeclaration->fields[i]->resolvedType;
 		};
 		i = i + 1;
 	};
-	fprintf(stderr, (char*)"Struct field does not exist: %.*s%c", (int)expression->field->length, (char*)expression->field->name, 10);
+	fprintf(stderr, (char*)"Struct field does not exist: %s%c", (char*)expression->field->name, 10);
 	exit(EXIT_FAILURE);
 };
 
@@ -167,7 +163,7 @@ func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type
 	var i = 0;
 	while (i < bufferCount((Void**)_declarations)) {
 		if (_declarations[i]->kind == .Enum) {
-			if (expression->base == NULL || (expression->base->length == _declarations[i]->name->length && strncmp((char*)expression->base->name, (char*)_declarations[i]->name->name, _declarations[i]->name->length) == (int)0)) {
+			if (expression->base == NULL || strcmp((char*)expression->base->name, (char*)_declarations[i]->name->name) == (int)0) {
 				if (expectedType == NULL || _declarations[i]->resolvedType == expectedType) {
 					return _declarations[i]->resolvedType;
 				};
@@ -243,18 +239,16 @@ func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): 
 func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType: Type*): Type* {
 	var i = 0;
 	while (i < bufferCount((Void**)_context->names)) {
-		if (_context->names[i]->length == expression->identifier->length) {
-			if (strncmp((char*)_context->names[i]->name, (char*)expression->identifier->name, expression->identifier->length) == (int)0) {
-				if (expectedType != NULL && expectedType != _context->types[i]) {
-					fprintf(stderr, (char*)"Identifier is wrong type: %.*s%c", (int)expression->identifier->length, (char*)expression->identifier->name, 10);
-					exit(EXIT_FAILURE);
-				};
-				return _context->types[i];
+		if (strcmp((char*)_context->names[i]->name, (char*)expression->identifier->name) == (int)0) {
+			if (expectedType != NULL && expectedType != _context->types[i]) {
+				fprintf(stderr, (char*)"Identifier is wrong type: %s%c", (char*)expression->identifier->name, 10);
+				exit(EXIT_FAILURE);
 			};
+			return _context->types[i];
 		};
 		i = i + 1;
 	};
-	fprintf(stderr, (char*)"Identifier is not a variable or function: %.*s%c", (int)expression->identifier->length, (char*)expression->identifier->name, 10);
+	fprintf(stderr, (char*)"Identifier is not a variable or function: %s%c", (char*)expression->identifier->name, 10);
 	exit(EXIT_FAILURE);
 };
 

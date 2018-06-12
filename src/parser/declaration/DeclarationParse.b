@@ -93,11 +93,9 @@ func parseDeclarationEnum(tokens: Token***, declaration: Declaration*): Declarat
 		expectToken(.Semicolon);
 		var i = 0;
 		while (i < bufferCount((Void**)decl->cases)) {
-			if (caseName->length == decl->cases[i]->name->length) {
-				if (strncmp((char*)decl->cases[i]->name->name, (char*)caseName->name, caseName->length) == (int)0) {
-					fprintf(stderr, (char*)"Duplicate enum case %.*s%c", (int)caseName->length, caseName->name, 10);
-					exit(EXIT_FAILURE);
-				};
+			if (strcmp((char*)decl->cases[i]->name->name, (char*)caseName->name) == (int)0) {
+				fprintf(stderr, (char*)"Duplicate enum case %s%c", caseName->name, 10);
+				exit(EXIT_FAILURE);
 			};
 			i = i + 1;
 		};

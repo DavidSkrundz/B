@@ -1,3 +1,3 @@
 func printIdentifier(identifier: Identifier*) {
-	printf((char*)"(identifier %.*s)", (int)identifier->length, (char*)identifier->name);
+	printf((char*)"(identifier %s)", (char*)identifier->name);
 };
