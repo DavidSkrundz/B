@@ -46,7 +46,6 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 
 List of things so I don't forget.
 
-- Make use of string interning throughout the compiler (Currently only Tokens)
 - Better error messages with file name and line number (~~lexer~~, parser, resolver)
 - C debugging by generating `#line` directives
 - Struct constructors
