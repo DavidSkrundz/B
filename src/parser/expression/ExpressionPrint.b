@@ -120,19 +120,19 @@ func printExpressionIdentifier(expression: ExpressionIdentifier*) {
 };
 
 func printExpressionBooleanLiteral(expression: ExpressionBooleanLiteral*) {
-	printf((char*)"(boolean %.*s)", (int)expression->literal->length, expression->literal->value);
+	printf((char*)"(boolean %s)", expression->literal->value);
 };
 
 func printExpressionIntegerLiteral(expression: ExpressionIntegerLiteral*) {
-	printf((char*)"(integer %.*s)", (int)expression->literal->length, expression->literal->value);
+	printf((char*)"(integer %s)", expression->literal->value);
 };
 
 func printExpressionCharacterLiteral(expression: ExpressionCharacterLiteral*) {
-	printf((char*)"(character %.*s)", (int)expression->literal->length, expression->literal->value);
+	printf((char*)"(character %s)", expression->literal->value);
 };
 
 func printExpressionStringLiteral(expression: ExpressionStringLiteral*) {
-	printf((char*)"(string %c%.*s%c)", 34, (int)expression->literal->length, expression->literal->value, 34);
+	printf((char*)"(string %c%s%c)", 34, expression->literal->value, 34);
 };
 
 func printExpression(expression: Expression*) {

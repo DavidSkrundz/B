@@ -101,7 +101,7 @@ func codegenExpressionDot(expression: Expression*, expr: ExpressionDot*) {
 func codegenExpressionInfixOperator(expression: Expression*, expr: ExpressionInfix*) {
 	printf((char*)"(");
 	codegenExpression(expr->lhs);
-	printf((char*)" %.*s ", (int)expr->operator->length, expr->operator->value);
+	printf((char*)" %s ", expr->operator->value);
 	codegenExpression(expr->rhs);
 	printf((char*)")");
 };
@@ -114,25 +114,25 @@ func codegenExpressionIdentifier(expression: Expression*, expr: ExpressionIdenti
 
 func codegenExpressionBooleanLiteral(expression: Expression*, expr: ExpressionBooleanLiteral*) {
 	printf((char*)"(");
-	printf((char*)"%.*s", (int)expr->literal->length, expr->literal->value);
+	printf((char*)"%s", expr->literal->value);
 	printf((char*)")");
 };
 
 func codegenExpressionIntegerLiteral(expression: Expression*, expr: ExpressionIntegerLiteral*) {
 	printf((char*)"(");
-	printf((char*)"%.*s", (int)expr->literal->length, expr->literal->value);
+	printf((char*)"%s", expr->literal->value);
 	printf((char*)")");
 };
 
 func codegenExpressionCharacterLiteral(expression: Expression*, expr: ExpressionCharacterLiteral*) {
 	printf((char*)"((UInt8)");
-	printf((char*)"%c%.*s%c", 39, (int)expr->literal->length, expr->literal->value, 39);
+	printf((char*)"%c%s%c", 39, expr->literal->value, 39);
 	printf((char*)")");
 };
 
 func codegenExpressionStringLiteral(expression: Expression*, expr: ExpressionStringLiteral*) {
 	printf((char*)"((UInt8*)");
-	printf((char*)"%c%.*s%c", 34, (int)expr->literal->length, expr->literal->value, 34);
+	printf((char*)"%c%s%c", 34, expr->literal->value, 34);
 	printf((char*)")");
 };
 

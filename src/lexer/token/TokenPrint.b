@@ -72,15 +72,15 @@ func _printToken(token: Token*, stream: FILE*) {
 	} else if (token->kind == .NotEqual) {
 		fprintf(stream, (char*)"NOTEQUAL (!=)");
 	} else if (token->kind == .Identifier) {
-		fprintf(stream, (char*)"IDENTIFIER (%.*s)", (int)token->length, token->value);
+		fprintf(stream, (char*)"IDENTIFIER (%s)", token->value);
 	} else if (token->kind == .BooleanLiteral) {
-		fprintf(stream, (char*)"BOOLEAN (%.*s)", (int)token->length, token->value);
+		fprintf(stream, (char*)"BOOLEAN (%s)", token->value);
 	} else if (token->kind == .IntegerLiteral) {
-		fprintf(stream, (char*)"INTEGER (%.*s)", (int)token->length, token->value);
+		fprintf(stream, (char*)"INTEGER (%s)", token->value);
 	} else if (token->kind == .CharacterLiteral) {
-		fprintf(stream, (char*)"CHARACTER (%.*s)", (int)token->length, token->value);
+		fprintf(stream, (char*)"CHARACTER (%s)", token->value);
 	} else if (token->kind == .StringLiteral) {
-		fprintf(stream, (char*)"STRING (%.*s)", (int)token->length, token->value);
+		fprintf(stream, (char*)"STRING (%s)", token->value);
 	} else {
 		fprintf(stderr, (char*)"Unknown token kind: %u%c", token->kind, 10);
 		abort();

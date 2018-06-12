@@ -94,8 +94,7 @@ func lexToken(kind: TokenKind) {
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	token->value = intern(_code, 1);
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-	token->length = 1;
-	_column = _column + token->length;
+	_column = _column + 1;
 	append((Void***)&_tokens, (Void*)token);
 };
 
@@ -105,16 +104,15 @@ func lexToken2(kind: TokenKind, character2: UInt8, kind2: TokenKind) {
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	var start = _code;
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-	token->length = 1;
+	_column = _column + 1;
 	if (*_code == character2) {
 		_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 		token->value = intern(start, 2);
 		token->kind = kind2;
-		token->length = 2;
+		_column = _column + 1;
 	} else {
 		token->value = intern(start, 1);
 	};
-	_column = _column + token->length;
 	append((Void***)&_tokens, (Void*)token);
 };
 
@@ -125,14 +123,13 @@ func lexElipses() {
 		token->kind = .Ellipses;
 		token->value = intern(_code, 3);
 		_code = (UInt8*)((UInt)_code + 3);
-		token->length = 3;
+		_column = _column + 3;
 	} else {
 		token->kind = .Dot;
 		token->value = intern(_code, 1);
 		_code = (UInt8*)((UInt)_code + 1);
-		token->length = 1;
+		_column = _column + 1;
 	};
-	_column = _column + token->length;
 	append((Void***)&_tokens, (Void*)token);
 };
 
@@ -142,9 +139,8 @@ func lexIntegerLiteral() {
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	var start = _code;
 	while (isdigit(*_code)) { _code = (UInt8*)((UInt)_code + sizeof(UInt8)); };
-	token->length = (UInt)_code - (UInt)start;
-	token->value = intern(start, token->length);
-	_column = _column + token->length;
+	token->value = intern(start, (UInt)_code - (UInt)start);
+	_column = _column + (UInt)_code - (UInt)start;
 	append((Void***)&_tokens, (Void*)token);
 };
 
@@ -157,10 +153,9 @@ func lexStringLiteral() {
 	while (*_code != (UInt8)34 && *_code != (UInt8)92 && isprint(*_code)) {
 		_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	};
-	token->length = (UInt)_code - (UInt)start;
-	token->value = intern(start, token->length);
+	token->value = intern(start, (UInt)_code - (UInt)start);
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-	_column = _column + token->length + 2;
+	_column = _column + (UInt)_code - (UInt)start + 2;
 	append((Void***)&_tokens, (Void*)token);
 };
 
@@ -172,8 +167,7 @@ func lexCharacterLiteral() {
 	token->value = intern(_code, 1);
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-	token->length = 1;
-	_column = _column + token->length + 2;
+	_column = _column + 3;
 	append((Void***)&_tokens, (Void*)token);
 };
 
@@ -182,9 +176,8 @@ func lexIdentifier() {
 	var start = _code;
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	while (isalnum(*_code) || *_code == '_') { _code = (UInt8*)((UInt)_code + 1); };
-	token->length = (UInt)_code - (UInt)start;
-	token->value = intern(start, token->length);
-	_column = _column + token->length;
+	token->value = intern(start, (UInt)_code - (UInt)start);
+	_column = _column + (UInt)_code - (UInt)start;
 	token->kind = .Identifier;
 	append((Void***)&_tokens, (Void*)token);
 };
