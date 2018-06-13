@@ -18,14 +18,13 @@ func Lex() {
 	
 	while (true) {
 		if (*_code == ' ' || *_code == (UInt8)9 || *_code == (UInt8)10) {
-			while (isspace(*_code)) { 
+			while (isspace(*_code)) {
 				if (*_code == (UInt8)10) {
 					_line = _line + 1;
 					_column = 0;
 					_start = (UInt8*)((UInt)_code + sizeof(UInt8));
 				};
-				_column = _column + 1;
-				_code = (UInt8*)((UInt)_code + sizeof(UInt8));
+				advanceLexer(1);
 			};
 		} else if (*_code == ',') {
 			lexToken(.Comma);
@@ -88,13 +87,17 @@ func Lex() {
 	};
 };
 
+func advanceLexer(amount: UInt) {
+	_column = _column + amount;
+	_code = (UInt8*)((UInt)_code + amount * sizeof(UInt8));
+};
+
 func lexToken(kind: TokenKind) {
 	var token = newToken();
 	token->kind = kind;
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	token->value = intern(_code, 1);
-	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-	_column = _column + 1;
+	advanceLexer(1);
 	append((Void***)&_tokens, (Void*)token);
 };
 
@@ -103,13 +106,11 @@ func lexToken2(kind: TokenKind, character2: UInt8, kind2: TokenKind) {
 	token->kind = kind;
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	var start = _code;
-	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-	_column = _column + 1;
+	advanceLexer(1);
 	if (*_code == character2) {
-		_code = (UInt8*)((UInt)_code + sizeof(UInt8));
 		token->value = intern(start, 2);
 		token->kind = kind2;
-		_column = _column + 1;
+		advanceLexer(1);
 	} else {
 		token->value = intern(start, 1);
 	};
@@ -122,13 +123,11 @@ func lexElipses() {
 	if (_code[1] == '.' && _code[2] == '.') {
 		token->kind = .Ellipses;
 		token->value = intern(_code, 3);
-		_code = (UInt8*)((UInt)_code + 3);
-		_column = _column + 3;
+		advanceLexer(3);
 	} else {
 		token->kind = .Dot;
 		token->value = intern(_code, 1);
-		_code = (UInt8*)((UInt)_code + 1);
-		_column = _column + 1;
+		advanceLexer(1);
 	};
 	append((Void***)&_tokens, (Void*)token);
 };
@@ -138,36 +137,37 @@ func lexIntegerLiteral() {
 	token->kind = .IntegerLiteral;
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	var start = _code;
-	while (isdigit(*_code)) { _code = (UInt8*)((UInt)_code + sizeof(UInt8)); };
+	while (isdigit(*_code)) { advanceLexer(1); };
 	token->value = intern(start, (UInt)_code - (UInt)start);
-	_column = _column + (UInt)_code - (UInt)start;
 	append((Void***)&_tokens, (Void*)token);
 };
 
 func lexStringLiteral() {
+	if (*_code != (UInt8)34) { LexerError(); };
 	var token = newToken();
 	token->kind = .StringLiteral;
 	token->pos = newSrcPos(_file, _start, _line, _column);
-	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
+	advanceLexer(1);
 	var start = _code;
 	while (*_code != (UInt8)34 && *_code != (UInt8)92 && isprint(*_code)) {
-		_code = (UInt8*)((UInt)_code + sizeof(UInt8));
+		advanceLexer(1);
 	};
 	token->value = intern(start, (UInt)_code - (UInt)start);
-	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-	_column = _column + (UInt)_code - (UInt)start + 2;
+	if (*_code != (UInt8)34) { LexerError(); };
+	advanceLexer(1);
 	append((Void***)&_tokens, (Void*)token);
 };
 
 func lexCharacterLiteral() {
+	if (*_code != (UInt8)39) { LexerError(); };
 	var token = newToken();
 	token->kind = .CharacterLiteral;
 	token->pos = newSrcPos(_file, _start, _line, _column);
-	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
+	advanceLexer(1);
 	token->value = intern(_code, 1);
-	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-	_code = (UInt8*)((UInt)_code + sizeof(UInt8));
-	_column = _column + 3;
+	advanceLexer(1);
+	if (*_code != (UInt8)39) { LexerError(); };
+	advanceLexer(1);
 	append((Void***)&_tokens, (Void*)token);
 };
 
@@ -175,9 +175,8 @@ func lexIdentifier() {
 	var token = newToken();
 	var start = _code;
 	token->pos = newSrcPos(_file, _start, _line, _column);
-	while (isalnum(*_code) || *_code == '_') { _code = (UInt8*)((UInt)_code + 1); };
+	while (isalnum(*_code) || *_code == '_') { advanceLexer(1); };
 	token->value = intern(start, (UInt)_code - (UInt)start);
-	_column = _column + (UInt)_code - (UInt)start;
 	token->kind = .Identifier;
 	append((Void***)&_tokens, (Void*)token);
 };
