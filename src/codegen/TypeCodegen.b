@@ -13,7 +13,7 @@ func codegenType(type: Type*) {
 	} else if (type->kind == .Pointer) {
 		codegenTypePointer((TypePointer*)type->type);
 	} else {
-		fprintf(stderr, (char*)"Invalid type kind %u%c", type->kind, '\n');
+		fprintf(stderr, (char*)"Invalid type kind %u\n", type->kind);
 		abort();
 	};;
 };

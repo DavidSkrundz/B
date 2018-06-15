@@ -6,7 +6,7 @@ func codegenNullExpression(type: Type*) {
 	if (type->kind == .Pointer) {
 		codegenNullExpressionPointer((TypePointer*)type->type);
 	} else {
-		fprintf(stderr, (char*)"Invalid type kind %u%c", type->kind, '\n');
+		fprintf(stderr, (char*)"Invalid type kind %u\n", type->kind);
 		abort();
 	};
 };
@@ -127,37 +127,37 @@ func codegenExpressionIntegerLiteral(expression: Expression*, expr: ExpressionIn
 func codegenExpressionCharacterLiteral(expression: Expression*, expr: ExpressionCharacterLiteral*) {
 	printf((char*)"((UInt8)");
 	if (expr->literal->value[0] == '\t') {
-		printf((char*)"%c%ct%c", '\'', '\\', '\'');
+		printf((char*)"'\\t'");
 	} else if (expr->literal->value[0] == '\n') {
-		printf((char*)"%c%cn%c", '\'', '\\', '\'');
+		printf((char*)"'\\n'");
 	} else if (expr->literal->value[0] == '\\') {
-		printf((char*)"%c%c%c%c", '\'', '\\', '\\', '\'');
+		printf((char*)"'\\\\'");
 	} else if (expr->literal->value[0] == '\'') {
-		printf((char*)"%c%c%c%c", '\'', '\\', '\'', '\'');
+		printf((char*)"'\\''");
 	} else {
-		printf((char*)"%c%s%c", '\'', expr->literal->value, '\'');
+		printf((char*)"'%s'", expr->literal->value);
 	};;;;
 	printf((char*)")");
 };
 
 func codegenExpressionStringLiteral(expression: Expression*, expr: ExpressionStringLiteral*) {
-	printf((char*)"((UInt8*)%c", '"');
+	printf((char*)"((UInt8*)\"");
 	var i = 0;
 	while (expr->literal->value[i] != (UInt8)0) {
 		if (expr->literal->value[i] == '\t') {
-			printf((char*)"%c%c", '\\', 't');
+			printf((char*)"\\t");
 		} else if (expr->literal->value[i] == '\n') {
-			printf((char*)"%c%c", '\\', 'n');
+			printf((char*)"\\n");
 		} else if (expr->literal->value[i] == '\\') {
-			printf((char*)"%c%c", '\\', '\\');
+			printf((char*)"\\\\");
 		} else if (expr->literal->value[i] == '"') {
-			printf((char*)"%c%c", '\\', '"');
+			printf((char*)"\\\"");
 		} else {
 			printf((char*)"%c", expr->literal->value[i]);
 		};;;;
 		i = i + 1;
 	};
-	printf((char*)"%c)", '"');
+	printf((char*)"\")");
 };
 
 func codegenExpression(expression: Expression*) {
@@ -196,7 +196,7 @@ func codegenExpression(expression: Expression*) {
 	} else if (expression->kind == .StringLiteral) {
 		codegenExpressionStringLiteral(expression, (ExpressionStringLiteral*)expression->expression);
 	} else {
-		fprintf(stderr, (char*)"Invalid expression kind %u%c", expression->kind, '\n');
+		fprintf(stderr, (char*)"Invalid expression kind %u\n", expression->kind);
 		abort();
 	};;;;;;;;;;;;;;;;;
 };

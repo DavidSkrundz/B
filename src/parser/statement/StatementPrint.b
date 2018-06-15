@@ -3,14 +3,14 @@ func printStatementExpression(statement: StatementExpression*) {
 };
 
 func printStatementAssign(statement: StatementAssign*) {
-	printf((char*)"(assign%c", '\n');
+	printf((char*)"(assign\n");
 	depth = depth + 1;
 	printDepth();
 	printExpression(statement->lhs);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	printDepth();
 	printExpression(statement->rhs);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	printDepth();
 	depth = depth - 1;
 	printf((char*)")");
@@ -24,14 +24,14 @@ func printStatementIf(statement: StatementIf*) {
 	printf((char*)"(if ");
 	depth = depth + 1;
 	printExpression(statement->condition);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	printDepth();
 	printStatementBlock(statement->block);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	if (statement->elseBlock != NULL) {
 		printDepth();
 		printStatement(statement->elseBlock);
-		printf((char*)"%c", '\n');
+		printf((char*)"\n");
 	};
 	depth = depth - 1;
 	printDepth();
@@ -42,10 +42,10 @@ func printStatementWhile(statement: StatementWhile*) {
 	printf((char*)"(while ");
 	depth = depth + 1;
 	printExpression(statement->condition);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	printDepth();
 	printStatementBlock(statement->block);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
@@ -76,19 +76,19 @@ func printStatement(statement: Statement*) {
 	} else if (statement->kind == .Return) {
 		printStatementReturn((StatementReturn*)statement->statement);
 	} else {
-		fprintf(stderr, (char*)"Invalid statement kind %u%c", statement->kind, '\n');
+		fprintf(stderr, (char*)"Invalid statement kind %u\n", statement->kind);
 		abort();
 	};;;;;;;
 };
 
 func printStatementBlock(block: StatementBlock*) {
-	printf((char*)"(block%c", '\n');
+	printf((char*)"(block\n");
 	depth = depth + 1;
 	var i = 0;
 	while (i < bufferCount((Void**)block->statements)) {
 		printDepth();
 		printStatement(block->statements[i]);
-		printf((char*)"%c", '\n');
+		printf((char*)"\n");
 		i = i + 1;
 	};
 	depth = depth - 1;

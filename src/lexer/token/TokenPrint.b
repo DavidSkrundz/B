@@ -5,7 +5,7 @@ func printTokens() {
 	var i = 0;
 	while (i < bufferCount((Void**)_tokens)) {
 		printToken(_tokens[i]);
-		printf((char*)"%c", '\n');
+		printf((char*)"\n");
 		i = i + 1;
 	};
 };
@@ -82,7 +82,7 @@ func _printToken(token: Token*, stream: FILE*) {
 	} else if (token->kind == .StringLiteral) {
 		fprintf(stream, (char*)"STRING (%s)", token->value);
 	} else {
-		fprintf(stderr, (char*)"Unknown token kind: %u%c", token->kind, '\n');
+		fprintf(stderr, (char*)"Unknown token kind: %u\n", token->kind);
 		abort();
 	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 };

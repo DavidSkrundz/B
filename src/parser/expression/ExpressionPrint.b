@@ -42,12 +42,12 @@ func printExpressionFunctionCall(expression: ExpressionFunctionCall*) {
 	printf((char*)"(call ");
 	depth = depth + 1;
 	printExpression(expression->function);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	var i = 0;
 	while (i < bufferCount((Void**)expression->arguments)) {
 		printDepth();
 		printExpression(expression->arguments[i]);
-		printf((char*)"%c", '\n');
+		printf((char*)"\n");
 		i = i + 1;
 	};
 	depth = depth - 1;
@@ -56,44 +56,44 @@ func printExpressionFunctionCall(expression: ExpressionFunctionCall*) {
 };
 
 func printExpressionSubscript(expression: ExpressionSubscript*) {
-	printf((char*)"(subscript%c", '\n');
+	printf((char*)"(subscript\n");
 	depth = depth + 1;
 	printDepth();
 	printExpression(expression->base);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	printDepth();
 	printExpression(expression->subscript);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
 };
 
 func printExpressionArrow(expression: ExpressionArrow*) {
-	printf((char*)"(->%c", '\n');
+	printf((char*)"(->\n");
 	depth = depth + 1;
 	printDepth();
 	printExpression(expression->base);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	printDepth();
 	printIdentifier(expression->field);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
 };
 
 func printExpressionDot(expression: ExpressionDot*) {
-	printf((char*)"(dot%c", '\n');
+	printf((char*)"(dot\n");
 	depth = depth + 1;
 	if (expression->base != NULL) {
 		printDepth();
 		printIdentifier(expression->base);
-		printf((char*)"%c", '\n');
+		printf((char*)"\n");
 	};
 	printDepth();
 	printIdentifier(expression->field);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
@@ -102,14 +102,14 @@ func printExpressionDot(expression: ExpressionDot*) {
 func printExpressionInfix(expression: ExpressionInfix*) {
 	printf((char*)"(");
 	printToken(expression->operator);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	depth = depth + 1;
 	printDepth();
 	printExpression(expression->lhs);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	printDepth();
 	printExpression(expression->rhs);
-	printf((char*)"%c", '\n');
+	printf((char*)"\n");
 	depth = depth - 1;
 	printDepth();
 	printf((char*)")");
@@ -171,7 +171,7 @@ func printExpression(expression: Expression*) {
 	} else if (expression->kind == .StringLiteral) {
 		printExpressionStringLiteral((ExpressionStringLiteral*)expression->expression);
 	} else {
-		fprintf(stderr, (char*)"Invalid expression kind %u%c", expression->kind, '\n');
+		fprintf(stderr, (char*)"Invalid expression kind %u\n", expression->kind);
 		abort();
 	};;;;;;;;;;;;;;;;;
 };
