@@ -19,12 +19,13 @@ func Lex() {
 	while (true) {
 		if (*_code == ' ' || *_code == (UInt8)9 || *_code == (UInt8)10) {
 			while (isspace(*_code)) {
-				if (*_code == (UInt8)10) {
-					_line = _line + 1;
-					_column = 0;
-					_start = (UInt8*)((UInt)_code + sizeof(UInt8));
-				};
+				var character = *_code;
 				advanceLexer(1);
+				if (character == (UInt8)10) {
+					_line = _line + 1;
+					_column = 1;
+					_start = _code;
+				};
 			};
 		} else if (*_code == ',') {
 			lexToken(.Comma);
