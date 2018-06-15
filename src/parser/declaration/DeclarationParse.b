@@ -94,7 +94,7 @@ func parseDeclarationEnum(tokens: Token***, declaration: Declaration*): Declarat
 		var i = 0;
 		while (i < bufferCount((Void**)decl->cases)) {
 			if (decl->cases[i]->name->name == caseName->name) {
-				fprintf(stderr, (char*)"Duplicate enum case %s%c", caseName->name, 10);
+				fprintf(stderr, (char*)"Duplicate enum case %s%c", caseName->name, '\n');
 				exit(EXIT_FAILURE);
 			};
 			i = i + 1;

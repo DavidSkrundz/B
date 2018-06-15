@@ -1,13 +1,13 @@
 func codegenStatementExpression(statement: StatementExpression*) {
 	codegenExpression(statement->expression);
-	printf((char*)";%c", 10);
+	printf((char*)";%c", '\n');
 };
 
 func codegenStatementAssign(statement: StatementAssign*) {
 	codegenExpression(statement->lhs);
 	printf((char*)" = ");
 	codegenExpression(statement->rhs);
-	printf((char*)";%c", 10);
+	printf((char*)";%c", '\n');
 };
 
 func codegenStatementVar(statement: StatementVar*) {
@@ -23,7 +23,7 @@ func codegenStatementIf(statement: StatementIf*) {
 		printf((char*)" else ");
 		codegenStatement(statement->elseBlock);
 	};
-	printf((char*)"%c", 10);
+	printf((char*)"%c", '\n');
 };
 
 func codegenStatementWhile(statement: StatementWhile*) {
@@ -31,7 +31,7 @@ func codegenStatementWhile(statement: StatementWhile*) {
 	codegenExpression(statement->condition);
 	printf((char*)" ");
 	codegenStatementBlock(statement->block);
-	printf((char*)"%c", 10);
+	printf((char*)"%c", '\n');
 };
 
 func codegenStatementReturn(statement: StatementReturn*) {
@@ -40,7 +40,7 @@ func codegenStatementReturn(statement: StatementReturn*) {
 		printf((char*)" ");
 		codegenExpression(statement->expression);
 	};
-	printf((char*)";%c", 10);
+	printf((char*)";%c", '\n');
 };
 
 func codegenStatement(statement: Statement*) {
@@ -59,13 +59,13 @@ func codegenStatement(statement: Statement*) {
 	} else if (statement->kind == .Return) {
 		codegenStatementReturn((StatementReturn*)statement->statement);
 	} else {
-		fprintf(stderr, (char*)"Invalid statement kind %u%c", statement->kind, 10);
+		fprintf(stderr, (char*)"Invalid statement kind %u%c", statement->kind, '\n');
 		abort();
 	};;;;;;;
 };
 
 func codegenStatementBlock(block: StatementBlock*) {
-	printf((char*)"{%c", 10);
+	printf((char*)"{%c", '\n');
 	genDepth = genDepth + 1;
 	var i = 0;
 	while (i < bufferCount((Void**)block->statements)) {

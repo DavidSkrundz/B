@@ -69,7 +69,7 @@ func resolveDeclarationType(declaration: Declaration*) {
 	} else if (declaration->kind == .Enum) {
 		declaration->resolvedType = resolveDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, '\n');
 		abort();
 	};;;;
 };
@@ -78,10 +78,10 @@ func resolveDeclarationDefinition(declaration: Declaration*) {
 	if (declaration->state == .Resolved) { return; }
 	else if (declaration->state == .Unresolved) {}
 	else if (declaration->state == .Resolving) {
-		fprintf(stderr, (char*)"Cyclic dependency%c", 10);
+		fprintf(stderr, (char*)"Cyclic dependency%c", '\n');
 		exit(EXIT_FAILURE);
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration state %u%c", declaration->state, 10);
+		fprintf(stderr, (char*)"Invalid declaration state %u%c", declaration->state, '\n');
 		abort();
 	};;;
 	
@@ -94,7 +94,7 @@ func resolveDeclarationDefinition(declaration: Declaration*) {
 		resolveDeclarationDefinitionStruct((DeclarationStruct*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Enum) {
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, '\n');
 		abort();
 	};;;;
 	declaration->state = .Resolved;
@@ -136,7 +136,7 @@ func resolveDeclarationImplementation(declaration: Declaration*) {
 	} else if (declaration->kind == .Struct) {
 	} else if (declaration->kind == .Enum) {
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, '\n');
 		abort();
 	};;;;
 };

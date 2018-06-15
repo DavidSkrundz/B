@@ -1,9 +1,9 @@
 func codegenInclude(file: UInt8*) {
-	printf((char*)"#include <%s>%c", file, 10);
+	printf((char*)"#include <%s>%c", file, '\n');
 };
 
 func codegenTypedef(name: UInt8*, type: UInt8*) {
-	printf((char*)"typedef %s %s;%c", type, name, 10);
+	printf((char*)"typedef %s %s;%c", type, name, '\n');
 };
 
 func CodegenBuiltins() {
@@ -11,7 +11,7 @@ func CodegenBuiltins() {
 	codegenInclude("stddef.h");
 	codegenInclude("stdint.h");
 	codegenInclude("unistd.h");
-	printf((char*)"%c", 10);
+	printf((char*)"%c", '\n');
 	codegenTypedef("Void", "void");
 	codegenTypedef("Bool", "bool");
 	codegenTypedef("Int", "ssize_t");
@@ -24,7 +24,7 @@ func CodegenBuiltins() {
 	codegenTypedef("UInt32", "uint32_t");
 	codegenTypedef("Int64", "int64_t");
 	codegenTypedef("UInt64", "uint64_t");
-	printf((char*)"%c", 10);
+	printf((char*)"%c", '\n');
 };
 
 var Attribute_Foreign: UInt8*;
@@ -34,13 +34,13 @@ func CodegenForeignImports() {
 		if (_declarations[i]->attribute != NULL) {
 			if (_declarations[i]->attribute->name->name == Attribute_Foreign) {
 				if (bufferCount((Void**)_declarations[i]->attribute->parameters) == 2) {
-					printf((char*)"#include <%s.h>%c", _declarations[i]->attribute->parameters[1]->name, 10);
+					printf((char*)"#include <%s.h>%c", _declarations[i]->attribute->parameters[1]->name, '\n');
 				};
 			};
 		};
 		i = i + 1;
 	};
-	printf((char*)"%c", 10);
+	printf((char*)"%c", '\n');
 };
 
 func Codegen() {

@@ -6,7 +6,7 @@ func codegenNullExpression(type: Type*) {
 	if (type->kind == .Pointer) {
 		codegenNullExpressionPointer((TypePointer*)type->type);
 	} else {
-		fprintf(stderr, (char*)"Invalid type kind %u%c", type->kind, 10);
+		fprintf(stderr, (char*)"Invalid type kind %u%c", type->kind, '\n');
 		abort();
 	};
 };
@@ -126,23 +126,23 @@ func codegenExpressionIntegerLiteral(expression: Expression*, expr: ExpressionIn
 
 func codegenExpressionCharacterLiteral(expression: Expression*, expr: ExpressionCharacterLiteral*) {
 	printf((char*)"((UInt8)");
-	if (expr->literal->value[0] == (UInt8)9) {
-		printf((char*)"%c%ct%c", 39, 92, 39);
-	} else if (expr->literal->value[0] == (UInt8)10) {
-		printf((char*)"%c%cn%c", 39, 92, 39);
-	} else if (expr->literal->value[0] == (UInt8)92) {
-		printf((char*)"%c%c%c%c", 39, 92, 92, 39);
-	} else if (expr->literal->value[0] == (UInt8)39) {
-		printf((char*)"%c%c%c%c", 39, 92, 39, 39);
+	if (expr->literal->value[0] == '\t') {
+		printf((char*)"%c%ct%c", '\'', '\\', '\'');
+	} else if (expr->literal->value[0] == '\n') {
+		printf((char*)"%c%cn%c", '\'', '\\', '\'');
+	} else if (expr->literal->value[0] == '\\') {
+		printf((char*)"%c%c%c%c", '\'', '\\', '\\', '\'');
+	} else if (expr->literal->value[0] == '\'') {
+		printf((char*)"%c%c%c%c", '\'', '\\', '\'', '\'');
 	} else {
-		printf((char*)"%c%s%c", 39, expr->literal->value, 39);
+		printf((char*)"%c%s%c", '\'', expr->literal->value, '\'');
 	};;;;
 	printf((char*)")");
 };
 
 func codegenExpressionStringLiteral(expression: Expression*, expr: ExpressionStringLiteral*) {
 	printf((char*)"((UInt8*)");
-	printf((char*)"%c%s%c", 34, expr->literal->value, 34);
+	printf((char*)"%c%s%c", '"', expr->literal->value, '"');
 	printf((char*)")");
 };
 
@@ -182,7 +182,7 @@ func codegenExpression(expression: Expression*) {
 	} else if (expression->kind == .StringLiteral) {
 		codegenExpressionStringLiteral(expression, (ExpressionStringLiteral*)expression->expression);
 	} else {
-		fprintf(stderr, (char*)"Invalid expression kind %u%c", expression->kind, 10);
+		fprintf(stderr, (char*)"Invalid expression kind %u%c", expression->kind, '\n');
 		abort();
 	};;;;;;;;;;;;;;;;;
 };

@@ -5,7 +5,7 @@ func resolveExpressionCast(expression: ExpressionCast*, expectedType: Type*): Ty
 		abort();
 	};
 	if (expectedType != NULL && expectedType != castType) {
-		fprintf(stderr, (char*)"Cast to wrong type%c", 10);
+		fprintf(stderr, (char*)"Cast to wrong type%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	return castType;
@@ -13,7 +13,7 @@ func resolveExpressionCast(expression: ExpressionCast*, expectedType: Type*): Ty
 
 func resolveExpressionSizeof(expression: ExpressionSizeof*, expectedType: Type*): Type* {
 	if (expectedType != NULL && expectedType != TypeUInt) {
-		fprintf(stderr, (char*)"Not expecting UInt%c", 10);
+		fprintf(stderr, (char*)"Not expecting UInt%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	expression->resolvedType = resolveTypespec(expression->type);
@@ -22,7 +22,7 @@ func resolveExpressionSizeof(expression: ExpressionSizeof*, expectedType: Type*)
 
 func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Type*): Type* {
 	if (expectedType != NULL && expectedType != TypeUInt) {
-		fprintf(stderr, (char*)"Not expecting UInt%c", 10);
+		fprintf(stderr, (char*)"Not expecting UInt%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	var structType = resolveTypespec(expression->type);
@@ -37,7 +37,7 @@ func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Ty
 		i = i + 1;
 	};
 	if (structDeclaration == NULL) {
-		fprintf(stderr, (char*)"Can't get the offset of a non-struct%c", 10);
+		fprintf(stderr, (char*)"Can't get the offset of a non-struct%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	i = 0;
@@ -49,7 +49,7 @@ func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Ty
 		i = i + 1;
 	};
 	if (expression->resolvedType == NULL) {
-		fprintf(stderr, (char*)"Struct does not have field: %s%c", (char*)expression->field->name, 10);
+		fprintf(stderr, (char*)"Struct does not have field: %s%c", (char*)expression->field->name, '\n');
 		exit(EXIT_FAILURE);
 	};
 	expression->resolvedType = structType;
@@ -63,7 +63,7 @@ func resolveExpressionDereference(expression: ExpressionDereference*, expectedTy
 	};
 	var baseType = resolveExpression(expression->expression, expectedBaseType);
 	if (isPointer(baseType) == false) {
-		fprintf(stderr, (char*)"Cannot dereference non-pointer%c", 10);
+		fprintf(stderr, (char*)"Cannot dereference non-pointer%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	return getPointerBase(baseType);
@@ -81,21 +81,21 @@ func resolveExpressionReference(expression: ExpressionReference*, expectedType: 
 func resolveExpressionFunctionCall(expression: ExpressionFunctionCall*, expectedType: Type*): Type* {
 	var functionType = resolveExpression(expression->function, NULL);
 	if (functionType->kind != .Function) {
-		fprintf(stderr, (char*)"Can't call non-function%c", 10);
+		fprintf(stderr, (char*)"Can't call non-function%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	var funcType = (TypeFunction*)functionType->type;
 	if (expectedType != NULL && expectedType != funcType->returnType) {
-		fprintf(stderr, (char*)"Function returns wrong type%c", 10);
+		fprintf(stderr, (char*)"Function returns wrong type%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	
 	if (bufferCount((Void**)expression->arguments) < bufferCount((Void**)funcType->argumentTypes)) {
-		fprintf(stderr, (char*)"Not enough arguments in function call%c", 10);
+		fprintf(stderr, (char*)"Not enough arguments in function call%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	if (bufferCount((Void**)funcType->argumentTypes) < bufferCount((Void**)expression->arguments) && funcType->isVariadic == false) {
-		fprintf(stderr, (char*)"Too many arguments in function call%c", 10);
+		fprintf(stderr, (char*)"Too many arguments in function call%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	var i = 0;
@@ -119,7 +119,7 @@ func resolveExpressionSubscript(expression: ExpressionSubscript*, expectedType: 
 	};
 	var baseType = resolveExpression(expression->base, expectedBaseType);
 	if (isPointer(baseType) == false) {
-		fprintf(stderr, (char*)"Cannot subscript non-pointer%c", 10);
+		fprintf(stderr, (char*)"Cannot subscript non-pointer%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	resolveExpression(expression->subscript, TypeUInt);
@@ -140,7 +140,7 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 		i = i + 1;
 	};
 	if (structDeclaration == NULL) {
-		fprintf(stderr, (char*)"Can't apply -> to non-struct%c", 10);
+		fprintf(stderr, (char*)"Can't apply -> to non-struct%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	i = 0;
@@ -148,14 +148,14 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 		var name = structDeclaration->fields[i]->name;
 		if (name->name == expression->field->name) {
 			if (expectedType != NULL && expectedType != structDeclaration->fields[i]->resolvedType) {
-				fprintf(stderr, (char*)"Struct field has wrong type: %s%c", (char*)name->name, 10);
+				fprintf(stderr, (char*)"Struct field has wrong type: %s%c", (char*)name->name, '\n');
 				exit(EXIT_FAILURE);
 			};
 			return structDeclaration->fields[i]->resolvedType;
 		};
 		i = i + 1;
 	};
-	fprintf(stderr, (char*)"Struct field does not exist: %s%c", (char*)expression->field->name, 10);
+	fprintf(stderr, (char*)"Struct field does not exist: %s%c", (char*)expression->field->name, '\n');
 	exit(EXIT_FAILURE);
 };
 
@@ -171,13 +171,13 @@ func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type
 		};
 		i = i + 1;
 	};
-	fprintf(stderr, (char*)"Enum does not exist%c", 10);
+	fprintf(stderr, (char*)"Enum does not exist%c", '\n');
 	exit(EXIT_FAILURE);
 };
 
 func resolveExpressionInfixComparison(expression: ExpressionInfix*, expectedType: Type*): Type* {
 	if (expectedType != NULL && expectedType != TypeBool) {
-		fprintf(stderr, (char*)"Not expecting bool from comparison%c", 10);
+		fprintf(stderr, (char*)"Not expecting bool from comparison%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	var lhs = resolveExpression(expression->lhs, NULL);
@@ -199,7 +199,7 @@ func resolveExpressionInfixMultiplication(expression: ExpressionInfix*, expected
 
 func resolveExpressionInfixLogical(expression: ExpressionInfix*, expectedType: Type*): Type* {
 	if (expectedType != NULL && expectedType != TypeBool) {
-		fprintf(stderr, (char*)"Not expecting bool from logical%c", 10);
+		fprintf(stderr, (char*)"Not expecting bool from logical%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	resolveExpression(expression->lhs, TypeBool);
@@ -231,7 +231,7 @@ func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): 
 	} else if (expression->operator->kind == .OrOr) {
 		return resolveExpressionInfixLogical(expression, expectedType);
 	} else {
-		fprintf(stderr, (char*)"Invalid operator %u%c", expression->operator->kind, 10);
+		fprintf(stderr, (char*)"Invalid operator %u%c", expression->operator->kind, '\n');
 		abort();
 	};;;;;;;;;;;
 };
@@ -241,20 +241,20 @@ func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType
 	while (i < bufferCount((Void**)_context->names)) {
 		if (_context->names[i]->name == expression->identifier->name) {
 			if (expectedType != NULL && expectedType != _context->types[i]) {
-				fprintf(stderr, (char*)"Identifier is wrong type: %s%c", (char*)expression->identifier->name, 10);
+				fprintf(stderr, (char*)"Identifier is wrong type: %s%c", (char*)expression->identifier->name, '\n');
 				exit(EXIT_FAILURE);
 			};
 			return _context->types[i];
 		};
 		i = i + 1;
 	};
-	fprintf(stderr, (char*)"Identifier is not a variable or function: %s%c", (char*)expression->identifier->name, 10);
+	fprintf(stderr, (char*)"Identifier is not a variable or function: %s%c", (char*)expression->identifier->name, '\n');
 	exit(EXIT_FAILURE);
 };
 
 func resolveExpressionBooleanLiteral(expression: ExpressionBooleanLiteral*, expectedType: Type*): Type* {
 	if (expectedType != NULL && expectedType != TypeBool) {
-		fprintf(stderr, (char*)"Not expecting bool%c", 10);
+		fprintf(stderr, (char*)"Not expecting bool%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	return TypeBool;
@@ -262,7 +262,7 @@ func resolveExpressionBooleanLiteral(expression: ExpressionBooleanLiteral*, expe
 
 func resolveExpressionIntegerLiteral(expression: ExpressionIntegerLiteral*, expectedType: Type*): Type* {
 	if (expectedType != NULL && expectedType != TypeUInt) {
-		fprintf(stderr, (char*)"Not expecting Int%c", 10);
+		fprintf(stderr, (char*)"Not expecting Int%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	return TypeUInt;
@@ -270,7 +270,7 @@ func resolveExpressionIntegerLiteral(expression: ExpressionIntegerLiteral*, expe
 
 func resolveExpressionCharacterLiteral(expression: ExpressionCharacterLiteral*, expectedType: Type*): Type* {
 	if (expectedType != NULL && expectedType != TypeCharacter) {
-		fprintf(stderr, (char*)"Not expecting character (pointer UInt8)%c", 10);
+		fprintf(stderr, (char*)"Not expecting character (pointer UInt8)%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	return TypeCharacter;
@@ -278,7 +278,7 @@ func resolveExpressionCharacterLiteral(expression: ExpressionCharacterLiteral*, 
 
 func resolveExpressionStringLiteral(expression: ExpressionStringLiteral*, expectedType: Type*): Type* {
 	if (expectedType != NULL && expectedType != TypeString) {
-		fprintf(stderr, (char*)"Not expecting string (pointer UInt8)%c", 10);
+		fprintf(stderr, (char*)"Not expecting string (pointer UInt8)%c", '\n');
 		exit(EXIT_FAILURE);
 	};
 	return TypeString;
@@ -320,7 +320,7 @@ func resolveExpression(expression: Expression*, expectedType: Type*): Type* {
 	} else if (expression->kind == .StringLiteral) {
 		expression->resolvedType = resolveExpressionStringLiteral((ExpressionStringLiteral*)expression->expression, expectedType);
 	} else {
-		fprintf(stderr, (char*)"Invalid expression kind %u%c", expression->kind, 10);
+		fprintf(stderr, (char*)"Invalid expression kind %u%c", expression->kind, '\n');
 		abort();
 	};;;;;;;;;;;;;;;;;
 	if (expression->resolvedType == NULL) {

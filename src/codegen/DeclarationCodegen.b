@@ -3,17 +3,17 @@ func codegenDeclarationStructDeclaration(declaration: Declaration*, decl: Declar
 	codegenIdentifier(declaration->name);
 	printf((char*)" ");
 	codegenIdentifier(declaration->name);
-	printf((char*)";%c", 10);
+	printf((char*)";%c", '\n');
 };
 
 func codegenDeclarationEnumDeclaration(declaration: Declaration*, decl: DeclarationEnum*) {
 	printf((char*)"typedef enum ");
 	codegenIdentifier(declaration->name);
-	printf((char*)" {%c", 10);
+	printf((char*)" {%c", '\n');
 	codegenDeclarationEnumCasesDefinition(decl->cases, declaration->name);
 	printf((char*)"} ");
 	codegenIdentifier(declaration->name);
-	printf((char*)";%c", 10);
+	printf((char*)";%c", '\n');
 };
 
 func codegenDeclarationDeclaration(declaration: Declaration*) {
@@ -26,7 +26,7 @@ func codegenDeclarationDeclaration(declaration: Declaration*) {
 	} else if (declaration->kind == .Enum) {
 		codegenDeclarationEnumDeclaration(declaration, (DeclarationEnum*)declaration->declaration);
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, '\n');
 		abort();
 	};;;;
 };
@@ -37,7 +37,7 @@ func CodegenDeclarationDeclarations() {
 		codegenDeclarationDeclaration(_declarations[i]);
 		i = i + 1;
 	};
-	printf((char*)"%c", 10);
+	printf((char*)"%c", '\n');
 };
 
 func codegenDeclarationVarDefinition(declaration: Declaration*, decl: DeclarationVar*) {
@@ -50,7 +50,7 @@ func codegenDeclarationVarDefinition(declaration: Declaration*, decl: Declaratio
 	} else {
 		codegenExpression(decl->value);
 	};
-	printf((char*)";%c", 10);
+	printf((char*)";%c", '\n');
 };
 
 func codegenDeclarationFuncArg(argument: DeclarationFuncArg*) {
@@ -75,7 +75,7 @@ func codegenDeclarationFuncArgs(args: DeclarationFuncArgs*) {
 
 func codegenDeclarationFuncDefinition(declaration: Declaration*, decl: DeclarationFunc*) {
 	if (declaration->resolvedType->kind != .Function) {
-		fprintf(stderr, (char*)"Function declaration has non function type%c", 10);
+		fprintf(stderr, (char*)"Function declaration has non function type%c", '\n');
 		abort();
 	};
 	var funcType = (TypeFunction*)declaration->resolvedType->type;
@@ -83,41 +83,41 @@ func codegenDeclarationFuncDefinition(declaration: Declaration*, decl: Declarati
 	printf((char*)" ");
 	codegenIdentifier(declaration->name);
 	codegenDeclarationFuncArgs(decl->args);
-	printf((char*)";%c", 10);
+	printf((char*)";%c", '\n');
 };
 
 func codegenDeclarationStructFieldDefinition(field: Declaration*) {
 	if (field->kind != .Var) {
-		fprintf(stderr, (char*)"Bad declaration kind (%u) in struct fields%c", field->kind, 10);
+		fprintf(stderr, (char*)"Bad declaration kind (%u) in struct fields%c", field->kind, '\n');
 		abort();
 	};
-	printf((char*)"%c", 9);
+	printf((char*)"%c", '\t');
 	codegenType(field->resolvedType);
 	printf((char*)" ");
 	codegenIdentifier(field->name);
-	printf((char*)";%c", 10);
+	printf((char*)";%c", '\n');
 };
 
 func codegenDeclarationStructDefinition(declaration: Declaration*, decl: DeclarationStruct*) {
 	printf((char*)"struct ");
 	codegenIdentifier(declaration->name);
-	printf((char*)" {%c", 10);
+	printf((char*)" {%c", '\n');
 	var i = 0;
 	while (i < bufferCount((Void**)decl->fields)) {
 		codegenDeclarationStructFieldDefinition(decl->fields[i]);
 		i = i + 1;
 	};
-	printf((char*)"};%c", 10);
+	printf((char*)"};%c", '\n');
 };
 
 func codegenDeclarationEnumCasesDefinition(cases: DeclarationEnumCase**, name: Identifier*) {
 	var i = 0;
 	while (i < bufferCount((Void**)cases)) {
-		printf((char*)"%c", 9);
+		printf((char*)"%c", '\t');
 		codegenIdentifier(name);
 		printf((char*)"_");
 		codegenIdentifier(cases[i]->name);
-		printf((char*)",%c", 10);
+		printf((char*)",%c", '\n');
 		i = i + 1;
 	};
 };
@@ -133,7 +133,7 @@ func codegenDeclarationDefinition(declaration: Declaration*) {
 		codegenDeclarationStructDefinition(declaration, (DeclarationStruct*)declaration->declaration);
 	} else if (declaration->kind == .Enum) {
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, '\n');
 		abort();
 	};;;;
 };
@@ -144,12 +144,12 @@ func CodegenDeclarationDefinitions() {
 		codegenDeclarationDefinition(_declarations[i]);
 		i = i + 1;
 	};
-	printf((char*)"%c", 10);
+	printf((char*)"%c", '\n');
 };
 
 func codegenDeclarationFuncImplementation(declaration: Declaration*, decl: DeclarationFunc*) {
 	if (declaration->resolvedType->kind != .Function) {
-		fprintf(stderr, (char*)"Function declaration has non function type%c", 10);
+		fprintf(stderr, (char*)"Function declaration has non function type%c", '\n');
 		abort();
 	};
 	var funcType = (TypeFunction*)declaration->resolvedType->type;
@@ -159,7 +159,7 @@ func codegenDeclarationFuncImplementation(declaration: Declaration*, decl: Decla
 	codegenDeclarationFuncArgs(decl->args);
 	printf((char*)" ");
 	codegenStatementBlock(decl->block);
-	printf((char*)"%c%c", 10, 10);
+	printf((char*)"%c%c", '\n', '\n');
 };
 
 func codegenDeclarationImplementation(declaration: Declaration*) {
@@ -171,7 +171,7 @@ func codegenDeclarationImplementation(declaration: Declaration*) {
 	} else if (declaration->kind == .Struct) {
 	} else if (declaration->kind == .Enum) {
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, '\n');
 		abort();
 	};;;;
 };

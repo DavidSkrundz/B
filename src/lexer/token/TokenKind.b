@@ -107,7 +107,7 @@ func printTokenKind_error(kind: TokenKind) {
 	} else if (kind == .StringLiteral) {
 		fprintf(stderr, (char*)"STRING (_)");
 	} else {
-		fprintf(stderr, (char*)"Unknown token kind: %u%c", kind, 10);
+		fprintf(stderr, (char*)"Unknown token kind: %u%c", kind, '\n');
 		abort();
 	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 };

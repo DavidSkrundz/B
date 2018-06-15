@@ -17,11 +17,11 @@ func Lex() {
 	_start = _code;
 	
 	while (true) {
-		if (*_code == ' ' || *_code == (UInt8)9 || *_code == (UInt8)10) {
+		if (*_code == ' ' || *_code == '\t' || *_code == '\n') {
 			while (isspace(*_code)) {
 				var character = *_code;
 				advanceLexer(1);
-				if (character == (UInt8)10) {
+				if (character == '\n') {
 					_line = _line + 1;
 					_column = 1;
 					_start = _code;
@@ -67,11 +67,11 @@ func Lex() {
 			lexToken2(.LessThan, '=', .LessThanEqual);
 		} else if (*_code == '.') {
 			lexElipses();
-		} else if (*_code == (UInt8)34) {
+		} else if (*_code == '"') {
 			lexStringLiteral();
 		} else if ('0' <= *_code && *_code <= '9') {
 			lexIntegerLiteral();
-		} else if (*_code == (UInt8)39) {
+		} else if (*_code == '\'') {
 			lexCharacterLiteral();
 		} else if ('A' <= *_code && *_code <= 'Z') {
 			lexIdentifier();
@@ -144,38 +144,38 @@ func lexIntegerLiteral() {
 };
 
 func lexStringLiteral() {
-	if (*_code != (UInt8)34) { LexerError(); };
+	if (*_code != '"') { LexerError(); };
 	var token = newToken();
 	token->kind = .StringLiteral;
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	advanceLexer(1);
 	var start = _code;
-	while (*_code != (UInt8)34 && *_code != (UInt8)92 && isprint(*_code)) {
+	while (*_code != '"' && *_code != '\\' && isprint(*_code)) {
 		advanceLexer(1);
 	};
 	token->value = intern(start, (UInt)_code - (UInt)start);
-	if (*_code != (UInt8)34) { LexerError(); };
+	if (*_code != '"') { LexerError(); };
 	advanceLexer(1);
 	append((Void***)&_tokens, (Void*)token);
 };
 
 func lexCharacterLiteral() {
-	if (*_code != (UInt8)39) { LexerError(); };
+	if (*_code != '\'') { LexerError(); };
 	var token = newToken();
 	token->kind = .CharacterLiteral;
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	advanceLexer(1);
-	if (*_code == (UInt8)92) {
+	if (*_code == '\\') {
 		advanceLexer(1);
 		var string = (UInt8*)xcalloc(1, sizeof(UInt8));
-		if (*_code == (UInt8)92) {
-			string[0] = (UInt8)92;
-		} else if (*_code == (UInt8)39) {
-			string[0] = (UInt8)39;
+		if (*_code == '\\') {
+			string[0] = '\\';
+		} else if (*_code == '\'') {
+			string[0] = '\'';
 		} else if (*_code == 'n') {
-			string[0] = (UInt8)10;
+			string[0] = '\n';
 		} else if (*_code == 't') {
-			string[0] = (UInt8)9;
+			string[0] = '\t';
 		} else {
 			LexerError();
 		};;;;
@@ -184,7 +184,7 @@ func lexCharacterLiteral() {
 		token->value = intern(_code, 1);
 	};
 	advanceLexer(1);
-	if (*_code != (UInt8)39) { LexerError(); };
+	if (*_code != '\'') { LexerError(); };
 	advanceLexer(1);
 	append((Void***)&_tokens, (Void*)token);
 };

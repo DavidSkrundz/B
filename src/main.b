@@ -23,18 +23,18 @@ func main(argc: int, argv: char**): int {
 };
 
 func printVersion(self: char*) {
-	printf((char*)"B Compiler (%s) Version 0.0.31%c", self, 10);
+	printf((char*)"B Compiler (%s) Version 0.0.31%c", self, '\n');
 	exit(EXIT_SUCCESS);
 };
 
 func printUsage(self: char*) {
-	printf((char*)"Usage: %s <option> file...%c", self, 10);
-	printf((char*)"Options:%c", 10);
-	printf((char*)"  --version                Print the version%c", 10);
-	printf((char*)"  -l                       Lex and output tokens%c", 10);
-	printf((char*)"  -p                       Parse and output ast%c", 10);
-	printf((char*)"  -r                       Resolve and output errors%c", 10);
-	printf((char*)"  -g                       Codegen and output C%c", 10);
+	printf((char*)"Usage: %s <option> file...%c", self, '\n');
+	printf((char*)"Options:%c", '\n');
+	printf((char*)"  --version                Print the version%c", '\n');
+	printf((char*)"  -l                       Lex and output tokens%c", '\n');
+	printf((char*)"  -p                       Parse and output ast%c", '\n');
+	printf((char*)"  -r                       Resolve and output errors%c", '\n');
+	printf((char*)"  -g                       Codegen and output C%c", '\n');
 	exit(EXIT_FAILURE);
 };
 

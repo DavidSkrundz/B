@@ -6,14 +6,14 @@ func printDeclarationVar(declaration: DeclarationVar*, name: Identifier*) {
 		printTypespec(declaration->type);
 	};
 	if (declaration->value != NULL) {
-		printf((char*)" (expression%c", 10);
+		printf((char*)" (expression%c", '\n');
 		depth = depth + 1;
 		depth = depth + 1;
 		printDepth();
 		printExpression(declaration->value);
 		depth = depth - 1;
 		depth = depth - 1;
-		printf((char*)"%c", 10);
+		printf((char*)"%c", '\n');
 		printDepth();
 		printf((char*)")");
 	};
@@ -29,18 +29,18 @@ func printDeclarationFuncArg(arg: DeclarationFuncArg*) {
 };
 
 func printDeclarationFuncArgs(args: DeclarationFuncArgs*) {
-	printf((char*)"(arguments%c", 10);
+	printf((char*)"(arguments%c", '\n');
 	depth = depth + 1;
 	var i = 0;
 	while (i < bufferCount((Void**)args->args)) {
 		printDepth();
 		printDeclarationFuncArg(args->args[i]);
-		printf((char*)"%c", 10);
+		printf((char*)"%c", '\n');
 		i = i + 1;
 	};
 	if (args->isVariadic) {
 		printDepth();
-		printf((char*)"(...)%c", 10);
+		printf((char*)"(...)%c", '\n');
 	};
 	depth = depth - 1;
 	printDepth();
@@ -56,15 +56,15 @@ func printDeclarationFunc(declaration: DeclarationFunc*, name: Identifier*) {
 	} else {
 		printTypespec(declaration->returnType);
 	};
-	printf((char*)"%c", 10);
+	printf((char*)"%c", '\n');
 	depth = depth + 1;
 	printDepth();
 	printDeclarationFuncArgs(declaration->args);
-	printf((char*)"%c", 10);
+	printf((char*)"%c", '\n');
 	if (declaration->block != NULL) {
 		printDepth();
 		printStatementBlock(declaration->block);
-		printf((char*)"%c", 10);
+		printf((char*)"%c", '\n');
 	};
 	depth = depth - 1;
 	printDepth();
@@ -72,26 +72,26 @@ func printDeclarationFunc(declaration: DeclarationFunc*, name: Identifier*) {
 };
 
 func printDeclarationStruct(declaration: DeclarationStruct*, name: Identifier*) {
-	printf((char*)"(struct%c", 10);
+	printf((char*)"(struct%c", '\n');
 	depth = depth + 1;
 	printDepth();
 	printIdentifier(name);
-	printf((char*)"%c", 10);
+	printf((char*)"%c", '\n');
 	if (declaration->fields != NULL) {
 		printDepth();
-		printf((char*)"(fields%c", 10);
+		printf((char*)"(fields%c", '\n');
 		depth = depth + 1;
 		var i = 0;
 		while (i < bufferCount((Void**)declaration->fields)) {
 			printDepth();
 			printDeclaration(declaration->fields[i]);
-			printf((char*)"%c", 10);
+			printf((char*)"%c", '\n');
 			i = i + 1;
 		};
 		depth = depth - 1;
 		printDepth();
 		printf((char*)")");
-		printf((char*)"%c", 10);
+		printf((char*)"%c", '\n');
 	};
 	depth = depth - 1;
 	printDepth();
@@ -105,16 +105,16 @@ func printDeclarationEnumCase(enumCase: DeclarationEnumCase*) {
 };
 
 func printDeclarationEnum(declaration: DeclarationEnum*, name: Identifier*) {
-	printf((char*)"(enum%c", 10);
+	printf((char*)"(enum%c", '\n');
 	depth = depth + 1;
 	printDepth();
 	printIdentifier(name);
-	printf((char*)"%c", 10);
+	printf((char*)"%c", '\n');
 	var i = 0;
 	while (i < bufferCount((Void**)declaration->cases)) {
 		printDepth();
 		printDeclarationEnumCase((declaration->cases)[i]);
-		printf((char*)"%c", 10);
+		printf((char*)"%c", '\n');
 		i = i + 1;
 	};
 	depth = depth - 1;
@@ -136,7 +136,7 @@ func printDeclaration(declaration: Declaration*) {
 	} else if (declaration->kind == .Enum) {
 		printDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, 10);
+		fprintf(stderr, (char*)"Invalid declaration kind %u%c", declaration->kind, '\n');
 		abort();
 	};;;;
 };
@@ -145,7 +145,7 @@ func printDeclarations() {
 	var i = 0;
 	while (i < bufferCount((Void**)_declarations)) {
 		printDeclaration(_declarations[i]);
-		printf((char*)"%c%c", 10, 10);
+		printf((char*)"%c%c", '\n', '\n');
 		i = i + 1;
 	};
 };

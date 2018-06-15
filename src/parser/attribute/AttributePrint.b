@@ -8,5 +8,5 @@ func printAttribute(attribute: Attribute*) {
 			printf((char*)", ");
 		};
 	};
-	printf((char*)")%c", 10);
+	printf((char*)")%c", '\n');
 };

@@ -15,7 +15,7 @@ func Parse() {
 	if ((*_tokens)->kind != .EOF) {
 		fprintf(stderr, (char*)"DEPRECATED ERROR - Unexpected token: ");
 		printToken_error(*_tokens);
-		fprintf(stderr, (char*)"%c%c", 10, 10);
+		fprintf(stderr, (char*)"%c%c", '\n', '\n');
 		printDeclarations();
 		exit(EXIT_FAILURE);
 	};

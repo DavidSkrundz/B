@@ -16,7 +16,7 @@ func resolveTypespecIdentifier(typespec: TypespecIdentifier*): Type* {
 		};
 	};
 	if (type == NULL) {
-		fprintf(stderr, (char*)"Invalid type '%s'%c", typespec->name->name, 10);
+		fprintf(stderr, (char*)"Invalid type '%s'%c", typespec->name->name, '\n');
 		exit(EXIT_FAILURE);
 	};
 	return type;
@@ -28,7 +28,7 @@ func resolveTypespec(typespec: Typespec*): Type* {
 	} else if (typespec->kind == .Identifier) {
 		return (Type*)resolveTypespecIdentifier((TypespecIdentifier*)typespec->spec);
 	} else {
-		fprintf(stderr, (char*)"Invalid typespec kind %u%c", typespec->kind, 10);
+		fprintf(stderr, (char*)"Invalid typespec kind %u%c", typespec->kind, '\n');
 		abort();
 	};;
 };

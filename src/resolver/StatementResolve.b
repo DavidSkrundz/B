@@ -30,7 +30,7 @@ func resolveStatementReturn(statement: StatementReturn*, expectedType: Type*) {
 		resolveExpression(statement->expression, expectedType);
 	} else {
 		if (expectedType != TypeVoid) {
-			fprintf(stderr, (char*)"Return missing value%c", 10);
+			fprintf(stderr, (char*)"Return missing value%c", '\n');
 			exit(EXIT_FAILURE);
 		};
 	};
@@ -52,7 +52,7 @@ func resolveStatement(statement: Statement*, expectedType: Type*) {
 	} else if (statement->kind == .Return) {
 		resolveStatementReturn((StatementReturn*)statement->statement, expectedType);
 	} else {
-		fprintf(stderr, (char*)"Invalid statement kind %u%c", statement->kind, 10);
+		fprintf(stderr, (char*)"Invalid statement kind %u%c", statement->kind, '\n');
 		abort();
 	};;;;;;;
 };

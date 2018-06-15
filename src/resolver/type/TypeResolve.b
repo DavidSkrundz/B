@@ -6,16 +6,16 @@ func isPointer(type: Type*): Bool {
 
 func getPointerBase(type: Type*): Type* {
 	if (type->kind == .Identifier) {
-		fprintf(stderr, (char*)"Not a pointer%c", 10);
+		fprintf(stderr, (char*)"Not a pointer%c", '\n');
 		abort();
 	} else if (type->kind == .Pointer) {
 		var pointer = (TypePointer*)type->type;
 		return pointer->base;
 	} else if (type->kind == .Function) {
-		fprintf(stderr, (char*)"Not a pointer%c", 10);
+		fprintf(stderr, (char*)"Not a pointer%c", '\n');
 		abort();
 	} else {
-		fprintf(stderr, (char*)"Invalid type kind %u%c", type->kind, 10);
+		fprintf(stderr, (char*)"Invalid type kind %u%c", type->kind, '\n');
 		exit(EXIT_FAILURE);
 	};;;
 };
@@ -93,7 +93,7 @@ func createTypeIdentifierString(name: UInt8*): Type* {
 
 func createTypeIdentifier(name: Identifier*): Type* {
 	if (resolveTypeIdentifier(name) != NULL) {
-		fprintf(stderr, (char*)"Type already exists: %s%c", name->name, 10);
+		fprintf(stderr, (char*)"Type already exists: %s%c", name->name, '\n');
 		exit(EXIT_FAILURE);
 	};
 	var typeIdentifier = newTypeIdentifier();
@@ -107,7 +107,7 @@ func createTypeIdentifier(name: Identifier*): Type* {
 
 func createTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: Bool): Type* {
 	if (resolveTypeFunction(returnType, argumentTypes, isVariadic) != NULL) {
-		fprintf(stderr, (char*)"Function type already created%c", 10);
+		fprintf(stderr, (char*)"Function type already created%c", '\n');
 		abort();
 	};
 	var funcType = newTypeFunction();
