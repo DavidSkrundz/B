@@ -68,7 +68,13 @@
 				{
 					"name": "string.quoted.double.b",
 					"begin": "\"",
-					"end": "\""
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.b",
+							"match": "\\\\(\\\\|\"|n|t)"
+						}
+					]
 				}
 			]
 		}
