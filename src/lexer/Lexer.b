@@ -188,19 +188,17 @@ func lexCharacterLiteral() {
 	advanceLexer(1);
 	if (*_code == '\\') {
 		advanceLexer(1);
-		var string = (UInt8*)xcalloc(1, sizeof(UInt8));
 		if (*_code == '\\') {
-			string[0] = '\\';
+			token->value = internLiteral("\\");
 		} else if (*_code == '\'') {
-			string[0] = '\'';
+			token->value = internLiteral("'");
 		} else if (*_code == 'n') {
-			string[0] = '\n';
+			token->value = internLiteral("\n");
 		} else if (*_code == 't') {
-			string[0] = '\t';
+			token->value = internLiteral("\t");
 		} else {
 			LexerError();
 		};;;;
-		token->value = intern(string, 1);
 	} else {
 		token->value = intern(_code, 1);
 	};
