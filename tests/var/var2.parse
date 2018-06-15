@@ -1,4 +1,21 @@
 (var (identifier a) (expression
-  (character a)
+  (character \)
+))
+
+(var (identifier b) (expression
+  (character 	)
+))
+
+(var (identifier c) (expression
+  (character 
+)
+))
+
+(var (identifier d) (expression
+  (character ')
+))
+
+(var (identifier e) (expression
+  (character ")
 ))
 

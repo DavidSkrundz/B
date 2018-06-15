@@ -126,7 +126,17 @@ func codegenExpressionIntegerLiteral(expression: Expression*, expr: ExpressionIn
 
 func codegenExpressionCharacterLiteral(expression: Expression*, expr: ExpressionCharacterLiteral*) {
 	printf((char*)"((UInt8)");
-	printf((char*)"%c%s%c", 39, expr->literal->value, 39);
+	if (expr->literal->value[0] == (UInt8)9) {
+		printf((char*)"%c%ct%c", 39, 92, 39);
+	} else if (expr->literal->value[0] == (UInt8)10) {
+		printf((char*)"%c%cn%c", 39, 92, 39);
+	} else if (expr->literal->value[0] == (UInt8)92) {
+		printf((char*)"%c%c%c%c", 39, 92, 92, 39);
+	} else if (expr->literal->value[0] == (UInt8)39) {
+		printf((char*)"%c%c%c%c", 39, 92, 39, 39);
+	} else {
+		printf((char*)"%c%s%c", 39, expr->literal->value, 39);
+	};;;;
 	printf((char*)")");
 };
 

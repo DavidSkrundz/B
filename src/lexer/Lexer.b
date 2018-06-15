@@ -165,7 +165,24 @@ func lexCharacterLiteral() {
 	token->kind = .CharacterLiteral;
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	advanceLexer(1);
-	token->value = intern(_code, 1);
+	if (*_code == (UInt8)92) {
+		advanceLexer(1);
+		var string = (UInt8*)xcalloc(1, sizeof(UInt8));
+		if (*_code == (UInt8)92) {
+			string[0] = (UInt8)92;
+		} else if (*_code == (UInt8)39) {
+			string[0] = (UInt8)39;
+		} else if (*_code == 'n') {
+			string[0] = (UInt8)10;
+		} else if (*_code == 't') {
+			string[0] = (UInt8)9;
+		} else {
+			LexerError();
+		};;;;
+		token->value = intern(string, 1);
+	} else {
+		token->value = intern(_code, 1);
+	};
 	advanceLexer(1);
 	if (*_code != (UInt8)39) { LexerError(); };
 	advanceLexer(1);
