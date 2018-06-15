@@ -142,7 +142,17 @@ func codegenExpressionCharacterLiteral(expression: Expression*, expr: Expression
 
 func codegenExpressionStringLiteral(expression: Expression*, expr: ExpressionStringLiteral*) {
 	printf((char*)"((UInt8*)");
-	printf((char*)"%c%s%c", '"', expr->literal->value, '"');
+	if (expr->literal->value[0] == '\t') {
+		printf((char*)"%c%c%c%c", '"', '\\', 't', '"');
+	} else if (expr->literal->value[0] == '\n') {
+		printf((char*)"%c%c%c%c", '"', '\\', 'n', '"');
+	} else if (expr->literal->value[0] == '\\') {
+		printf((char*)"%c%c%c%c", '"', '\\', '\\', '"');
+	} else if (expr->literal->value[0] == '"') {
+		printf((char*)"%c%c%c%c", '"', '\\', '"', '"');
+	} else {
+		printf((char*)"%c%s%c", '"', expr->literal->value, '"');
+	};;;;
 	printf((char*)")");
 };
 

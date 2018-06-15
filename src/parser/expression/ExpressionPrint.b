@@ -132,7 +132,7 @@ func printExpressionCharacterLiteral(expression: ExpressionCharacterLiteral*) {
 };
 
 func printExpressionStringLiteral(expression: ExpressionStringLiteral*) {
-	printf((char*)"(string %c%s%c)", 34, expression->literal->value, 34);
+	printf((char*)"(string %s)", expression->literal->value);
 };
 
 func printExpression(expression: Expression*) {

@@ -19,3 +19,24 @@
   (character ")
 ))
 
+(var (identifier f) (expression
+  (string \)
+))
+
+(var (identifier g) (expression
+  (string 	)
+))
+
+(var (identifier h) (expression
+  (string 
+)
+))
+
+(var (identifier i) (expression
+  (string ')
+))
+
+(var (identifier j) (expression
+  (string ")
+))
+

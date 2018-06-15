@@ -149,11 +149,32 @@ func lexStringLiteral() {
 	token->kind = .StringLiteral;
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	advanceLexer(1);
-	var start = _code;
-	while (*_code != '"' && *_code != '\\' && isprint(*_code)) {
+	var i = 0;
+	while (_code[i] != '"' && isprint(_code[i])) { i = i + 1; };
+	if (_code[i] != '"') { LexerError(); };
+	var string = (UInt8*)xcalloc(i, sizeof(UInt8));
+	i = 0;
+	while (*_code != '"' && isprint(*_code)) {
+		if (*_code == '\\') {
+			advanceLexer(1);
+			if (*_code == '\\') {
+				string[i] = '\\';
+			} else if (*_code == '"') {
+				string[i] = '"';
+			} else if (*_code == 'n') {
+				string[i] = '\n';
+			} else if (*_code == 't') {
+				string[i] = '\t';
+			} else {
+				LexerError();
+			};;;;
+		} else {
+			string[i] = *_code;
+		};
+		i = i + 1;
 		advanceLexer(1);
 	};
-	token->value = intern(start, (UInt)_code - (UInt)start);
+	token->value = intern(string, i);
 	if (*_code != '"') { LexerError(); };
 	advanceLexer(1);
 	append((Void***)&_tokens, (Void*)token);

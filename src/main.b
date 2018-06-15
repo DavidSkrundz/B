@@ -23,7 +23,7 @@ func main(argc: int, argv: char**): int {
 };
 
 func printVersion(self: char*) {
-	printf((char*)"B Compiler (%s) Version 0.0.31%c", self, '\n');
+	printf((char*)"B Compiler (%s) Version 0.0.32%c", self, '\n');
 	exit(EXIT_SUCCESS);
 };
 

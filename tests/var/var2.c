@@ -23,4 +23,9 @@ UInt8 b = ((UInt8)'\t');
 UInt8 c = ((UInt8)'\n');
 UInt8 d = ((UInt8)'\'');
 UInt8 e = ((UInt8)'"');
+UInt8* f = ((UInt8*)"\\");
+UInt8* g = ((UInt8*)"\t");
+UInt8* h = ((UInt8*)"\n");
+UInt8* i = ((UInt8*)"'");
+UInt8* j = ((UInt8*)"\"");
 
