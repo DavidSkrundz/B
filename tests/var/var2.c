@@ -28,4 +28,5 @@ UInt8* g = ((UInt8*)"\t");
 UInt8* h = ((UInt8*)"\n");
 UInt8* i = ((UInt8*)"'");
 UInt8* j = ((UInt8*)"\"");
+UInt8* k = ((UInt8*)"\"\n\t");
 

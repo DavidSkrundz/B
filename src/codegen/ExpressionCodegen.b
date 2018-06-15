@@ -141,19 +141,23 @@ func codegenExpressionCharacterLiteral(expression: Expression*, expr: Expression
 };
 
 func codegenExpressionStringLiteral(expression: Expression*, expr: ExpressionStringLiteral*) {
-	printf((char*)"((UInt8*)");
-	if (expr->literal->value[0] == '\t') {
-		printf((char*)"%c%c%c%c", '"', '\\', 't', '"');
-	} else if (expr->literal->value[0] == '\n') {
-		printf((char*)"%c%c%c%c", '"', '\\', 'n', '"');
-	} else if (expr->literal->value[0] == '\\') {
-		printf((char*)"%c%c%c%c", '"', '\\', '\\', '"');
-	} else if (expr->literal->value[0] == '"') {
-		printf((char*)"%c%c%c%c", '"', '\\', '"', '"');
-	} else {
-		printf((char*)"%c%s%c", '"', expr->literal->value, '"');
-	};;;;
-	printf((char*)")");
+	printf((char*)"((UInt8*)%c", '"');
+	var i = 0;
+	while (expr->literal->value[i] != (UInt8)0) {
+		if (expr->literal->value[i] == '\t') {
+			printf((char*)"%c%c", '\\', 't');
+		} else if (expr->literal->value[i] == '\n') {
+			printf((char*)"%c%c", '\\', 'n');
+		} else if (expr->literal->value[i] == '\\') {
+			printf((char*)"%c%c", '\\', '\\');
+		} else if (expr->literal->value[i] == '"') {
+			printf((char*)"%c%c", '\\', '"');
+		} else {
+			printf((char*)"%c", expr->literal->value[i]);
+		};;;;
+		i = i + 1;
+	};
+	printf((char*)"%c)", '"');
 };
 
 func codegenExpression(expression: Expression*) {

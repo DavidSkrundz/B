@@ -9,3 +9,4 @@ var g = "\t";
 var h = "\n";
 var i = "'";
 var j = "\"";
+var k = "\"\n\t";
