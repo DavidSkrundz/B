@@ -47,7 +47,7 @@
 \alt `NULL'
 \alt `true' | `false'
 \alt [0-9]+
-\alt `\textquotesingle' [\^{}\textquotesingle\textbackslash n\textbackslash\textbackslash] `\textquotesingle'
-\alt `"' [\^{}\textquotedbl\textbackslash n\textbackslash\textbackslash] `"'
+\alt `\textquotesingle' ( [\^{}\textquotesingle\textbackslash n\textbackslash\textbackslash] | `\\n' | `\\t' | `\\\'' | `\\\\' ) `\textquotesingle'
+\alt `"' ( [\^{}\textquotedbl\textbackslash n\textbackslash\textbackslash] | `\\n' | `\\t' | `\\"' | `\\\\' )+ `"'
 
 \end{grammar}
