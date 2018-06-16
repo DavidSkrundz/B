@@ -121,8 +121,7 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 	if (checkKeyword(Keyword_Sizeof)) {
 		expectToken(.OpenParenthesis);
 		var expr = newExpressionSizeof();
-		expr->type = parseTypespec(tokens);
-		if (expr->type == NULL) { return NULL; };
+		expr->type = expectTypespec();
 		expectToken(.CloseParenthesis);
 		var expression = newExpression();
 		expression->kind = .Sizeof;
@@ -131,8 +130,7 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 	} else if (checkKeyword(Keyword_Offsetof)) {
 		expectToken(.OpenParenthesis);
 		var expr = newExpressionOffsetof();
-		expr->type = parseTypespec(tokens);
-		if (expr->type == NULL) { return NULL; };
+		expr->type = expectTypespec();
 		expectToken(.Comma);
 		expr->field = expectIdentifier();
 		expectToken(.CloseParenthesis);

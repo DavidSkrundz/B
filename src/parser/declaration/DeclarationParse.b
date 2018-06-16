@@ -3,7 +3,7 @@ func parseDeclarationVar(tokens: Token***, declaration: Declaration*): Declarati
 	declaration->name = expectIdentifier();
 	var decl = newDeclarationVar();
 	if (checkToken(.Colon)) {
-		decl->type = parseTypespec(tokens);
+		decl->type = expectTypespec();
 	};
 	if (checkToken(.Assign)) {
 		decl->value = parseExpression(tokens);
@@ -18,8 +18,7 @@ func parseDeclarationFuncArgument(tokens: Token***): DeclarationFuncArg* {
 	arg->name = parseIdentifier(tokens);
 	if (arg->name == NULL) { return NULL; };
 	expectToken(.Colon);
-	arg->type = parseTypespec(tokens);
-	if (arg->type == NULL) { return NULL; };
+	arg->type = expectTypespec();
 	return arg;
 };
 
@@ -50,8 +49,7 @@ func parseDeclarationFunc(tokens: Token***, declaration: Declaration*): Declarat
 	decl->args = parseDeclarationFuncArguments(tokens);
 	if (decl->args == NULL) { return NULL; };
 	if (checkToken(.Colon)) {
-		decl->returnType = parseTypespec(tokens);
-		if (decl->returnType == NULL) { return NULL; };
+		decl->returnType = expectTypespec();
 	};
 	if ((**tokens)->kind == .OpenCurly) {
 		decl->block = parseStatementBlock(tokens);
