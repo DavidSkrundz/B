@@ -34,7 +34,7 @@ func parseExpressionPrimary(tokens: Token***): Expression* {
 	} else if ((**tokens)->kind == .Identifier) {
 		expression->kind = .Identifier;
 		var identifier = newExpressionIdentifier();
-		identifier->identifier = parseIdentifier(tokens);
+		identifier->identifier = expectIdentifier();
 		expression->expression = (Void*)identifier;
 	} else { return NULL; };;;;;;;
 	return expression;
@@ -67,16 +67,14 @@ func parseExpressionSubscript(tokens: Token***): ExpressionSubscript* {
 func parseExpressionArrow(tokens: Token***): ExpressionArrow* {
 	var expression = newExpressionArrow();
 	expectToken(.Arrow);
-	expression->field = parseIdentifier(tokens);
-	if (expression->field == NULL) { return NULL; };
+	expression->field = expectIdentifier();
 	return expression;
 };
 
 func parseExpressionDot(tokens: Token***): ExpressionDot* {
 	var expression = newExpressionDot();
 	expectToken(.Dot);
-	expression->field = parseIdentifier(tokens);
-	if (expression->field == NULL) { return NULL; };
+	expression->field = expectIdentifier();
 	return expression;
 };
 
@@ -136,8 +134,7 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 		expr->type = parseTypespec(tokens);
 		if (expr->type == NULL) { return NULL; };
 		expectToken(.Comma);
-		expr->field = parseIdentifier(tokens);
-		if (expr->field == NULL) { return NULL; };
+		expr->field = expectIdentifier();
 		expectToken(.CloseParenthesis);
 		var expression = newExpression();
 		expression->kind = .Offsetof;

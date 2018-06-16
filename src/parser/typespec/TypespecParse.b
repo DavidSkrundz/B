@@ -1,15 +1,14 @@
-func parseTypespecIdentifier(tokens: Token***): TypespecIdentifier* {
+func parseTypespecIdentifier(): TypespecIdentifier* {
 	var typespecIdentifier = newTypespecIdentifier();
-	typespecIdentifier->name = parseIdentifier(tokens);
-	if (typespecIdentifier->name == NULL) { return (TypespecIdentifier*)NULL; };
+	typespecIdentifier->name = expectIdentifier();
 	return typespecIdentifier;
 };
 
 func parseTypespec(tokens: Token***): Typespec* {
 	var typespec = newTypespec();
-	if ((**tokens)->kind == .Identifier) {
+	if (isToken(.Identifier)) {
 		typespec->kind = .Identifier;
-		typespec->spec = (Void*)parseTypespecIdentifier(tokens);
+		typespec->spec = (Void*)parseTypespecIdentifier();
 	} else { return (Typespec*)NULL; };
 	while (checkToken(.Star)) {
 		var typespecPointer = newTypespecPointer();

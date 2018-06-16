@@ -45,8 +45,7 @@ func parseDeclarationFuncArguments(tokens: Token***): DeclarationFuncArgs* {
 
 func parseDeclarationFunc(tokens: Token***, declaration: Declaration*): DeclarationFunc* {
 	expectKeyword(Keyword_Func);
-	declaration->name = parseIdentifier(tokens);
-	if (declaration->name == NULL) { return NULL; };
+	declaration->name = expectIdentifier();
 	var decl = newDeclarationFunc();
 	decl->args = parseDeclarationFuncArguments(tokens);
 	if (decl->args == NULL) { return NULL; };
@@ -64,8 +63,7 @@ func parseDeclarationFunc(tokens: Token***, declaration: Declaration*): Declarat
 
 func parseDeclarationStruct(tokens: Token***, declaration: Declaration*): DeclarationStruct* {
 	expectKeyword(Keyword_Struct);
-	declaration->name = parseIdentifier(tokens);
-	if (declaration->name == NULL) { return NULL; };
+	declaration->name = expectIdentifier();
 	var decl = newDeclarationStruct();
 	if (checkToken(.OpenCurly)) {
 		while ((**tokens)->kind != .CloseCurly) {
@@ -82,14 +80,12 @@ func parseDeclarationStruct(tokens: Token***, declaration: Declaration*): Declar
 
 func parseDeclarationEnum(tokens: Token***, declaration: Declaration*): DeclarationEnum* {
 	expectKeyword(Keyword_Enum);
-	declaration->name = parseIdentifier(tokens);
-	if (declaration->name == NULL) { return NULL; };
+	declaration->name = expectIdentifier();
 	var decl = newDeclarationEnum();
 	expectToken(.OpenCurly);
 	while ((**tokens)->kind != .CloseCurly) {
 		expectKeyword(Keyword_Case);
-		var caseName = parseIdentifier(tokens);
-		if (caseName == NULL) { return NULL; };
+		var caseName = expectIdentifier();
 		expectToken(.Semicolon);
 		var i = 0;
 		while (i < bufferCount((Void**)decl->cases)) {
