@@ -1,17 +1,17 @@
-func parseStatementIf(tokens: Token***): StatementIf* {
+func expectStatementIf(): StatementIf* {
 	expectKeyword(Keyword_If);
 	var statement = newStatementIf();
 	expectToken(.OpenParenthesis);
-	statement->condition = parseExpression(tokens);
-	if (statement->condition == NULL) { return NULL; };
+	statement->condition = parseExpression(&_tokens);
+	if (statement->condition == NULL) { ParserErrorTmp("expecting expression"); };
 	expectToken(.CloseParenthesis);
-	statement->block = parseStatementBlock(tokens);
-	if (statement->block == NULL) { return NULL; };
+	statement->block = parseStatementBlock(&_tokens);
+	if (statement->block == NULL) { ParserErrorTmp("expecting statement block"); };
 	if (checkKeyword(Keyword_Else)) {
-		if (isTokenKeyword(Keyword_If) || (**tokens)->kind == .OpenCurly) {
-			statement->elseBlock = parseStatement(tokens);
-			if (statement->elseBlock == NULL) { return NULL; };
-		} else { return NULL; };
+		if (isTokenKeyword(Keyword_If) || (*_tokens)->kind == .OpenCurly) {
+			statement->elseBlock = parseStatement(&_tokens);
+			if (statement->elseBlock == NULL) { ParserErrorTmp("expecting if or block"); };
+		} else { ParserErrorTmp("expecting if or block"); };
 	};
 	expectToken(.Semicolon);
 	return statement;
@@ -68,7 +68,7 @@ func parseStatement(tokens: Token***): Statement* {
 	var statement = newStatement();
 	if (isTokenKeyword(Keyword_If)) {
 		statement->kind = .If;
-		statement->statement = (Void*)parseStatementIf(tokens);
+		statement->statement = (Void*)expectStatementIf();
 	} else if (isTokenKeyword(Keyword_While)) {
 		statement->kind = .While;
 		statement->statement = (Void*)parseStatementWhile(tokens);

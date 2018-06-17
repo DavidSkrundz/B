@@ -11,6 +11,16 @@ func LexerError() {
 	exit(EXIT_FAILURE);
 };
 
+func ParserErrorTmp(string: UInt8*) {
+	var token = *_tokens;
+	var pos = token->pos;
+	fprintf(stderr, (char*)"%s:%zu:%zu: ", pos->file, pos->line, pos->column);
+	fprintf(stderr, (char*)"(tmp) error: %s\n", (char*)string);
+	_printUpToNewline(pos->start);
+	_printErrorLocation(pos->start, pos->column);
+	exit(EXIT_FAILURE);
+};
+
 func ParserError(kind: TokenKind) {
 	var token = *_tokens;
 	var pos = token->pos;
