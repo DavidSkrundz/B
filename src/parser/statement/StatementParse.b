@@ -30,10 +30,10 @@ func expectStatementWhile(): StatementWhile* {
 	return statement;
 };
 
-func parseStatementReturn(tokens: Token***): StatementReturn* {
+func expectStatementReturn(): StatementReturn* {
 	expectKeyword(Keyword_Return);
 	var statement = newStatementReturn();
-	statement->expression = parseExpression(tokens);
+	statement->expression = parseExpression(&_tokens);
 	expectToken(.Semicolon);
 	return statement;
 };
@@ -75,7 +75,7 @@ func parseStatement(tokens: Token***): Statement* {
 		statement->statement = (Void*)expectStatementWhile();
 	} else if (isTokenKeyword(Keyword_Return)) {
 		statement->kind = .Return;
-		statement->statement = (Void*)parseStatementReturn(tokens);
+		statement->statement = (Void*)expectStatementReturn();
 	} else if (isTokenKeyword(Keyword_Var)) {
 		statement->kind = .Var;
 		statement->statement = (Void*)parseStatementVar(tokens);
