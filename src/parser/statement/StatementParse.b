@@ -17,14 +17,15 @@ func expectStatementIf(): StatementIf* {
 	return statement;
 };
 
-func parseStatementWhile(tokens: Token***): StatementWhile* {
+func expectStatementWhile(): StatementWhile* {
 	expectKeyword(Keyword_While);
 	var statement = newStatementWhile();
 	expectToken(.OpenParenthesis);
-	statement->condition = parseExpression(tokens);
-	if (statement->condition == NULL) { return NULL; };
+	statement->condition = parseExpression(&_tokens);
+	if (statement->condition == NULL) { ParserErrorTmp("expecting expression"); };
 	expectToken(.CloseParenthesis);
-	statement->block = parseStatementBlock(tokens);
+	statement->block = parseStatementBlock(&_tokens);
+	if (statement->block == NULL) { ParserErrorTmp("expecting statement block"); };
 	expectToken(.Semicolon);
 	return statement;
 };
@@ -71,7 +72,7 @@ func parseStatement(tokens: Token***): Statement* {
 		statement->statement = (Void*)expectStatementIf();
 	} else if (isTokenKeyword(Keyword_While)) {
 		statement->kind = .While;
-		statement->statement = (Void*)parseStatementWhile(tokens);
+		statement->statement = (Void*)expectStatementWhile();
 	} else if (isTokenKeyword(Keyword_Return)) {
 		statement->kind = .Return;
 		statement->statement = (Void*)parseStatementReturn(tokens);
