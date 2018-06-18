@@ -58,15 +58,15 @@ func expectDeclarationFunc(declaration: Declaration*): DeclarationFunc* {
 	return decl;
 };
 
-func parseDeclarationStruct(tokens: Token***, declaration: Declaration*): DeclarationStruct* {
+func expectDeclarationStruct(declaration: Declaration*): DeclarationStruct* {
 	expectKeyword(Keyword_Struct);
 	declaration->name = expectIdentifier();
 	var decl = newDeclarationStruct();
 	if (checkToken(.OpenCurly)) {
-		while ((**tokens)->kind != .CloseCurly) {
-			var varDecl = parseDeclaration(tokens);
-			if (varDecl == NULL) { return NULL; };
-			if (varDecl->kind != .Var) { return NULL; };
+		while (isToken(.CloseCurly) == false) {
+			var varDecl = parseDeclaration(&_tokens);
+			if (varDecl == NULL) { ParserErrorTmp("expecting var declaration"); };
+			if (varDecl->kind != .Var) { ParserErrorTmp("expecting var declaration"); };
 			append((Void***)&decl->fields, (Void*)varDecl);
 		};
 		expectToken(.CloseCurly);
@@ -113,7 +113,7 @@ func parseDeclaration(tokens: Token***): Declaration* {
 		declaration->declaration = (Void*)expectDeclarationFunc(declaration);
 	} else if (isTokenKeyword(Keyword_Struct)) {
 		declaration->kind = .Struct;
-		declaration->declaration = (Void*)parseDeclarationStruct(tokens, declaration);
+		declaration->declaration = (Void*)expectDeclarationStruct(declaration);
 	} else if (isTokenKeyword(Keyword_Enum)) {
 		declaration->kind = .Enum;
 		declaration->declaration = (Void*)parseDeclarationEnum(tokens, declaration);
