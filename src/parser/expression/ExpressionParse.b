@@ -64,7 +64,7 @@ func expectExpressionArrow(): ExpressionArrow* {
 	return newExpressionArrow(expectIdentifier());
 };
 
-func parseExpressionDot(tokens: Token***): ExpressionDot* {
+func expectExpressionDot(): ExpressionDot* {
 	var expression = newExpressionDot();
 	expectToken(.Dot);
 	expression->field = expectIdentifier();
@@ -95,8 +95,7 @@ func expectExpressionPostfix(): Expression* {
 			expression->expression = (Void*)arrow;
 		} else if (isToken(.Dot)) {
 			if (expression->kind != .Identifier) { return NULL; };
-			var dot = parseExpressionDot(&_tokens);
-			if (dot == NULL) { return NULL; };
+			var dot = expectExpressionDot();
 			dot->base = ((ExpressionIdentifier*)expression->expression)->identifier;
 			expression = newExpression();
 			expression->kind = .Dot;
@@ -142,8 +141,7 @@ func expectExpressionUnary(): Expression* {
 		expression->expression = (Void*)expr;
 		return expression;
 	} else if (isToken(.Dot)) {
-		var expr = parseExpressionDot(&_tokens);
-		if (expr == NULL) { return expectExpressionPostfix(); };
+		var expr = expectExpressionDot();
 		var expression = newExpression();
 		expression->kind = .Dot;
 		expression->expression = (Void*)expr;
