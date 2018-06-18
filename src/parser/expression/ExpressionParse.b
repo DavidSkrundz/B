@@ -71,31 +71,31 @@ func parseExpressionDot(tokens: Token***): ExpressionDot* {
 	return expression;
 };
 
-func parseExpressionPostfix(tokens: Token***): Expression* {
+func expectExpressionPostfix(): Expression* {
 	var expression = expectExpressionPrimary();
 	var loop = true;
 	while (loop) {
-		if ((**tokens)->kind == .OpenParenthesis) {
+		if (isToken(.OpenParenthesis)) {
 			var f = expectExpressionFunctionCallArguments();
 			f->function = expression;
 			expression = newExpression();
 			expression->kind = .FunctionCall;
 			expression->expression = (Void*)f;
-		} else if ((**tokens)->kind == .OpenBracket) {
+		} else if (isToken(.OpenBracket)) {
 			var subscript = expectExpressionSubscript();
 			subscript->base = expression;
 			expression = newExpression();
 			expression->kind = .Subscript;
 			expression->expression = (Void*)subscript;
-		} else if ((**tokens)->kind == .Arrow) {
+		} else if (isToken(.Arrow)) {
 			var arrow = expectExpressionArrow();
 			arrow->base = expression;
 			expression = newExpression();
 			expression->kind = .Arrow;
 			expression->expression = (Void*)arrow;
-		} else if ((**tokens)->kind == .Dot) {
+		} else if (isToken(.Dot)) {
 			if (expression->kind != .Identifier) { return NULL; };
-			var dot = parseExpressionDot(tokens);
+			var dot = parseExpressionDot(&_tokens);
 			if (dot == NULL) { return NULL; };
 			dot->base = ((ExpressionIdentifier*)expression->expression)->identifier;
 			expression = newExpression();
@@ -143,13 +143,13 @@ func expectExpressionUnary(): Expression* {
 		return expression;
 	} else if (isToken(.Dot)) {
 		var expr = parseExpressionDot(&_tokens);
-		if (expr == NULL) { return parseExpressionPostfix(&_tokens); };
+		if (expr == NULL) { return expectExpressionPostfix(); };
 		var expression = newExpression();
 		expression->kind = .Dot;
 		expression->expression = (Void*)expr;
 		return expression;
 	} else {
-		return parseExpressionPostfix(&_tokens);
+		return expectExpressionPostfix();
 	};;;;;
 };
 
