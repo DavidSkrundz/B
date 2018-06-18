@@ -1,4 +1,4 @@
-func parseDeclarationVar(tokens: Token***, declaration: Declaration*): DeclarationVar* {
+func expectDeclarationVar(declaration: Declaration*): DeclarationVar* {
 	expectKeyword(Keyword_Var);
 	declaration->name = expectIdentifier();
 	var decl = newDeclarationVar();
@@ -6,7 +6,8 @@ func parseDeclarationVar(tokens: Token***, declaration: Declaration*): Declarati
 		decl->type = expectTypespec();
 	};
 	if (checkToken(.Assign)) {
-		decl->value = parseExpression(tokens);
+		decl->value = parseExpression(&_tokens);
+		if (decl->value == NULL) { ParserErrorTmp("expected expression"); };
 	};
 	expectToken(.Semicolon);
 	if (decl->type == NULL && decl->value == NULL) { return NULL; };
@@ -108,7 +109,7 @@ func parseDeclaration(tokens: Token***): Declaration* {
 	declaration->state = .Unresolved;
 	if (isTokenKeyword(Keyword_Var)) {
 		declaration->kind = .Var;
-		declaration->declaration = (Void*)parseDeclarationVar(tokens, declaration);
+		declaration->declaration = (Void*)expectDeclarationVar(declaration);
 	} else if (isTokenKeyword(Keyword_Func)) {
 		declaration->kind = .Func;
 		declaration->declaration = (Void*)parseDeclarationFunc(tokens, declaration);
