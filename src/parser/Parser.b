@@ -1,15 +1,8 @@
 var _declarations: Declaration**;
 
 func Parse() {
-	var t = &_tokens;
-	var loop = true;
-	while (loop) {
-		var declaration = parseDeclaration(t);
-		if (declaration == NULL) {
-			loop = false;
-		} else {
-			append((Void***)&_declarations, (Void*)declaration);
-		};
+	while (isToken(.EOF) == false) {
+		append((Void***)&_declarations, (Void*)expectDeclaration());
 	};
 	
 	if ((*_tokens)->kind != .EOF) {

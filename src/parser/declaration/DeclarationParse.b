@@ -64,8 +64,7 @@ func expectDeclarationStruct(declaration: Declaration*): DeclarationStruct* {
 	var decl = newDeclarationStruct();
 	if (checkToken(.OpenCurly)) {
 		while (isToken(.CloseCurly) == false) {
-			var varDecl = parseDeclaration(&_tokens);
-			if (varDecl == NULL) { ParserErrorTmp("expecting var declaration"); };
+			var varDecl = expectDeclaration();
 			if (varDecl->kind != .Var) { ParserErrorTmp("expecting var declaration"); };
 			append((Void***)&decl->fields, (Void*)varDecl);
 		};
@@ -101,9 +100,9 @@ func parseDeclarationEnum(tokens: Token***, declaration: Declaration*): Declarat
 	return decl;
 };
 
-func parseDeclaration(tokens: Token***): Declaration* {
+func expectDeclaration(): Declaration* {
 	var declaration = newDeclaration();
-	declaration->attribute = parseAttribute(tokens);
+	declaration->attribute = parseAttribute(&_tokens);
 	declaration->state = .Unresolved;
 	if (isTokenKeyword(Keyword_Var)) {
 		declaration->kind = .Var;
@@ -116,7 +115,7 @@ func parseDeclaration(tokens: Token***): Declaration* {
 		declaration->declaration = (Void*)expectDeclarationStruct(declaration);
 	} else if (isTokenKeyword(Keyword_Enum)) {
 		declaration->kind = .Enum;
-		declaration->declaration = (Void*)parseDeclarationEnum(tokens, declaration);
+		declaration->declaration = (Void*)parseDeclarationEnum(&_tokens, declaration);
 	};;;;
 	if (declaration->declaration == NULL) { return NULL; };
 	return declaration;

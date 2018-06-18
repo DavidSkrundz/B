@@ -37,8 +37,7 @@ func expectStatementReturn(): StatementReturn* {
 
 func expectStatementVar(): StatementVar* {
 	var statement = newStatementVar();
-	statement->declaration = parseDeclaration(&_tokens);
-	if (statement->declaration == NULL) { ParserErrorTmp("expecting var declaration"); };
+	statement->declaration = expectDeclaration();
 	if (statement->declaration->kind != .Var) { ParserErrorTmp("expecting var declaration"); };
 	return statement;
 };
