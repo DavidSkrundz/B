@@ -1,16 +1,8 @@
 var _declarations: Declaration**;
 
 func Parse() {
-	while (isToken(.EOF) == false) {
+	while (checkToken(.EOF) == false) {
 		append((Void***)&_declarations, (Void*)expectDeclaration());
-	};
-	
-	if ((*_tokens)->kind != .EOF) {
-		fprintf(stderr, (char*)"DEPRECATED ERROR - Unexpected token: ");
-		printToken_error(*_tokens);
-		fprintf(stderr, (char*)"\n\n");
-		printDeclarations();
-		exit(EXIT_FAILURE);
 	};
 };
 
