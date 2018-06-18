@@ -278,14 +278,14 @@ func expectExpressionEquality(): Expression* {
 	return expression;
 };
 
-func parseExpressionLogicalAND(tokens: Token***): Expression* {
+func expectExpressionLogicalAND(): Expression* {
 	var expression = expectExpressionEquality();
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
-		if ((**tokens)->kind == .AndAnd) {
-			infix->operator = **tokens;
-			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+		if (isToken(.AndAnd)) {
+			infix->operator = *_tokens;
+			checkToken(.AndAnd);
 		} else { loop = false; };
 		if (loop) {
 			infix->lhs = expression;
@@ -299,8 +299,7 @@ func parseExpressionLogicalAND(tokens: Token***): Expression* {
 };
 
 func parseExpressionLogicalOR(tokens: Token***): Expression* {
-	var expression = parseExpressionLogicalAND(tokens);
-	if (expression == NULL) { return NULL; };
+	var expression = expectExpressionLogicalAND();
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
@@ -310,8 +309,7 @@ func parseExpressionLogicalOR(tokens: Token***): Expression* {
 		} else { loop = false; };
 		if (loop) {
 			infix->lhs = expression;
-			infix->rhs = parseExpressionLogicalAND(tokens);
-			if (infix->rhs == NULL) { return NULL; };
+			infix->rhs = expectExpressionLogicalAND();
 			expression = newExpression();
 			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
