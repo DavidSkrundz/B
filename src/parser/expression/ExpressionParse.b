@@ -209,17 +209,17 @@ func expectExpressionMultiplicative(): Expression* {
 	return expression;
 };
 
-func parseExpressionAdditive(tokens: Token***): Expression* {
+func expectExpressionAdditive(): Expression* {
 	var expression = expectExpressionMultiplicative();
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
-		if ((**tokens)->kind == .Plus) {
-			infix->operator = **tokens;
-			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
-		} else if ((**tokens)->kind == .Minus) {
-			infix->operator = **tokens;
-			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+		if (isToken(.Plus)) {
+			infix->operator = *_tokens;
+			checkToken(.Plus);
+		} else if (isToken(.Minus)) {
+			infix->operator = *_tokens;
+			checkToken(.Minus);
 		} else { loop = false; };;
 		if (loop) {
 			infix->lhs = expression;
@@ -233,8 +233,7 @@ func parseExpressionAdditive(tokens: Token***): Expression* {
 };
 
 func parseExpressionComparison(tokens: Token***): Expression* {
-	var expression = parseExpressionAdditive(tokens);
-	if (expression == NULL) { return NULL; };
+	var expression = expectExpressionAdditive();
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
@@ -247,8 +246,7 @@ func parseExpressionComparison(tokens: Token***): Expression* {
 		} else { loop = false; };;
 		if (loop) {
 			infix->lhs = expression;
-			infix->rhs = parseExpressionAdditive(tokens);
-			if (infix->rhs == NULL) { return NULL; };
+			infix->rhs = expectExpressionAdditive();
 			expression = newExpression();
 			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
