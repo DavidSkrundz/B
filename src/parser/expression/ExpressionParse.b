@@ -255,17 +255,17 @@ func expectExpressionComparison(): Expression* {
 	return expression;
 };
 
-func parseExpressionEquality(tokens: Token***): Expression* {
+func expectExpressionEquality(): Expression* {
 	var expression = expectExpressionComparison();
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
-		if ((**tokens)->kind == .Equal) {
-			infix->operator = **tokens;
-			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
-		} else if ((**tokens)->kind == .NotEqual) {
-			infix->operator = **tokens;
-			*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+		if (isToken(.Equal)) {
+			infix->operator = *_tokens;
+			checkToken(.Equal);
+		} else if (isToken(.NotEqual)) {
+			infix->operator = *_tokens;
+			checkToken(.NotEqual);
 		} else { loop = false; };;
 		if (loop) {
 			infix->lhs = expression;
@@ -279,8 +279,7 @@ func parseExpressionEquality(tokens: Token***): Expression* {
 };
 
 func parseExpressionLogicalAND(tokens: Token***): Expression* {
-	var expression = parseExpressionEquality(tokens);
-	if (expression == NULL) { return NULL; };
+	var expression = expectExpressionEquality();
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
@@ -290,8 +289,7 @@ func parseExpressionLogicalAND(tokens: Token***): Expression* {
 		} else { loop = false; };
 		if (loop) {
 			infix->lhs = expression;
-			infix->rhs = parseExpressionEquality(tokens);
-			if (infix->rhs == NULL) { return NULL; };
+			infix->rhs = expectExpressionEquality();
 			expression = newExpression();
 			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
