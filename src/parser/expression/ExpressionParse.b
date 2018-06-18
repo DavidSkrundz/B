@@ -39,13 +39,12 @@ func expectExpressionPrimary(): Expression* {
 	return expression;
 };
 
-func parseExpressionFunctionCallArguments(tokens: Token***): ExpressionFunctionCall* {
+func expectExpressionFunctionCallArguments(): ExpressionFunctionCall* {
 	var expression = newExpressionFunctionCall();
 	expectToken(.OpenParenthesis);
 	var loop = true;
-	while ((**tokens)->kind != .CloseParenthesis && loop) {
-		var argument = expectExpression();
-		append((Void***)&expression->arguments, (Void*)argument);
+	while (isToken(.CloseParenthesis) == false && loop) {
+		append((Void***)&expression->arguments, (Void*)expectExpression());
 		loop = checkToken(.Comma);
 	};
 	expectToken(.CloseParenthesis);
@@ -77,8 +76,7 @@ func parseExpressionPostfix(tokens: Token***): Expression* {
 	var loop = true;
 	while (loop) {
 		if ((**tokens)->kind == .OpenParenthesis) {
-			var f = parseExpressionFunctionCallArguments(tokens);
-			if (f == NULL) { return NULL; };
+			var f = expectExpressionFunctionCallArguments();
 			f->function = expression;
 			expression = newExpression();
 			expression->kind = .FunctionCall;
