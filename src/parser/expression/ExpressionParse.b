@@ -113,7 +113,7 @@ func parseExpressionPostfix(tokens: Token***): Expression* {
 	return expression;
 };
 
-func parseExpressionUnary(tokens: Token***): Expression* {
+func expectExpressionUnary(): Expression* {
 	if (checkKeyword(Keyword_Sizeof)) {
 		expectToken(.OpenParenthesis);
 		var expr = newExpressionSizeof();
@@ -136,29 +136,29 @@ func parseExpressionUnary(tokens: Token***): Expression* {
 		return expression;
 	} else if (checkToken(.Star)) {
 		var expr = newExpressionDereference();
-		expr->expression = parseExpressionCast(tokens);
-		if (expr->expression == NULL) { return NULL; };
+		expr->expression = parseExpressionCast(&_tokens);
+		if (expr->expression == NULL) { ParserErrorTmp("expecting cast expression"); };
 		var expression = newExpression();
 		expression->kind = .Dereference;
 		expression->expression = (Void*)expr;
 		return expression;
 	} else if (checkToken(.And)) {
 		var expr = newExpressionReference();
-		expr->expression = parseExpressionCast(tokens);
-		if (expr->expression == NULL) { return NULL; };
+		expr->expression = parseExpressionCast(&_tokens);
+		if (expr->expression == NULL) { ParserErrorTmp("expecting cast expression"); };
 		var expression = newExpression();
 		expression->kind = .Reference;
 		expression->expression = (Void*)expr;
 		return expression;
 	} else if (isToken(.Dot)) {
-		var expr = parseExpressionDot(tokens);
-		if (expr == NULL) { return parseExpressionPostfix(tokens); };
+		var expr = parseExpressionDot(&_tokens);
+		if (expr == NULL) { return parseExpressionPostfix(&_tokens); };
 		var expression = newExpression();
 		expression->kind = .Dot;
 		expression->expression = (Void*)expr;
 		return expression;
 	} else {
-		return parseExpressionPostfix(tokens);
+		return parseExpressionPostfix(&_tokens);
 	};;;;;
 };
 
@@ -172,17 +172,17 @@ func parseExpressionCast(tokens: Token***): Expression* {
 		expressionCast->type = parseTypespec(tokens);
 		if (expressionCast->type == NULL) {
 			*tokens = save;
-			return parseExpressionUnary(tokens);
+			return expectExpressionUnary();
 		};
 		if (checkToken(.CloseParenthesis) == false) {
 			*tokens = save;
-			return parseExpressionUnary(tokens);
+			return expectExpressionUnary();
 		};
 		expressionCast->expression = parseExpressionCast(tokens);
 		if (expressionCast->expression == NULL) { return NULL; };
 		return expression;
 	} else {
-		return parseExpressionUnary(tokens);
+		return expectExpressionUnary();
 	};
 };
 
