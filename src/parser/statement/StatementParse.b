@@ -8,8 +8,7 @@ func expectStatementIf(): StatementIf* {
 	statement->block = expectStatementBlock();
 	if (checkKeyword(Keyword_Else)) {
 		if (isTokenKeyword(Keyword_If) || (*_tokens)->kind == .OpenCurly) {
-			statement->elseBlock = parseStatement(&_tokens);
-			if (statement->elseBlock == NULL) { ParserErrorTmp("expecting if or block"); };
+			statement->elseBlock = expectStatement();
 		} else { ParserErrorTmp("expecting if or block"); };
 	};
 	expectToken(.Semicolon);
@@ -63,7 +62,7 @@ func expectStatementAssign(): StatementAssign* {
 	return statement;
 };
 
-func parseStatement(tokens: Token***): Statement* {
+func expectStatement(): Statement* {
 	var statement = newStatement();
 	if (isTokenKeyword(Keyword_If)) {
 		statement->kind = .If;
@@ -77,15 +76,15 @@ func parseStatement(tokens: Token***): Statement* {
 	} else if (isTokenKeyword(Keyword_Var)) {
 		statement->kind = .Var;
 		statement->statement = (Void*)expectStatementVar();
-	} else if ((**tokens)->kind == .OpenCurly) {
+	} else if ((*_tokens)->kind == .OpenCurly) {
 		statement->kind = .Block;
 		statement->statement = (Void*)expectStatementBlock();
 	} else {
-		var before = *tokens;
+		var before = _tokens;
 		statement->kind = .Expression;
 		statement->statement = (Void*)parseStatementExpression();
 		if (statement->statement == NULL) {
-			*tokens = before;
+			_tokens = before;
 			statement->kind = .Assign;
 			statement->statement = (Void*)expectStatementAssign();
 		};
@@ -97,8 +96,7 @@ func expectStatementBlock(): StatementBlock* {
 	expectToken(.OpenCurly);
 	var block = newStatementBlock();
 	while ((*_tokens)->kind != .CloseCurly) {
-		var statement = parseStatement(&_tokens);
-		if (statement == NULL) { ParserErrorTmp("expecting statement"); };
+		var statement = expectStatement();
 		append((Void***)&block->statements, (Void*)statement);
 	};
 	expectToken(.CloseCurly);
