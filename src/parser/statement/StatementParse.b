@@ -5,8 +5,7 @@ func expectStatementIf(): StatementIf* {
 	statement->condition = parseExpression(&_tokens);
 	if (statement->condition == NULL) { ParserErrorTmp("expecting expression"); };
 	expectToken(.CloseParenthesis);
-	statement->block = parseStatementBlock(&_tokens);
-	if (statement->block == NULL) { ParserErrorTmp("expecting statement block"); };
+	statement->block = expectStatementBlock();
 	if (checkKeyword(Keyword_Else)) {
 		if (isTokenKeyword(Keyword_If) || (*_tokens)->kind == .OpenCurly) {
 			statement->elseBlock = parseStatement(&_tokens);
@@ -24,8 +23,7 @@ func expectStatementWhile(): StatementWhile* {
 	statement->condition = parseExpression(&_tokens);
 	if (statement->condition == NULL) { ParserErrorTmp("expecting expression"); };
 	expectToken(.CloseParenthesis);
-	statement->block = parseStatementBlock(&_tokens);
-	if (statement->block == NULL) { ParserErrorTmp("expecting statement block"); };
+	statement->block = expectStatementBlock();
 	expectToken(.Semicolon);
 	return statement;
 };
@@ -81,7 +79,7 @@ func parseStatement(tokens: Token***): Statement* {
 		statement->statement = (Void*)expectStatementVar();
 	} else if ((**tokens)->kind == .OpenCurly) {
 		statement->kind = .Block;
-		statement->statement = (Void*)parseStatementBlock(tokens);
+		statement->statement = (Void*)expectStatementBlock();
 	} else {
 		var before = *tokens;
 		statement->kind = .Expression;
@@ -95,12 +93,12 @@ func parseStatement(tokens: Token***): Statement* {
 	return statement;
 };
 
-func parseStatementBlock(tokens: Token***): StatementBlock* {
+func expectStatementBlock(): StatementBlock* {
 	expectToken(.OpenCurly);
 	var block = newStatementBlock();
-	while ((**tokens)->kind != .CloseCurly) {
-		var statement = parseStatement(tokens);
-		if (statement == NULL) { return NULL; };
+	while ((*_tokens)->kind != .CloseCurly) {
+		var statement = parseStatement(&_tokens);
+		if (statement == NULL) { ParserErrorTmp("expecting statement"); };
 		append((Void***)&block->statements, (Void*)statement);
 	};
 	expectToken(.CloseCurly);

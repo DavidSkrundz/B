@@ -52,7 +52,7 @@ func parseDeclarationFunc(tokens: Token***, declaration: Declaration*): Declarat
 		decl->returnType = expectTypespec();
 	};
 	if ((**tokens)->kind == .OpenCurly) {
-		decl->block = parseStatementBlock(tokens);
+		decl->block = expectStatementBlock();
 		if (decl->block == NULL) { return NULL; };
 	};
 	expectToken(.Semicolon);
