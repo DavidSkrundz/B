@@ -62,6 +62,7 @@ func expectStatementAssign(): StatementAssign* {
 
 func expectStatement(): Statement* {
 	var statement = newStatement();
+	statement->pos = _tokens[0]->pos;
 	if (isTokenKeyword(Keyword_If)) {
 		statement->kind = .If;
 		statement->statement = (Void*)expectStatementIf();

@@ -1,4 +1,5 @@
 struct Attribute {
+	var pos: SrcPos*;
 	var name: Identifier*;
 	var parameters: Identifier**;
 };

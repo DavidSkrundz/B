@@ -1,4 +1,5 @@
 struct Expression {
+	var pos: SrcPos*;
 	var kind: ExpressionKind;
 	var expression: Void*;
 	var resolvedType: Type*;

@@ -1,5 +1,6 @@
 func expectDeclarationVar(declaration: Declaration*): DeclarationVar* {
 	expectKeyword(Keyword_Var);
+	declaration->pos = previousToken()->pos;
 	declaration->name = expectIdentifier();
 	var decl = newDeclarationVar();
 	if (checkToken(.Colon)) {
@@ -17,6 +18,7 @@ func parseDeclarationFuncArgument(): DeclarationFuncArg* {
 	var arg = newDeclarationFuncArg();
 	arg->name = parseIdentifier(&_tokens);
 	if (arg->name == NULL) { return NULL; };
+	arg->pos = arg->name->pos;
 	expectToken(.Colon);
 	arg->type = expectTypespec();
 	return arg;
@@ -44,6 +46,7 @@ func expectDeclarationFuncArguments(): DeclarationFuncArgs* {
 
 func expectDeclarationFunc(declaration: Declaration*): DeclarationFunc* {
 	expectKeyword(Keyword_Func);
+	declaration->pos = previousToken()->pos;
 	declaration->name = expectIdentifier();
 	var decl = newDeclarationFunc();
 	decl->args = expectDeclarationFuncArguments();
@@ -59,6 +62,7 @@ func expectDeclarationFunc(declaration: Declaration*): DeclarationFunc* {
 
 func expectDeclarationStruct(declaration: Declaration*): DeclarationStruct* {
 	expectKeyword(Keyword_Struct);
+	declaration->pos = previousToken()->pos;
 	declaration->name = expectIdentifier();
 	var decl = newDeclarationStruct();
 	if (checkToken(.OpenCurly)) {
@@ -75,6 +79,7 @@ func expectDeclarationStruct(declaration: Declaration*): DeclarationStruct* {
 
 func expectDeclarationEnum(declaration: Declaration*): DeclarationEnum* {
 	expectKeyword(Keyword_Enum);
+	declaration->pos = previousToken()->pos;
 	declaration->name = expectIdentifier();
 	var decl = newDeclarationEnum();
 	expectToken(.OpenCurly);

@@ -1,4 +1,5 @@
 struct Declaration {
+	var pos: SrcPos*;
 	var kind: DeclarationKind;
 	var state: DeclarationState;
 	var attribute: Attribute*;
@@ -13,6 +14,7 @@ struct DeclarationVar {
 };
 
 struct DeclarationFuncArg {
+	var pos: SrcPos*;
 	var name: Identifier*;
 	var type: Typespec*;
 	var resolvedType: Type*;

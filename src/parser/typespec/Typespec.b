@@ -1,4 +1,5 @@
 struct Typespec {
+	var pos: SrcPos*;
 	var kind: TypespecKind;
 	var spec: Void*;
 };

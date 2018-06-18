@@ -51,3 +51,7 @@ func isToken(kind: TokenKind): Bool {
 func isTokenKeyword(keyword: UInt8*): Bool {
 	return isToken(.Identifier) && (*_tokens)->value == keyword;
 };
+
+func previousToken(): Token* {
+	return *(Token**)((UInt)_tokens - sizeof(Token*));
+};

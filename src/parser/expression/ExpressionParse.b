@@ -36,6 +36,7 @@ func expectExpressionPrimary(): Expression* {
 		identifier->identifier = expectIdentifier();
 		expression->expression = (Void*)identifier;
 	} else { return NULL; };;;;;;;
+	expression->pos = previousToken()->pos;
 	return expression;
 };
 
@@ -75,22 +76,26 @@ func expectExpressionPostfix(): Expression* {
 	var expression = expectExpressionPrimary();
 	var loop = true;
 	while (loop) {
+		var pos = _tokens[0]->pos;
 		if (isToken(.OpenParenthesis)) {
 			var f = expectExpressionFunctionCallArguments();
 			f->function = expression;
 			expression = newExpression();
+			expression->pos = pos;
 			expression->kind = .FunctionCall;
 			expression->expression = (Void*)f;
 		} else if (isToken(.OpenBracket)) {
 			var subscript = expectExpressionSubscript();
 			subscript->base = expression;
 			expression = newExpression();
+			expression->pos = pos;
 			expression->kind = .Subscript;
 			expression->expression = (Void*)subscript;
 		} else if (isToken(.Arrow)) {
 			var arrow = expectExpressionArrow();
 			arrow->base = expression;
 			expression = newExpression();
+			expression->pos = pos;
 			expression->kind = .Arrow;
 			expression->expression = (Void*)arrow;
 		} else if (isToken(.Dot)) {
@@ -98,6 +103,7 @@ func expectExpressionPostfix(): Expression* {
 			var dot = expectExpressionDot();
 			dot->base = ((ExpressionIdentifier*)expression->expression)->identifier;
 			expression = newExpression();
+			expression->pos = pos;
 			expression->kind = .Dot;
 			expression->expression = (Void*)dot;
 		} else { loop = false; };;;;
@@ -106,12 +112,14 @@ func expectExpressionPostfix(): Expression* {
 };
 
 func expectExpressionUnary(): Expression* {
+	var pos = _tokens[0]->pos;
 	if (checkKeyword(Keyword_Sizeof)) {
 		expectToken(.OpenParenthesis);
 		var expr = newExpressionSizeof();
 		expr->type = expectTypespec();
 		expectToken(.CloseParenthesis);
 		var expression = newExpression();
+		expression->pos = pos;
 		expression->kind = .Sizeof;
 		expression->expression = (Void*)expr;
 		return expression;
@@ -123,6 +131,7 @@ func expectExpressionUnary(): Expression* {
 		expr->field = expectIdentifier();
 		expectToken(.CloseParenthesis);
 		var expression = newExpression();
+		expression->pos = pos;
 		expression->kind = .Offsetof;
 		expression->expression = (Void*)expr;
 		return expression;
@@ -130,6 +139,7 @@ func expectExpressionUnary(): Expression* {
 		var expr = newExpressionDereference();
 		expr->expression = expectExpressionCast();
 		var expression = newExpression();
+		expression->pos = pos;
 		expression->kind = .Dereference;
 		expression->expression = (Void*)expr;
 		return expression;
@@ -137,12 +147,14 @@ func expectExpressionUnary(): Expression* {
 		var expr = newExpressionReference();
 		expr->expression = expectExpressionCast();
 		var expression = newExpression();
+		expression->pos = pos;
 		expression->kind = .Reference;
 		expression->expression = (Void*)expr;
 		return expression;
 	} else if (isToken(.Dot)) {
 		var expr = expectExpressionDot();
 		var expression = newExpression();
+		expression->pos = pos;
 		expression->kind = .Dot;
 		expression->expression = (Void*)expr;
 		return expression;
@@ -155,6 +167,7 @@ func expectExpressionCast(): Expression* {
 	var save = _tokens;
 	if (checkToken(.OpenParenthesis)) {
 		var expression = newExpression();
+		expression->pos = previousToken()->pos;
 		expression->kind = .Cast;
 		var expressionCast = newExpressionCast();
 		expression->expression = (Void*)expressionCast;
@@ -193,6 +206,7 @@ func expectExpressionMultiplicative(): Expression* {
 			infix->lhs = expression;
 			infix->rhs = expectExpressionCast();
 			expression = newExpression();
+			expression->pos = previousToken()->pos;
 			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
 		};
@@ -216,6 +230,7 @@ func expectExpressionAdditive(): Expression* {
 			infix->lhs = expression;
 			infix->rhs = expectExpressionMultiplicative();
 			expression = newExpression();
+			expression->pos = previousToken()->pos;
 			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
 		};
@@ -239,6 +254,7 @@ func expectExpressionComparison(): Expression* {
 			infix->lhs = expression;
 			infix->rhs = expectExpressionAdditive();
 			expression = newExpression();
+			expression->pos = previousToken()->pos;
 			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
 		};
@@ -262,6 +278,7 @@ func expectExpressionEquality(): Expression* {
 			infix->lhs = expression;
 			infix->rhs = expectExpressionComparison();
 			expression = newExpression();
+			expression->pos = previousToken()->pos;
 			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
 		};
@@ -282,6 +299,7 @@ func expectExpressionLogicalAND(): Expression* {
 			infix->lhs = expression;
 			infix->rhs = expectExpressionEquality();
 			expression = newExpression();
+			expression->pos = previousToken()->pos;
 			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
 		};
@@ -302,6 +320,7 @@ func expectExpressionLogicalOR(): Expression* {
 			infix->lhs = expression;
 			infix->rhs = expectExpressionLogicalAND();
 			expression = newExpression();
+			expression->pos = previousToken()->pos;
 			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
 		};

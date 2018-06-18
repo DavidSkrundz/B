@@ -1,4 +1,5 @@
 struct Statement {
+	var pos: SrcPos*;
 	var kind: StatementKind;
 	var statement: Void*;
 };
