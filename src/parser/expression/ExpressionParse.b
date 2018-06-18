@@ -55,11 +55,11 @@ func parseExpressionFunctionCallArguments(tokens: Token***): ExpressionFunctionC
 	return expression;
 };
 
-func parseExpressionSubscript(tokens: Token***): ExpressionSubscript* {
+func expectExpressionSubscript(): ExpressionSubscript* {
 	var expression = newExpressionSubscript();
 	expectToken(.OpenBracket);
-	expression->subscript = parseExpression(tokens);
-	if (expression->subscript == NULL) { return NULL; };
+	expression->subscript = parseExpression(&_tokens);
+	if (expression->subscript == NULL) { ParserErrorTmp("expected expression"); };
 	expectToken(.CloseBracket);
 	return expression;
 };
@@ -91,8 +91,7 @@ func parseExpressionPostfix(tokens: Token***): Expression* {
 			expression->kind = .FunctionCall;
 			expression->expression = (Void*)f;
 		} else if ((**tokens)->kind == .OpenBracket) {
-			var subscript = parseExpressionSubscript(tokens);
-			if (subscript == NULL) { return NULL; };
+			var subscript = expectExpressionSubscript();
 			subscript->base = expression;
 			expression = newExpression();
 			expression->kind = .Subscript;
