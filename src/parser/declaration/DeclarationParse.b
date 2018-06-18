@@ -14,9 +14,9 @@ func expectDeclarationVar(declaration: Declaration*): DeclarationVar* {
 	return decl;
 };
 
-func parseDeclarationFuncArgument(tokens: Token***): DeclarationFuncArg* {
+func parseDeclarationFuncArgument(): DeclarationFuncArg* {
 	var arg = newDeclarationFuncArg();
-	arg->name = parseIdentifier(tokens);
+	arg->name = parseIdentifier(&_tokens);
 	if (arg->name == NULL) { return NULL; };
 	expectToken(.Colon);
 	arg->type = expectTypespec();
@@ -26,12 +26,12 @@ func parseDeclarationFuncArgument(tokens: Token***): DeclarationFuncArg* {
 func expectDeclarationFuncArguments(): DeclarationFuncArgs* {
 	expectToken(.OpenParenthesis);
 	var args = newDeclarationFuncArgs();
-	var arg = parseDeclarationFuncArgument(&_tokens);
+	var arg = parseDeclarationFuncArgument();
 	if (arg != NULL) {
 		append((Void***)&args->args, (Void*)arg);
 	};
 	while (checkToken(.Comma)) {
-		var arg2 = parseDeclarationFuncArgument(&_tokens);
+		var arg2 = parseDeclarationFuncArgument();
 		if (arg2 != NULL) {
 			append((Void***)&args->args, (Void*)arg2);
 		};
