@@ -106,8 +106,10 @@ func newExpressionSubscript(): ExpressionSubscript* {
 	return (ExpressionSubscript*)xcalloc(1, sizeof(ExpressionSubscript));
 };
 
-func newExpressionArrow(): ExpressionArrow* {
-	return (ExpressionArrow*)xcalloc(1, sizeof(ExpressionArrow));
+func newExpressionArrow(field: Identifier*): ExpressionArrow* {
+	var expression = (ExpressionArrow*)xcalloc(1, sizeof(ExpressionArrow));
+	expression->field = field;
+	return expression;
 };
 
 func newExpressionDot(): ExpressionDot* {

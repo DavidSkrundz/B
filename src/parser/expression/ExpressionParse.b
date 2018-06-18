@@ -64,11 +64,9 @@ func expectExpressionSubscript(): ExpressionSubscript* {
 	return expression;
 };
 
-func parseExpressionArrow(tokens: Token***): ExpressionArrow* {
-	var expression = newExpressionArrow();
+func expectExpressionArrow(): ExpressionArrow* {
 	expectToken(.Arrow);
-	expression->field = expectIdentifier();
-	return expression;
+	return newExpressionArrow(expectIdentifier());
 };
 
 func parseExpressionDot(tokens: Token***): ExpressionDot* {
@@ -97,8 +95,7 @@ func parseExpressionPostfix(tokens: Token***): Expression* {
 			expression->kind = .Subscript;
 			expression->expression = (Void*)subscript;
 		} else if ((**tokens)->kind == .Arrow) {
-			var arrow = parseExpressionArrow(tokens);
-			if (arrow == NULL) { return NULL; };
+			var arrow = expectExpressionArrow();
 			arrow->base = expression;
 			expression = newExpression();
 			expression->kind = .Arrow;
