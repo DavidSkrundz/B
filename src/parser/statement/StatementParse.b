@@ -38,17 +38,17 @@ func expectStatementReturn(): StatementReturn* {
 	return statement;
 };
 
-func parseStatementVar(tokens: Token***): StatementVar* {
+func expectStatementVar(): StatementVar* {
 	var statement = newStatementVar();
-	statement->declaration = parseDeclaration(tokens);
-	if (statement->declaration == NULL) { return NULL; };
-	if (statement->declaration->kind != .Var) { return NULL; };
+	statement->declaration = parseDeclaration(&_tokens);
+	if (statement->declaration == NULL) { ParserErrorTmp("expecting var declaration"); };
+	if (statement->declaration->kind != .Var) { ParserErrorTmp("expecting var declaration"); };
 	return statement;
 };
 
-func parseStatementExpression(tokens: Token***): StatementExpression* {
+func parseStatementExpression(): StatementExpression* {
 	var expression = newStatementExpression();
-	expression->expression = parseExpression(tokens);
+	expression->expression = parseExpression(&_tokens);
 	if (expression->expression == NULL) { return NULL; };
 	if (checkToken(.Semicolon)) {
 		return expression;
@@ -56,11 +56,11 @@ func parseStatementExpression(tokens: Token***): StatementExpression* {
 	return NULL;
 };
 
-func parseStatementAssign(tokens: Token***): StatementAssign* {
+func expectStatementAssign(): StatementAssign* {
 	var statement = newStatementAssign();
-	statement->lhs = parseExpression(tokens);
+	statement->lhs = parseExpression(&_tokens);
 	expectToken(.Assign);
-	statement->rhs = parseExpression(tokens);
+	statement->rhs = parseExpression(&_tokens);
 	expectToken(.Semicolon);
 	return statement;
 };
@@ -78,21 +78,20 @@ func parseStatement(tokens: Token***): Statement* {
 		statement->statement = (Void*)expectStatementReturn();
 	} else if (isTokenKeyword(Keyword_Var)) {
 		statement->kind = .Var;
-		statement->statement = (Void*)parseStatementVar(tokens);
+		statement->statement = (Void*)expectStatementVar();
 	} else if ((**tokens)->kind == .OpenCurly) {
 		statement->kind = .Block;
 		statement->statement = (Void*)parseStatementBlock(tokens);
 	} else {
 		var before = *tokens;
 		statement->kind = .Expression;
-		statement->statement = (Void*)parseStatementExpression(tokens);
+		statement->statement = (Void*)parseStatementExpression();
 		if (statement->statement == NULL) {
 			*tokens = before;
 			statement->kind = .Assign;
-			statement->statement = (Void*)parseStatementAssign(tokens);
+			statement->statement = (Void*)expectStatementAssign();
 		};
 	};;;;;
-	if (statement->statement == NULL) { return NULL; };
 	return statement;
 };
 
