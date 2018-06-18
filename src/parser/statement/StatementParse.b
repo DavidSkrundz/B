@@ -30,8 +30,10 @@ func expectStatementWhile(): StatementWhile* {
 func expectStatementReturn(): StatementReturn* {
 	expectKeyword(Keyword_Return);
 	var statement = newStatementReturn();
-	statement->expression = parseExpression(&_tokens);
-	expectToken(.Semicolon);
+	if (checkToken(.Semicolon) == false) {
+		statement->expression = parseExpression(&_tokens);
+		expectToken(.Semicolon);
+	};
 	return statement;
 };
 
