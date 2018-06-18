@@ -136,16 +136,14 @@ func expectExpressionUnary(): Expression* {
 		return expression;
 	} else if (checkToken(.Star)) {
 		var expr = newExpressionDereference();
-		expr->expression = parseExpressionCast(&_tokens);
-		if (expr->expression == NULL) { ParserErrorTmp("expecting cast expression"); };
+		expr->expression = expectExpressionCast();
 		var expression = newExpression();
 		expression->kind = .Dereference;
 		expression->expression = (Void*)expr;
 		return expression;
 	} else if (checkToken(.And)) {
 		var expr = newExpressionReference();
-		expr->expression = parseExpressionCast(&_tokens);
-		if (expr->expression == NULL) { ParserErrorTmp("expecting cast expression"); };
+		expr->expression = expectExpressionCast();
 		var expression = newExpression();
 		expression->kind = .Reference;
 		expression->expression = (Void*)expr;
@@ -162,24 +160,23 @@ func expectExpressionUnary(): Expression* {
 	};;;;;
 };
 
-func parseExpressionCast(tokens: Token***): Expression* {
-	var save = *tokens;
+func expectExpressionCast(): Expression* {
+	var save = _tokens;
 	if (checkToken(.OpenParenthesis)) {
 		var expression = newExpression();
 		expression->kind = .Cast;
 		var expressionCast = newExpressionCast();
 		expression->expression = (Void*)expressionCast;
-		expressionCast->type = parseTypespec(tokens);
+		expressionCast->type = parseTypespec(&_tokens);
 		if (expressionCast->type == NULL) {
-			*tokens = save;
+			_tokens = save;
 			return expectExpressionUnary();
 		};
 		if (checkToken(.CloseParenthesis) == false) {
-			*tokens = save;
+			_tokens = save;
 			return expectExpressionUnary();
 		};
-		expressionCast->expression = parseExpressionCast(tokens);
-		if (expressionCast->expression == NULL) { return NULL; };
+		expressionCast->expression = expectExpressionCast();
 		return expression;
 	} else {
 		return expectExpressionUnary();
@@ -187,8 +184,7 @@ func parseExpressionCast(tokens: Token***): Expression* {
 };
 
 func parseExpressionMultiplicative(tokens: Token***): Expression* {
-	var expression = parseExpressionCast(tokens);
-	if (expression == NULL) { return NULL; };
+	var expression = expectExpressionCast();
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
@@ -204,8 +200,7 @@ func parseExpressionMultiplicative(tokens: Token***): Expression* {
 		} else { loop = false; };;;
 		if (loop) {
 			infix->lhs = expression;
-			infix->rhs = parseExpressionCast(tokens);
-			if (infix->rhs == NULL) { return NULL; };
+			infix->rhs = expectExpressionCast();
 			expression = newExpression();
 			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
