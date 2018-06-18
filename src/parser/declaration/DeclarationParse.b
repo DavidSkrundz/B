@@ -74,12 +74,12 @@ func expectDeclarationStruct(declaration: Declaration*): DeclarationStruct* {
 	return decl;
 };
 
-func parseDeclarationEnum(tokens: Token***, declaration: Declaration*): DeclarationEnum* {
+func expectDeclarationEnum(declaration: Declaration*): DeclarationEnum* {
 	expectKeyword(Keyword_Enum);
 	declaration->name = expectIdentifier();
 	var decl = newDeclarationEnum();
 	expectToken(.OpenCurly);
-	while ((**tokens)->kind != .CloseCurly) {
+	while (isToken(.CloseCurly) == false) {
 		expectKeyword(Keyword_Case);
 		var caseName = expectIdentifier();
 		expectToken(.Semicolon);
@@ -115,8 +115,9 @@ func expectDeclaration(): Declaration* {
 		declaration->declaration = (Void*)expectDeclarationStruct(declaration);
 	} else if (isTokenKeyword(Keyword_Enum)) {
 		declaration->kind = .Enum;
-		declaration->declaration = (Void*)parseDeclarationEnum(&_tokens, declaration);
+		declaration->declaration = (Void*)expectDeclarationEnum(declaration);
+	} else {
+		ParserErrorTmp("expecting declaration");
 	};;;;
-	if (declaration->declaration == NULL) { return NULL; };
 	return declaration;
 };
