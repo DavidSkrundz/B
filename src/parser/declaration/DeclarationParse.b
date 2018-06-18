@@ -43,18 +43,16 @@ func expectDeclarationFuncArguments(): DeclarationFuncArgs* {
 	return args;
 };
 
-func parseDeclarationFunc(tokens: Token***, declaration: Declaration*): DeclarationFunc* {
+func expectDeclarationFunc(declaration: Declaration*): DeclarationFunc* {
 	expectKeyword(Keyword_Func);
 	declaration->name = expectIdentifier();
 	var decl = newDeclarationFunc();
 	decl->args = expectDeclarationFuncArguments();
-	if (decl->args == NULL) { return NULL; };
 	if (checkToken(.Colon)) {
 		decl->returnType = expectTypespec();
 	};
-	if ((**tokens)->kind == .OpenCurly) {
+	if (isToken(.OpenCurly)) {
 		decl->block = expectStatementBlock();
-		if (decl->block == NULL) { return NULL; };
 	};
 	expectToken(.Semicolon);
 	return decl;
@@ -112,7 +110,7 @@ func parseDeclaration(tokens: Token***): Declaration* {
 		declaration->declaration = (Void*)expectDeclarationVar(declaration);
 	} else if (isTokenKeyword(Keyword_Func)) {
 		declaration->kind = .Func;
-		declaration->declaration = (Void*)parseDeclarationFunc(tokens, declaration);
+		declaration->declaration = (Void*)expectDeclarationFunc(declaration);
 	} else if (isTokenKeyword(Keyword_Struct)) {
 		declaration->kind = .Struct;
 		declaration->declaration = (Void*)parseDeclarationStruct(tokens, declaration);
