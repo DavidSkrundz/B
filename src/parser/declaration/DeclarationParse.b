@@ -6,11 +6,10 @@ func expectDeclarationVar(declaration: Declaration*): DeclarationVar* {
 		decl->type = expectTypespec();
 	};
 	if (checkToken(.Assign)) {
-		decl->value = parseExpression(&_tokens);
-		if (decl->value == NULL) { ParserErrorTmp("expected expression"); };
+		decl->value = expectExpression();
 	};
 	expectToken(.Semicolon);
-	if (decl->type == NULL && decl->value == NULL) { return NULL; };
+	if (decl->type == NULL && decl->value == NULL) { ParserErrorTmp("expecting type or value to not be null"); };
 	return decl;
 };
 

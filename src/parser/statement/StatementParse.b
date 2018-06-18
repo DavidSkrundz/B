@@ -2,8 +2,7 @@ func expectStatementIf(): StatementIf* {
 	expectKeyword(Keyword_If);
 	var statement = newStatementIf();
 	expectToken(.OpenParenthesis);
-	statement->condition = parseExpression(&_tokens);
-	if (statement->condition == NULL) { ParserErrorTmp("expecting expression"); };
+	statement->condition = expectExpression();
 	expectToken(.CloseParenthesis);
 	statement->block = expectStatementBlock();
 	if (checkKeyword(Keyword_Else)) {
@@ -19,8 +18,7 @@ func expectStatementWhile(): StatementWhile* {
 	expectKeyword(Keyword_While);
 	var statement = newStatementWhile();
 	expectToken(.OpenParenthesis);
-	statement->condition = parseExpression(&_tokens);
-	if (statement->condition == NULL) { ParserErrorTmp("expecting expression"); };
+	statement->condition = expectExpression();
 	expectToken(.CloseParenthesis);
 	statement->block = expectStatementBlock();
 	expectToken(.Semicolon);
@@ -31,7 +29,7 @@ func expectStatementReturn(): StatementReturn* {
 	expectKeyword(Keyword_Return);
 	var statement = newStatementReturn();
 	if (checkToken(.Semicolon) == false) {
-		statement->expression = parseExpression(&_tokens);
+		statement->expression = expectExpression();
 		expectToken(.Semicolon);
 	};
 	return statement;
@@ -46,8 +44,7 @@ func expectStatementVar(): StatementVar* {
 
 func parseStatementExpression(): StatementExpression* {
 	var expression = newStatementExpression();
-	expression->expression = parseExpression(&_tokens);
-	if (expression->expression == NULL) { return NULL; };
+	expression->expression = expectExpression();
 	if (checkToken(.Semicolon)) {
 		return expression;
 	};
@@ -56,9 +53,9 @@ func parseStatementExpression(): StatementExpression* {
 
 func expectStatementAssign(): StatementAssign* {
 	var statement = newStatementAssign();
-	statement->lhs = parseExpression(&_tokens);
+	statement->lhs = expectExpression();
 	expectToken(.Assign);
-	statement->rhs = parseExpression(&_tokens);
+	statement->rhs = expectExpression();
 	expectToken(.Semicolon);
 	return statement;
 };

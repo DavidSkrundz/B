@@ -2,9 +2,8 @@ func parseExpressionPrimary(tokens: Token***): Expression* {
 	var expression = newExpression();
 	if (checkToken(.OpenParenthesis)) {
 		expression->kind = .Group;
-		expression->expression = (Void*)parseExpression(tokens);
-		if ((**tokens)->kind != .CloseParenthesis) { return NULL; };
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+		expression->expression = (Void*)expectExpression();
+		expectToken(.CloseParenthesis);
 	} else if (checkKeyword(Keyword_NULL)) {
 		expression->kind = .Null;
 	} else if (isTokenKeyword(Keyword_True) || isTokenKeyword(Keyword_False)) {
@@ -46,8 +45,7 @@ func parseExpressionFunctionCallArguments(tokens: Token***): ExpressionFunctionC
 	expectToken(.OpenParenthesis);
 	var loop = true;
 	while ((**tokens)->kind != .CloseParenthesis && loop) {
-		var argument = parseExpression(tokens);
-		if (argument == NULL) { return NULL; };
+		var argument = expectExpression();
 		append((Void***)&expression->arguments, (Void*)argument);
 		loop = checkToken(.Comma);
 	};
@@ -58,8 +56,7 @@ func parseExpressionFunctionCallArguments(tokens: Token***): ExpressionFunctionC
 func expectExpressionSubscript(): ExpressionSubscript* {
 	var expression = newExpressionSubscript();
 	expectToken(.OpenBracket);
-	expression->subscript = parseExpression(&_tokens);
-	if (expression->subscript == NULL) { ParserErrorTmp("expected expression"); };
+	expression->subscript = expectExpression();
 	expectToken(.CloseBracket);
 	return expression;
 };
@@ -318,6 +315,6 @@ func expectExpressionLogicalOR(): Expression* {
 	return expression;
 };
 
-func parseExpression(tokens: Token***): Expression* {
+func expectExpression(): Expression* {
 	return expectExpressionLogicalOR();
 };
