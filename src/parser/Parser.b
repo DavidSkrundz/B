@@ -14,6 +14,10 @@ func Parse() {
 	};
 };
 
+func advanceParser(amount: UInt) {
+	_tokens = (Token**)((UInt)_tokens + amount * sizeof(Token*));
+};
+
 func expectToken(kind: TokenKind) {
 	if ((*_tokens)->kind != kind) {
 		printDeclarations();

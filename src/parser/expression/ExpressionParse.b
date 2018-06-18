@@ -1,4 +1,4 @@
-func parseExpressionPrimary(tokens: Token***): Expression* {
+func expectExpressionPrimary(): Expression* {
 	var expression = newExpression();
 	if (checkToken(.OpenParenthesis)) {
 		expression->kind = .Group;
@@ -9,28 +9,28 @@ func parseExpressionPrimary(tokens: Token***): Expression* {
 	} else if (isTokenKeyword(Keyword_True) || isTokenKeyword(Keyword_False)) {
 		expression->kind = .BooleanLiteral;
 		var literal = newExpressionBooleanLiteral();
-		literal->literal = **tokens;
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+		literal->literal = *_tokens;
+		advanceParser(1);
 		expression->expression = (Void*)literal;
-	} else if ((**tokens)->kind == .IntegerLiteral) {
+	} else if (isToken(.IntegerLiteral)) {
 		expression->kind = .IntegerLiteral;
 		var literal = newExpressionIntegerLiteral();
-		literal->literal = **tokens;
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+		literal->literal = *_tokens;
+		advanceParser(1);
 		expression->expression = (Void*)literal;
-	} else if ((**tokens)->kind == .CharacterLiteral) {
+	} else if (isToken(.CharacterLiteral)) {
 		expression->kind = .CharacterLiteral;
 		var literal = newExpressionCharacterLiteral();
-		literal->literal = **tokens;
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+		literal->literal = *_tokens;
+		advanceParser(1);
 		expression->expression = (Void*)literal;
-	} else if ((**tokens)->kind == .StringLiteral) {
+	} else if (isToken(.StringLiteral)) {
 		expression->kind = .StringLiteral;
 		var literal = newExpressionStringLiteral();
-		literal->literal = **tokens;
-		*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
+		literal->literal = *_tokens;
+		advanceParser(1);
 		expression->expression = (Void*)literal;
-	} else if ((**tokens)->kind == .Identifier) {
+	} else if (isToken(.Identifier)) {
 		expression->kind = .Identifier;
 		var identifier = newExpressionIdentifier();
 		identifier->identifier = expectIdentifier();
@@ -38,7 +38,6 @@ func parseExpressionPrimary(tokens: Token***): Expression* {
 	} else { return NULL; };;;;;;;
 	return expression;
 };
-
 
 func parseExpressionFunctionCallArguments(tokens: Token***): ExpressionFunctionCall* {
 	var expression = newExpressionFunctionCall();
@@ -74,8 +73,7 @@ func parseExpressionDot(tokens: Token***): ExpressionDot* {
 };
 
 func parseExpressionPostfix(tokens: Token***): Expression* {
-	var expression = parseExpressionPrimary(tokens);
-	if (expression == NULL) { return NULL; };
+	var expression = expectExpressionPrimary();
 	var loop = true;
 	while (loop) {
 		if ((**tokens)->kind == .OpenParenthesis) {
