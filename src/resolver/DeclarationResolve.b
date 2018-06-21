@@ -69,8 +69,7 @@ func resolveDeclarationType(declaration: Declaration*) {
 	} else if (declaration->kind == .Enum) {
 		declaration->resolvedType = resolveDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %u\n", declaration->kind);
-		abort();
+		ProgrammingError("called resolveDeclarationType on a .Invalid");
 	};;;;
 };
 
@@ -78,11 +77,9 @@ func resolveDeclarationDefinition(declaration: Declaration*) {
 	if (declaration->state == .Resolved) { return; }
 	else if (declaration->state == .Unresolved) {}
 	else if (declaration->state == .Resolving) {
-		fprintf(stderr, (char*)"Cyclic dependency\n");
-		exit(EXIT_FAILURE);
+		ResolverError(declaration->pos, "cyclic dependency for '", declaration->name->name, "'");
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration state %u\n", declaration->state);
-		abort();
+		ProgrammingError("called resolveDeclarationDefinition on a .Invalid state");
 	};;;
 	
 	declaration->state = .Resolving;
@@ -94,8 +91,7 @@ func resolveDeclarationDefinition(declaration: Declaration*) {
 		resolveDeclarationDefinitionStruct((DeclarationStruct*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Enum) {
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %u\n", declaration->kind);
-		abort();
+		ProgrammingError("called resolveDeclarationDefinition on a .Invalid");
 	};;;;
 	declaration->state = .Resolved;
 };
@@ -127,8 +123,7 @@ func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: I
 
 func resolveDeclarationImplementation(declaration: Declaration*) {
 	if (declaration->state != .Resolved) {
-		fprintf(stderr, (char*)"Declaration not resolved before resolving implementation");
-		abort();
+		ProgrammingError("Declaration not resolved before resolving implementation");
 	};
 	if (declaration->kind == .Var) {
 	} else if (declaration->kind == .Func) {
@@ -136,7 +131,6 @@ func resolveDeclarationImplementation(declaration: Declaration*) {
 	} else if (declaration->kind == .Struct) {
 	} else if (declaration->kind == .Enum) {
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %u\n", declaration->kind);
-		abort();
+		ProgrammingError("called resolveDeclarationImplementation on a .Invalid");
 	};;;;
 };
