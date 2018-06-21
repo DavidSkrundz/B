@@ -6,18 +6,16 @@ func isPointer(type: Type*): Bool {
 
 func getPointerBase(type: Type*): Type* {
 	if (type->kind == .Identifier) {
-		fprintf(stderr, (char*)"Not a pointer\n");
-		abort();
+		ProgrammingError("called getPointerBase on a .Identifier");
 	} else if (type->kind == .Pointer) {
 		var pointer = (TypePointer*)type->type;
 		return pointer->base;
 	} else if (type->kind == .Function) {
-		fprintf(stderr, (char*)"Not a pointer\n");
-		abort();
+		ProgrammingError("called getPointerBase on a .Function");
 	} else {
-		fprintf(stderr, (char*)"Invalid type kind %u\n", type->kind);
-		exit(EXIT_FAILURE);
+		ProgrammingError("called getPointerBase on a .Invalid");
 	};;;
+	return NULL;
 };
 
 func registerType(type: Type*) {
@@ -87,14 +85,14 @@ func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: B
 
 func createTypeIdentifierString(name: UInt8*): Type* {
 	var identifier = newIdentifier();
+	identifier->pos = newSrcPos("builtin", "builtin", 0, 0);
 	identifier->name = name;
 	return createTypeIdentifier(identifier);
 };
 
 func createTypeIdentifier(name: Identifier*): Type* {
 	if (resolveTypeIdentifier(name) != NULL) {
-		fprintf(stderr, (char*)"Type already exists: %s\n", name->name);
-		exit(EXIT_FAILURE);
+		ResolverError(name->pos, "duplicate definition of type '", name->name, "'");
 	};
 	var typeIdentifier = newTypeIdentifier();
 	typeIdentifier->name = name->name;
@@ -107,8 +105,7 @@ func createTypeIdentifier(name: Identifier*): Type* {
 
 func createTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: Bool): Type* {
 	if (resolveTypeFunction(returnType, argumentTypes, isVariadic) != NULL) {
-		fprintf(stderr, (char*)"Function type already created\n");
-		abort();
+		ProgrammingError("attempting to create duplicate function type");
 	};
 	var funcType = newTypeFunction();
 	funcType->returnType = returnType;

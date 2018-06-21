@@ -55,6 +55,11 @@ func ResolverError(pos: SrcPos*, message1: UInt8*, message2: UInt8*, message3: U
 	exit(EXIT_FAILURE);
 };
 
+func ProgrammingError(message: UInt8*) {
+	fprintf(stderr, (char*)"Programming Error: %s\n", message);
+	abort();
+};
+
 func _printUpToNewline(string: UInt8*) {
 	var firstNewline = (UInt8*)strchr((char*)string, '\n');
 	if (firstNewline == NULL) {
