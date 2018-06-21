@@ -16,8 +16,7 @@ func resolveTypespecIdentifier(typespec: TypespecIdentifier*): Type* {
 		};
 	};
 	if (type == NULL) {
-		fprintf(stderr, (char*)"Invalid type '%s'\n", typespec->name->name);
-		exit(EXIT_FAILURE);
+		ResolverError(typespec->name->pos, "invalid type '", typespec->name->name, "'");
 	};
 	return type;
 };
@@ -28,7 +27,7 @@ func resolveTypespec(typespec: Typespec*): Type* {
 	} else if (typespec->kind == .Identifier) {
 		return (Type*)resolveTypespecIdentifier((TypespecIdentifier*)typespec->spec);
 	} else {
-		fprintf(stderr, (char*)"Invalid typespec kind %u\n", typespec->kind);
-		abort();
+		ProgrammingError("called resolveTypespec on a .Invalid");
+		return NULL;
 	};;
 };
