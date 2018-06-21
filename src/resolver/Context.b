@@ -11,8 +11,7 @@ func addTo(context: Context*, name: Identifier*, type: Type*) {
 	var i = 0;
 	while (i < bufferCount((Void**)context->names)) {
 		if (context->names[i]->name == name->name) {
-			fprintf(stderr, (char*)"Duplicate definition of %s\n", name->name);
-			exit(EXIT_FAILURE);
+			ResolverError(name->pos, "duplicate definition of '", name->name, "'");
 		};
 		i = i + 1;
 	};
