@@ -25,13 +25,12 @@ func resolveStatementWhile(statement: StatementWhile*, expectedType: Type*) {
 	resolveStatementBlock(statement->block, expectedType);
 };
 
-func resolveStatementReturn(statement: StatementReturn*, expectedType: Type*) {
+func resolveStatementReturn(stmt: Statement*, statement: StatementReturn*, expectedType: Type*) {
 	if (statement->expression != NULL) {
 		resolveExpression(statement->expression, expectedType);
 	} else {
 		if (expectedType != TypeVoid) {
-			fprintf(stderr, (char*)"Return missing value\n");
-			exit(EXIT_FAILURE);
+			ResolverError(stmt->pos, "missing return value", "", "");
 		};
 	};
 };
@@ -50,10 +49,9 @@ func resolveStatement(statement: Statement*, expectedType: Type*) {
 	} else if (statement->kind == .While) {
 		resolveStatementWhile((StatementWhile*)statement->statement, expectedType);
 	} else if (statement->kind == .Return) {
-		resolveStatementReturn((StatementReturn*)statement->statement, expectedType);
+		resolveStatementReturn(statement, (StatementReturn*)statement->statement, expectedType);
 	} else {
-		fprintf(stderr, (char*)"Invalid statement kind %u\n", statement->kind);
-		abort();
+		ProgrammingError("called resolveStatement on a .Invalid");
 	};;;;;;;
 };
 
