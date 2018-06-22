@@ -26,8 +26,7 @@ func codegenDeclarationDeclaration(declaration: Declaration*) {
 	} else if (declaration->kind == .Enum) {
 		codegenDeclarationEnumDeclaration(declaration, (DeclarationEnum*)declaration->declaration);
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %u\n", declaration->kind);
-		abort();
+		ProgrammingError("called codegenDeclarationDeclaration on a .Invalid");
 	};;;;
 };
 
@@ -75,8 +74,7 @@ func codegenDeclarationFuncArgs(args: DeclarationFuncArgs*) {
 
 func codegenDeclarationFuncDefinition(declaration: Declaration*, decl: DeclarationFunc*) {
 	if (declaration->resolvedType->kind != .Function) {
-		fprintf(stderr, (char*)"Function declaration has non function type\n");
-		abort();
+		ProgrammingError("called codegenDeclarationFuncDefinition non-.Function");
 	};
 	var funcType = (TypeFunction*)declaration->resolvedType->type;
 	codegenType(funcType->returnType);
@@ -88,8 +86,7 @@ func codegenDeclarationFuncDefinition(declaration: Declaration*, decl: Declarati
 
 func codegenDeclarationStructFieldDefinition(field: Declaration*) {
 	if (field->kind != .Var) {
-		fprintf(stderr, (char*)"Bad declaration kind (%u) in struct fields\n", field->kind);
-		abort();
+		ProgrammingError("called codegenDeclarationStructFieldDefinition with non-.Var");
 	};
 	printf((char*)"\t");
 	codegenType(field->resolvedType);
@@ -133,8 +130,7 @@ func codegenDeclarationDefinition(declaration: Declaration*) {
 		codegenDeclarationStructDefinition(declaration, (DeclarationStruct*)declaration->declaration);
 	} else if (declaration->kind == .Enum) {
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %u\n", declaration->kind);
-		abort();
+		ProgrammingError("called codegenDeclarationDefinition on a .Invalid");
 	};;;;
 };
 
@@ -149,8 +145,7 @@ func CodegenDeclarationDefinitions() {
 
 func codegenDeclarationFuncImplementation(declaration: Declaration*, decl: DeclarationFunc*) {
 	if (declaration->resolvedType->kind != .Function) {
-		fprintf(stderr, (char*)"Function declaration has non function type\n");
-		abort();
+		ProgrammingError("called codegenDeclarationFuncImplementation non-.Function");
 	};
 	var funcType = (TypeFunction*)declaration->resolvedType->type;
 	codegenType(funcType->returnType);
@@ -171,8 +166,7 @@ func codegenDeclarationImplementation(declaration: Declaration*) {
 	} else if (declaration->kind == .Struct) {
 	} else if (declaration->kind == .Enum) {
 	} else {
-		fprintf(stderr, (char*)"Invalid declaration kind %u\n", declaration->kind);
-		abort();
+		ProgrammingError("called codegenDeclarationImplementation on a .Invalid");
 	};;;;
 };
 

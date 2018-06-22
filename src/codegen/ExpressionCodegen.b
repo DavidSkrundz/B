@@ -6,8 +6,7 @@ func codegenNullExpression(type: Type*) {
 	if (type->kind == .Pointer) {
 		codegenNullExpressionPointer((TypePointer*)type->type);
 	} else {
-		fprintf(stderr, (char*)"Invalid type kind %u\n", type->kind);
-		abort();
+		ProgrammingError("called codegenNullExpression on a .Invalid");
 	};
 };
 
@@ -196,7 +195,6 @@ func codegenExpression(expression: Expression*) {
 	} else if (expression->kind == .StringLiteral) {
 		codegenExpressionStringLiteral(expression, (ExpressionStringLiteral*)expression->expression);
 	} else {
-		fprintf(stderr, (char*)"Invalid expression kind %u\n", expression->kind);
-		abort();
+		ProgrammingError("called codegenExpression on a .Invalid");
 	};;;;;;;;;;;;;;;;;
 };

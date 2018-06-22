@@ -59,8 +59,7 @@ func codegenStatement(statement: Statement*) {
 	} else if (statement->kind == .Return) {
 		codegenStatementReturn((StatementReturn*)statement->statement);
 	} else {
-		fprintf(stderr, (char*)"Invalid statement kind %u\n", statement->kind);
-		abort();
+		ProgrammingError("called codegenStatement on a .Invalid");
 	};;;;;;;
 };
 
