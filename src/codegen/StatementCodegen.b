@@ -47,16 +47,23 @@ func codegenStatement(statement: Statement*) {
 	if (statement->kind == .Block) {
 		codegenStatementBlock((StatementBlock*)statement->statement);
 	} else if (statement->kind == .Expression) {
+		codegenLine(statement->pos);
 		codegenStatementExpression((StatementExpression*)statement->statement);
 	} else if (statement->kind == .Assign) {
+		codegenLine(statement->pos);
 		codegenStatementAssign((StatementAssign*)statement->statement);
 	} else if (statement->kind == .Var) {
 		codegenStatementVar((StatementVar*)statement->statement);
 	} else if (statement->kind == .If) {
+		printf((char*)"\n");
+		codegenDepth();
+		codegenLine(statement->pos);
 		codegenStatementIf((StatementIf*)statement->statement);
 	} else if (statement->kind == .While) {
+		codegenLine(statement->pos);
 		codegenStatementWhile((StatementWhile*)statement->statement);
 	} else if (statement->kind == .Return) {
+		codegenLine(statement->pos);
 		codegenStatementReturn((StatementReturn*)statement->statement);
 	} else {
 		ProgrammingError("called codegenStatement on a .Invalid");

@@ -20,7 +20,9 @@ typedef uint64_t UInt64;
 
 UInt main(void);
 
+#line 1 "tests/func/func3.b"
 UInt main(void) {
+	#line 2 "tests/func/func3.b"
 	return (0);
 }
 

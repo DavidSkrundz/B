@@ -7,6 +7,7 @@ func codegenDeclarationStructDeclaration(declaration: Declaration*, decl: Declar
 };
 
 func codegenDeclarationEnumDeclaration(declaration: Declaration*, decl: DeclarationEnum*) {
+	codegenLine(declaration->pos);
 	printf((char*)"typedef enum ");
 	codegenIdentifier(declaration->name);
 	printf((char*)" {\n");
@@ -40,6 +41,7 @@ func CodegenDeclarationDeclarations() {
 };
 
 func codegenDeclarationVarDefinition(declaration: Declaration*, decl: DeclarationVar*) {
+	codegenLine(declaration->pos);
 	codegenType(declaration->resolvedType);
 	printf((char*)" ");
 	codegenIdentifier(declaration->name);
@@ -96,6 +98,7 @@ func codegenDeclarationStructFieldDefinition(field: Declaration*) {
 };
 
 func codegenDeclarationStructDefinition(declaration: Declaration*, decl: DeclarationStruct*) {
+	codegenLine(declaration->pos);
 	printf((char*)"struct ");
 	codegenIdentifier(declaration->name);
 	printf((char*)" {\n");
@@ -147,6 +150,7 @@ func codegenDeclarationFuncImplementation(declaration: Declaration*, decl: Decla
 	if (declaration->resolvedType->kind != .Function) {
 		ProgrammingError("called codegenDeclarationFuncImplementation non-.Function");
 	};
+	codegenLine(declaration->pos);
 	var funcType = (TypeFunction*)declaration->resolvedType->type;
 	codegenType(funcType->returnType);
 	printf((char*)" ");

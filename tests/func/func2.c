@@ -20,6 +20,7 @@ typedef uint64_t UInt64;
 
 Void main(Int a);
 
+#line 1 "tests/func/func2.b"
 Void main(Int a) {
 }
 

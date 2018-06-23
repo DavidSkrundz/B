@@ -18,7 +18,10 @@ typedef uint64_t UInt64;
 
 
 
+#line 1 "tests/operator/lte.b"
 Bool a = ((3) <= (2));
+#line 2 "tests/operator/lte.b"
 Bool b = ((2) <= (2));
+#line 3 "tests/operator/lte.b"
 Bool c = ((1) <= (2));
 

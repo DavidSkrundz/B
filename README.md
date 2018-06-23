@@ -46,7 +46,6 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 
 List of things so I don't forget.
 
-- C debugging by generating `#line` directives
 - Struct constructors
 - Structs associated functions
 - Unions + nested struct/union

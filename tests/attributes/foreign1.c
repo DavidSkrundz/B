@@ -18,5 +18,6 @@ typedef uint64_t UInt64;
 
 
 
+#line 3 "tests/attributes/foreign1.b"
 char c = (char)((0));
 

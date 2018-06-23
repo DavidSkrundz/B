@@ -18,7 +18,10 @@ typedef uint64_t UInt64;
 
 
 
+#line 1 "tests/var/var1.b"
 Void* a = (NULL);
+#line 2 "tests/var/var1.b"
 Bool b = (true);
+#line 3 "tests/var/var1.b"
 UInt c = (1);
 

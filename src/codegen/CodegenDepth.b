@@ -7,3 +7,8 @@ func codegenDepth() {
 		i = i + 1;
 	};
 };
+
+func codegenLine(pos: SrcPos*) {
+	printf((char*)"#line %zu \"%s\"\n", pos->line, pos->file);
+	codegenDepth();
+};

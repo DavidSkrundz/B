@@ -17,11 +17,14 @@ typedef int64_t Int64;
 typedef uint64_t UInt64;
 
 
+#line 1 "tests/enum/enum1.b"
 typedef enum ExitStatus {
 	ExitStatus_Success,
 	ExitStatus_Failure,
 } ExitStatus;
 
+#line 6 "tests/enum/enum1.b"
 ExitStatus a = (ExitStatus_Success);
+#line 7 "tests/enum/enum1.b"
 ExitStatus b = (ExitStatus_Failure);
 

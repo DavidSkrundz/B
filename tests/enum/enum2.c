@@ -17,9 +17,11 @@ typedef int64_t Int64;
 typedef uint64_t UInt64;
 
 
+#line 3 "tests/enum/enum2.b"
 typedef enum Enum {
 	Enum_Case,
 } Enum;
 
+#line 1 "tests/enum/enum2.b"
 Enum a = (Enum_Case);
 

@@ -19,6 +19,7 @@ typedef uint64_t UInt64;
 
 typedef struct MyStruct MyStruct;
 
+#line 1 "tests/struct/struct2.b"
 struct MyStruct {
 	Int a;
 	Bool b;
