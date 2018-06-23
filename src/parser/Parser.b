@@ -2,7 +2,7 @@ var _declarations: Declaration**;
 
 func Parse() {
 	while (checkToken(.EOF) == false) {
-		append((Void***)&_declarations, (Void*)expectDeclaration());
+		Buffer_append((Void***)&_declarations, (Void*)expectDeclaration());
 	};
 };
 

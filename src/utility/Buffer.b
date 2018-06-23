@@ -4,7 +4,7 @@ struct Buffer {
 	var elements: Void*;
 };
 
-func _getBuffer(list: Void***): Buffer* {
+func _Buffer_get(list: Void***): Buffer* {
 	if (*list == NULL) {
 		var buffer = (Buffer*)xcalloc(1, sizeof(Buffer));
 		buffer->capacity = 1;
@@ -14,8 +14,8 @@ func _getBuffer(list: Void***): Buffer* {
 	return (Buffer*)((UInt)*list - offsetof(Buffer, elements));
 };
 
-func append(list: Void***, element: Void*) {
-	var buffer = _getBuffer(list);
+func Buffer_append(list: Void***, element: Void*) {
+	var buffer = _Buffer_get(list);
 	if (buffer->count == buffer->capacity) {
 		buffer->capacity = buffer->capacity * 2;
 		buffer = (Buffer*)xrealloc((Void*)buffer, sizeof(Buffer) + buffer->capacity * sizeof(Void*));
@@ -25,13 +25,13 @@ func append(list: Void***, element: Void*) {
 	buffer->count = buffer->count + 1;
 };
 
-func bufferCount(list: Void**): UInt {
+func Buffer_getCount(list: Void**): UInt {
 	if (list == NULL) { return 0; };
-	var buffer = _getBuffer(&list);
+	var buffer = _Buffer_get(&list);
 	return buffer->count;
 };
 
-func setBufferCount(list: Void**, count: UInt) {
-	var buffer = _getBuffer(&list);
+func Buffer_setCount(list: Void**, count: UInt) {
+	var buffer = _Buffer_get(&list);
 	buffer->count = count;
 };

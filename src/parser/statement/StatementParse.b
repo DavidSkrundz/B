@@ -96,7 +96,7 @@ func expectStatementBlock(): StatementBlock* {
 	var block = newStatementBlock();
 	while ((*_tokens)->kind != .CloseCurly) {
 		var statement = expectStatement();
-		append((Void***)&block->statements, (Void*)statement);
+		Buffer_append((Void***)&block->statements, (Void*)statement);
 	};
 	expectToken(.CloseCurly);
 	return block;

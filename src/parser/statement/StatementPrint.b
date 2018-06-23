@@ -85,7 +85,7 @@ func printStatementBlock(block: StatementBlock*) {
 	printf((char*)"(block\n");
 	depth = depth + 1;
 	var i = 0;
-	while (i < bufferCount((Void**)block->statements)) {
+	while (i < Buffer_getCount((Void**)block->statements)) {
 		printDepth();
 		printStatement(block->statements[i]);
 		printf((char*)"\n");

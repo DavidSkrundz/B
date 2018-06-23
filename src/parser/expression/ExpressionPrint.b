@@ -44,7 +44,7 @@ func printExpressionFunctionCall(expression: ExpressionFunctionCall*) {
 	printExpression(expression->function);
 	printf((char*)"\n");
 	var i = 0;
-	while (i < bufferCount((Void**)expression->arguments)) {
+	while (i < Buffer_getCount((Void**)expression->arguments)) {
 		printDepth();
 		printExpression(expression->arguments[i]);
 		printf((char*)"\n");

@@ -30,10 +30,10 @@ func CodegenBuiltins() {
 var Attribute_Foreign: UInt8*;
 func CodegenForeignImports() {
 	var i = 0;
-	while (i < bufferCount((Void**)_declarations)) {
+	while (i < Buffer_getCount((Void**)_declarations)) {
 		if (_declarations[i]->attribute != NULL) {
 			if (_declarations[i]->attribute->name->name == Attribute_Foreign) {
-				if (bufferCount((Void**)_declarations[i]->attribute->parameters) == 2) {
+				if (Buffer_getCount((Void**)_declarations[i]->attribute->parameters) == 2) {
 					printf((char*)"#include <%s.h>\n", _declarations[i]->attribute->parameters[1]->name);
 				};
 			};

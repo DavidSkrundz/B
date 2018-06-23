@@ -99,7 +99,7 @@ func lexToken(kind: TokenKind) {
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	token->value = intern(_code, 1);
 	advanceLexer(1);
-	append((Void***)&_tokens, (Void*)token);
+	Buffer_append((Void***)&_tokens, (Void*)token);
 };
 
 func lexToken2(kind: TokenKind, character2: UInt8, kind2: TokenKind) {
@@ -115,7 +115,7 @@ func lexToken2(kind: TokenKind, character2: UInt8, kind2: TokenKind) {
 	} else {
 		token->value = intern(start, 1);
 	};
-	append((Void***)&_tokens, (Void*)token);
+	Buffer_append((Void***)&_tokens, (Void*)token);
 };
 
 func lexElipses() {
@@ -130,7 +130,7 @@ func lexElipses() {
 		token->value = intern(_code, 1);
 		advanceLexer(1);
 	};
-	append((Void***)&_tokens, (Void*)token);
+	Buffer_append((Void***)&_tokens, (Void*)token);
 };
 
 func lexIntegerLiteral() {
@@ -140,7 +140,7 @@ func lexIntegerLiteral() {
 	var start = _code;
 	while (isdigit(*_code)) { advanceLexer(1); };
 	token->value = intern(start, (UInt)_code - (UInt)start);
-	append((Void***)&_tokens, (Void*)token);
+	Buffer_append((Void***)&_tokens, (Void*)token);
 };
 
 func lexStringLiteral() {
@@ -177,7 +177,7 @@ func lexStringLiteral() {
 	token->value = intern(string, i);
 	if (*_code != '"') { LexerError(); };
 	advanceLexer(1);
-	append((Void***)&_tokens, (Void*)token);
+	Buffer_append((Void***)&_tokens, (Void*)token);
 };
 
 func lexCharacterLiteral() {
@@ -205,7 +205,7 @@ func lexCharacterLiteral() {
 	advanceLexer(1);
 	if (*_code != '\'') { LexerError(); };
 	advanceLexer(1);
-	append((Void***)&_tokens, (Void*)token);
+	Buffer_append((Void***)&_tokens, (Void*)token);
 };
 
 func lexIdentifier() {
@@ -215,5 +215,5 @@ func lexIdentifier() {
 	while (isalnum(*_code) || *_code == '_') { advanceLexer(1); };
 	token->value = intern(start, (UInt)_code - (UInt)start);
 	token->kind = .Identifier;
-	append((Void***)&_tokens, (Void*)token);
+	Buffer_append((Void***)&_tokens, (Void*)token);
 };

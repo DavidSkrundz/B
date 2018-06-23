@@ -25,7 +25,7 @@ func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Ty
 	var structType = resolveTypespec(expression->type);
 	var structDeclaration: DeclarationStruct*;
 	var i = 0;
-	while (i < bufferCount((Void**)_declarations)) {
+	while (i < Buffer_getCount((Void**)_declarations)) {
 		if (_declarations[i]->kind == .Struct) {
 			if (_declarations[i]->resolvedType == structType) {
 				structDeclaration = (DeclarationStruct*)_declarations[i]->declaration;
@@ -37,7 +37,7 @@ func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Ty
 		ResolverError(expression->type->pos, "unable to get the offset of a non-struct", "", "");
 	};
 	i = 0;
-	while (i < bufferCount((Void**)structDeclaration->fields)) {
+	while (i < Buffer_getCount((Void**)structDeclaration->fields)) {
 		var name = structDeclaration->fields[i]->name;
 		if (name->name == expression->field->name) {
 			expression->resolvedType = structDeclaration->fields[i]->resolvedType;
@@ -82,19 +82,19 @@ func resolveExpressionFunctionCall(expression: ExpressionFunctionCall*, expected
 		ResolverError(expression->function->pos, "function call returns wrong type", "", "");
 	};
 	
-	if (bufferCount((Void**)expression->arguments) < bufferCount((Void**)funcType->argumentTypes)) {
+	if (Buffer_getCount((Void**)expression->arguments) < Buffer_getCount((Void**)funcType->argumentTypes)) {
 		ResolverError(expression->function->pos, "not enough arguments in function call", "", "");
 	};
-	if (bufferCount((Void**)funcType->argumentTypes) < bufferCount((Void**)expression->arguments) && funcType->isVariadic == false) {
+	if (Buffer_getCount((Void**)funcType->argumentTypes) < Buffer_getCount((Void**)expression->arguments) && funcType->isVariadic == false) {
 		ResolverError(expression->function->pos, "too many arguments in function call", "", "");
 	};
 	var i = 0;
-	while (i < bufferCount((Void**)funcType->argumentTypes)) {
+	while (i < Buffer_getCount((Void**)funcType->argumentTypes)) {
 		resolveExpression(expression->arguments[i], funcType->argumentTypes[i]);
 		i = i + 1;
 	};
 	i = 0;
-	while (i < bufferCount((Void**)expression->arguments)) {
+	while (i < Buffer_getCount((Void**)expression->arguments)) {
 		resolveExpression(expression->arguments[i], NULL);
 		i = i + 1;
 	};
@@ -120,7 +120,7 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 	var baseType = getPointerBase(pointerType);
 	var structDeclaration: DeclarationStruct*;
 	var i = 0;
-	while (i < bufferCount((Void**)_declarations)) {
+	while (i < Buffer_getCount((Void**)_declarations)) {
 		if (_declarations[i]->kind == .Struct) {
 			if (_declarations[i]->resolvedType == baseType) {
 				structDeclaration = (DeclarationStruct*)_declarations[i]->declaration;
@@ -132,7 +132,7 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 		ResolverError(expression->base->pos, "unable to apply -> to non-struct", "", "");
 	};
 	i = 0;
-	while (i < bufferCount((Void**)structDeclaration->fields)) {
+	while (i < Buffer_getCount((Void**)structDeclaration->fields)) {
 		var name = structDeclaration->fields[i]->name;
 		if (name->name == expression->field->name) {
 			if (expectedType != NULL && expectedType != structDeclaration->fields[i]->resolvedType) {
@@ -148,7 +148,7 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 
 func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type* {
 	var i = 0;
-	while (i < bufferCount((Void**)_declarations)) {
+	while (i < Buffer_getCount((Void**)_declarations)) {
 		if (_declarations[i]->kind == .Enum) {
 			if (expression->base == NULL || expression->base->name == _declarations[i]->name->name) {
 				if (expectedType == NULL || _declarations[i]->resolvedType == expectedType) {
@@ -223,7 +223,7 @@ func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): 
 
 func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType: Type*): Type* {
 	var i = 0;
-	while (i < bufferCount((Void**)_context->names)) {
+	while (i < Buffer_getCount((Void**)_context->names)) {
 		if (_context->names[i]->name == expression->identifier->name) {
 			if (expectedType != NULL && expectedType != _context->types[i]) {
 				ResolverError(expression->identifier->pos, "identifier '", expression->identifier->name, "' is the wrong type");

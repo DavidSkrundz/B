@@ -45,7 +45,7 @@ func expectExpressionFunctionCallArguments(): ExpressionFunctionCall* {
 	expectToken(.OpenParenthesis);
 	var loop = true;
 	while (isToken(.CloseParenthesis) == false && loop) {
-		append((Void***)&expression->arguments, (Void*)expectExpression());
+		Buffer_append((Void***)&expression->arguments, (Void*)expectExpression());
 		loop = checkToken(.Comma);
 	};
 	expectToken(.CloseParenthesis);

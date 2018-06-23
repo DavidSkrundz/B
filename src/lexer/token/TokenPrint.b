@@ -3,7 +3,7 @@ func printToken_error(token: Token*) { _printToken(token, stderr); };
 
 func printTokens() {
 	var i = 0;
-	while (i < bufferCount((Void**)_tokens)) {
+	while (i < Buffer_getCount((Void**)_tokens)) {
 		printToken(_tokens[i]);
 		printf((char*)"\n");
 		i = i + 1;

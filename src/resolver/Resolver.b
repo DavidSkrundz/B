@@ -6,19 +6,19 @@ func Resolve() {
 	InitBuiltinTypes();
 	
 	var i = 0;
-	while (i < bufferCount((Void**)_declarations)) {
+	while (i < Buffer_getCount((Void**)_declarations)) {
 		resolveDeclarationType(_declarations[i]);
 		i = i + 1;
 	};
 	
 	i = 0;
-	while (i < bufferCount((Void**)_declarations)) {
+	while (i < Buffer_getCount((Void**)_declarations)) {
 		resolveDeclarationDefinition(_declarations[i]);
 		i = i + 1;
 	};
 	
 	i = 0;
-	while (i < bufferCount((Void**)_declarations)) {
+	while (i < Buffer_getCount((Void**)_declarations)) {
 		resolveDeclarationImplementation(_declarations[i]);
 		i = i + 1;
 	};

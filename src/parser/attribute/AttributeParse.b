@@ -5,9 +5,9 @@ func parseAttribute(tokens: Token***): Attribute* {
 		attribute->pos = previousToken()->pos;
 		attribute->name = expectIdentifier();
 		if (checkToken(.OpenParenthesis)) {
-			append((Void***)&attribute->parameters, (Void*)expectIdentifier());
+			Buffer_append((Void***)&attribute->parameters, (Void*)expectIdentifier());
 			while (checkToken(.Comma)) {
-				append((Void***)&attribute->parameters, (Void*)expectIdentifier());
+				Buffer_append((Void***)&attribute->parameters, (Void*)expectIdentifier());
 			};
 			expectToken(.CloseParenthesis);
 		};

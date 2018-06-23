@@ -55,10 +55,10 @@ func codegenExpressionFunctionCall(expression: Expression*, expr: ExpressionFunc
 	codegenExpression(expr->function);
 	printf((char*)"(");
 	var i = 0;
-	while (i < bufferCount((Void**)expr->arguments)) {
+	while (i < Buffer_getCount((Void**)expr->arguments)) {
 		codegenExpression(expr->arguments[i]);
 		i = i + 1;
-		if (i < bufferCount((Void**)expr->arguments)) { printf((char*)", "); };
+		if (i < Buffer_getCount((Void**)expr->arguments)) { printf((char*)", "); };
 	};
 	printf((char*)")");
 	printf((char*)")");
@@ -84,7 +84,7 @@ func codegenExpressionArrow(expression: Expression*, expr: ExpressionArrow*) {
 func codegenExpressionDot(expression: Expression*, expr: ExpressionDot*) {
 	printf((char*)"(");
 	var i = 0;
-	while (i < bufferCount((Void**)_declarations)) {
+	while (i < Buffer_getCount((Void**)_declarations)) {
 		if (_declarations[i]->kind == .Enum) {
 			if (_declarations[i]->resolvedType == expression->resolvedType) {
 				codegenIdentifier(_declarations[i]->name);

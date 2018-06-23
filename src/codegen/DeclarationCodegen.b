@@ -33,7 +33,7 @@ func codegenDeclarationDeclaration(declaration: Declaration*) {
 
 func CodegenDeclarationDeclarations() {
 	var i = 0;
-	while (i < bufferCount((Void**)_declarations)) {
+	while (i < Buffer_getCount((Void**)_declarations)) {
 		codegenDeclarationDeclaration(_declarations[i]);
 		i = i + 1;
 	};
@@ -62,14 +62,14 @@ func codegenDeclarationFuncArg(argument: DeclarationFuncArg*) {
 
 func codegenDeclarationFuncArgs(args: DeclarationFuncArgs*) {
 	printf((char*)"(");
-	if (bufferCount((Void**)args->args) == 0) {
+	if (Buffer_getCount((Void**)args->args) == 0) {
 		printf((char*)"void");
 	};
 	var i = 0;
-	while (i < bufferCount((Void**)args->args)) {
+	while (i < Buffer_getCount((Void**)args->args)) {
 		codegenDeclarationFuncArg(args->args[i]);
 		i = i + 1;
-		if (i < bufferCount((Void**)args->args)) { printf((char*)", "); };
+		if (i < Buffer_getCount((Void**)args->args)) { printf((char*)", "); };
 	};
 	printf((char*)")");
 };
@@ -103,7 +103,7 @@ func codegenDeclarationStructDefinition(declaration: Declaration*, decl: Declara
 	codegenIdentifier(declaration->name);
 	printf((char*)" {\n");
 	var i = 0;
-	while (i < bufferCount((Void**)decl->fields)) {
+	while (i < Buffer_getCount((Void**)decl->fields)) {
 		codegenDeclarationStructFieldDefinition(decl->fields[i]);
 		i = i + 1;
 	};
@@ -112,7 +112,7 @@ func codegenDeclarationStructDefinition(declaration: Declaration*, decl: Declara
 
 func codegenDeclarationEnumCasesDefinition(cases: DeclarationEnumCase**, name: Identifier*) {
 	var i = 0;
-	while (i < bufferCount((Void**)cases)) {
+	while (i < Buffer_getCount((Void**)cases)) {
 		printf((char*)"\t");
 		codegenIdentifier(name);
 		printf((char*)"_");
@@ -139,7 +139,7 @@ func codegenDeclarationDefinition(declaration: Declaration*) {
 
 func CodegenDeclarationDefinitions() {
 	var i = 0;
-	while (i < bufferCount((Void**)_declarations)) {
+	while (i < Buffer_getCount((Void**)_declarations)) {
 		codegenDeclarationDefinition(_declarations[i]);
 		i = i + 1;
 	};
@@ -176,7 +176,7 @@ func codegenDeclarationImplementation(declaration: Declaration*) {
 
 func CodegenDeclarationImplementations() {
 	var i = 0;
-	while (i < bufferCount((Void**)_declarations)) {
+	while (i < Buffer_getCount((Void**)_declarations)) {
 		codegenDeclarationImplementation(_declarations[i]);
 		i = i + 1;
 	};

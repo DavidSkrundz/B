@@ -29,12 +29,12 @@ func expectDeclarationFuncArguments(): DeclarationFuncArgs* {
 	var args = newDeclarationFuncArgs();
 	var arg = parseDeclarationFuncArgument();
 	if (arg != NULL) {
-		append((Void***)&args->args, (Void*)arg);
+		Buffer_append((Void***)&args->args, (Void*)arg);
 	};
 	while (checkToken(.Comma)) {
 		var arg2 = parseDeclarationFuncArgument();
 		if (arg2 != NULL) {
-			append((Void***)&args->args, (Void*)arg2);
+			Buffer_append((Void***)&args->args, (Void*)arg2);
 		};
 	};
 	if (checkToken(.Ellipses)) {
@@ -69,7 +69,7 @@ func expectDeclarationStruct(declaration: Declaration*): DeclarationStruct* {
 		while (isToken(.CloseCurly) == false) {
 			var varDecl = expectDeclaration();
 			if (varDecl->kind != .Var) { ParserErrorTmp("expecting var declaration"); };
-			append((Void***)&decl->fields, (Void*)varDecl);
+			Buffer_append((Void***)&decl->fields, (Void*)varDecl);
 		};
 		expectToken(.CloseCurly);
 	};
@@ -88,7 +88,7 @@ func expectDeclarationEnum(declaration: Declaration*): DeclarationEnum* {
 		var caseName = expectIdentifier();
 		expectToken(.Semicolon);
 		var i = 0;
-		while (i < bufferCount((Void**)decl->cases)) {
+		while (i < Buffer_getCount((Void**)decl->cases)) {
 			if (decl->cases[i]->name->name == caseName->name) {
 				fprintf(stderr, (char*)"Duplicate enum case %s\n", caseName->name);
 				exit(EXIT_FAILURE);
@@ -97,7 +97,7 @@ func expectDeclarationEnum(declaration: Declaration*): DeclarationEnum* {
 		};
 		var enumCase = newDeclarationEnumCase();
 		enumCase->name = caseName;
-		append((Void***)&decl->cases, (Void*)enumCase);
+		Buffer_append((Void***)&decl->cases, (Void*)enumCase);
 	};
 	expectToken(.CloseCurly);
 	expectToken(.Semicolon);

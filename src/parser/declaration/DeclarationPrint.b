@@ -32,7 +32,7 @@ func printDeclarationFuncArgs(args: DeclarationFuncArgs*) {
 	printf((char*)"(arguments\n");
 	depth = depth + 1;
 	var i = 0;
-	while (i < bufferCount((Void**)args->args)) {
+	while (i < Buffer_getCount((Void**)args->args)) {
 		printDepth();
 		printDeclarationFuncArg(args->args[i]);
 		printf((char*)"\n");
@@ -82,7 +82,7 @@ func printDeclarationStruct(declaration: DeclarationStruct*, name: Identifier*) 
 		printf((char*)"(fields\n");
 		depth = depth + 1;
 		var i = 0;
-		while (i < bufferCount((Void**)declaration->fields)) {
+		while (i < Buffer_getCount((Void**)declaration->fields)) {
 			printDepth();
 			printDeclaration(declaration->fields[i]);
 			printf((char*)"\n");
@@ -111,7 +111,7 @@ func printDeclarationEnum(declaration: DeclarationEnum*, name: Identifier*) {
 	printIdentifier(name);
 	printf((char*)"\n");
 	var i = 0;
-	while (i < bufferCount((Void**)declaration->cases)) {
+	while (i < Buffer_getCount((Void**)declaration->cases)) {
 		printDepth();
 		printDeclarationEnumCase((declaration->cases)[i]);
 		printf((char*)"\n");
@@ -143,7 +143,7 @@ func printDeclaration(declaration: Declaration*) {
 
 func printDeclarations() {
 	var i = 0;
-	while (i < bufferCount((Void**)_declarations)) {
+	while (i < Buffer_getCount((Void**)_declarations)) {
 		printDeclaration(_declarations[i]);
 		printf((char*)"\n\n");
 		i = i + 1;
