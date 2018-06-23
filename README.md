@@ -46,7 +46,11 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 
 List of things so I don't forget.
 
-- Struct constructors
+- Better solution to string handling (in the compiler not the language)
+- Introduce Symbols that the resolver and codegen modules operate on
+- Dead code detection/omission
+- Improve awareness of resolver in different contexts
+- Ensure the resolver passes over everything
 - Structs associated functions
 - Unions + nested struct/union
 - Allow `.` to get a struct field (currently only `->` on a pointer works)
