@@ -30,7 +30,7 @@ Bootstrap the compiler (`bin/bc`):
 
 ```Bash
 git checkout bootstrap
-./bootstrap.sh [--update]
+./bootstrap.sh [--update] [--keep-old]
 ```
 
 While developing:
