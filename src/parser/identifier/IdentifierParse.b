@@ -2,7 +2,7 @@ func parseIdentifier(tokens: Token***): Identifier* {
 	if ((**tokens)->kind != .Identifier) { return NULL; };
 	var identifier = newIdentifier();
 	identifier->pos = (**tokens)->pos;
-	identifier->name = (**tokens)->value;
+	identifier->name = intern((**tokens)->string->string, (**tokens)->string->length);
 	*tokens = (Token**)((UInt)*tokens + sizeof(Token*));
 	return identifier;
 };
@@ -12,6 +12,6 @@ func expectIdentifier(): Identifier* {
 	expectToken(.Identifier);
 	var identifier = newIdentifier();
 	identifier->pos = token->pos;
-	identifier->name = token->value;
+	identifier->name = intern(token->string->string, token->string->length);
 	return identifier;
 };

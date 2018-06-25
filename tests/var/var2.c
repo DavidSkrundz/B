@@ -27,7 +27,7 @@ UInt8 c = ((UInt8)'\n');
 #line 4 "tests/var/var2.b"
 UInt8 d = ((UInt8)'\'');
 #line 5 "tests/var/var2.b"
-UInt8 e = ((UInt8)'"');
+UInt8 e = ((UInt8)'\"');
 #line 7 "tests/var/var2.b"
 UInt8* f = ((UInt8*)"\\");
 #line 8 "tests/var/var2.b"
@@ -35,7 +35,7 @@ UInt8* g = ((UInt8*)"\t");
 #line 9 "tests/var/var2.b"
 UInt8* h = ((UInt8*)"\n");
 #line 10 "tests/var/var2.b"
-UInt8* i = ((UInt8*)"'");
+UInt8* i = ((UInt8*)"\'");
 #line 11 "tests/var/var2.b"
 UInt8* j = ((UInt8*)"\"");
 #line 12 "tests/var/var2.b"

@@ -1,7 +1,7 @@
 struct Token {
 	var kind: TokenKind;
-	var value: UInt8*;
 	var pos: SrcPos*;
+	var string: String*;
 };
 
 func newToken(): Token* {

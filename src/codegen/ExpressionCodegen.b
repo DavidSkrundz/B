@@ -100,7 +100,9 @@ func codegenExpressionDot(expression: Expression*, expr: ExpressionDot*) {
 func codegenExpressionInfixOperator(expression: Expression*, expr: ExpressionInfix*) {
 	printf((char*)"(");
 	codegenExpression(expr->lhs);
-	printf((char*)" %s ", expr->operator->value);
+	printf((char*)" ");
+	String_print(stdout, expr->operator->string);
+	printf((char*)" ");
 	codegenExpression(expr->rhs);
 	printf((char*)")");
 };
@@ -113,49 +115,25 @@ func codegenExpressionIdentifier(expression: Expression*, expr: ExpressionIdenti
 
 func codegenExpressionBooleanLiteral(expression: Expression*, expr: ExpressionBooleanLiteral*) {
 	printf((char*)"(");
-	printf((char*)"%s", expr->literal->value);
+	String_print(stdout, expr->literal->string);
 	printf((char*)")");
 };
 
 func codegenExpressionIntegerLiteral(expression: Expression*, expr: ExpressionIntegerLiteral*) {
 	printf((char*)"(");
-	printf((char*)"%s", expr->literal->value);
+	String_print(stdout, expr->literal->string);
 	printf((char*)")");
 };
 
 func codegenExpressionCharacterLiteral(expression: Expression*, expr: ExpressionCharacterLiteral*) {
-	printf((char*)"((UInt8)");
-	if (expr->literal->value[0] == '\t') {
-		printf((char*)"'\\t'");
-	} else if (expr->literal->value[0] == '\n') {
-		printf((char*)"'\\n'");
-	} else if (expr->literal->value[0] == '\\') {
-		printf((char*)"'\\\\'");
-	} else if (expr->literal->value[0] == '\'') {
-		printf((char*)"'\\''");
-	} else {
-		printf((char*)"'%s'", expr->literal->value);
-	};;;;
-	printf((char*)")");
+	printf((char*)"((UInt8)'");
+	String_print_escaped(stdout, expr->literal->string);
+	printf((char*)"')");
 };
 
 func codegenExpressionStringLiteral(expression: Expression*, expr: ExpressionStringLiteral*) {
 	printf((char*)"((UInt8*)\"");
-	var i = 0;
-	while (expr->literal->value[i] != (UInt8)0) {
-		if (expr->literal->value[i] == '\t') {
-			printf((char*)"\\t");
-		} else if (expr->literal->value[i] == '\n') {
-			printf((char*)"\\n");
-		} else if (expr->literal->value[i] == '\\') {
-			printf((char*)"\\\\");
-		} else if (expr->literal->value[i] == '"') {
-			printf((char*)"\\\"");
-		} else {
-			printf((char*)"%c", expr->literal->value[i]);
-		};;;;
-		i = i + 1;
-	};
+	String_print_escaped(stdout, expr->literal->string);
 	printf((char*)"\")");
 };
 

@@ -35,13 +35,15 @@ func ParserError(kind: TokenKind) {
 	exit(EXIT_FAILURE);
 };
 
-func ParserKeywordError(keyword: UInt8*) {
+func ParserKeywordError(keyword: String*) {
 	var token = *_tokens;
 	var pos = token->pos;
 	fprintf(stderr, (char*)"%s:%zu:%zu: ", pos->file, pos->line, pos->column);
 	fprintf(stderr, (char*)"error: unexpected token '");
 	printToken_error(token);
-	fprintf(stderr, (char*)"' expecting keyword '%s'\n", keyword);
+	fprintf(stderr, (char*)"' expecting keyword '");
+	String_print(stderr, keyword);
+	fprintf(stderr, (char*)"'\n");
 	_printUpToNewline(pos->start);
 	_printErrorLocation(pos->start, pos->column);
 	exit(EXIT_FAILURE);

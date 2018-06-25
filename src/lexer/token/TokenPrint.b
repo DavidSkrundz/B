@@ -13,6 +13,8 @@ func printTokens() {
 func _printToken(token: Token*, stream: FILE*) {
 	_printTokenKind(token->kind, stream);
 	if (token->kind != .EOF) {
-		fprintf(stream, (char*)" (%s)", token->value);
+		fprintf(stream, (char*)" (");
+		String_print(stream, token->string);
+		fprintf(stream, (char*)")");
 	};
 };
