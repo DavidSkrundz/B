@@ -167,9 +167,11 @@ func lexStringLiteral() {
 				string[i] = '\n';
 			} else if (*_code == 't') {
 				string[i] = '\t';
+			} else if (*_code == '0') {
+				string[i] = (UInt8)0;
 			} else {
 				LexerError();
-			};;;;;
+			};;;;;;
 		} else {
 			string[i] = *_code;
 		};
@@ -200,9 +202,12 @@ func lexCharacterLiteral() {
 			token->string = String_init_literal("\n");
 		} else if (*_code == 't') {
 			token->string = String_init_literal("\t");
+		} else if (*_code == '0') {
+			var c = (UInt8)0;
+			token->string = String_init(&c, 1);
 		} else {
 			LexerError();
-		};;;;;
+		};;;;;;
 	} else {
 		token->string = String_init(_code, 1);
 	};
