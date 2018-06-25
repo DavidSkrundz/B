@@ -162,7 +162,7 @@ func lexStringLiteral() {
 			} else if (*_code == '\'') {
 				string[i] = '\'';
 			} else if (*_code == '"') {
-				string[i] = '"';
+				string[i] = '\"';
 			} else if (*_code == 'n') {
 				string[i] = '\n';
 			} else if (*_code == 't') {
@@ -193,7 +193,7 @@ func lexCharacterLiteral() {
 		if (*_code == '\\') {
 			token->value = internLiteral("\\");
 		} else if (*_code == '\'') {
-			token->value = internLiteral("'");
+			token->value = internLiteral("\'");
 		} else if (*_code == '"') {
 			token->value = internLiteral("\"");
 		} else if (*_code == 'n') {
