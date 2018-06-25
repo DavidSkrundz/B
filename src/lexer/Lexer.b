@@ -159,6 +159,8 @@ func lexStringLiteral() {
 			advanceLexer(1);
 			if (*_code == '\\') {
 				string[i] = '\\';
+			} else if (*_code == '\'') {
+				string[i] = '\'';
 			} else if (*_code == '"') {
 				string[i] = '"';
 			} else if (*_code == 'n') {
@@ -167,7 +169,7 @@ func lexStringLiteral() {
 				string[i] = '\t';
 			} else {
 				LexerError();
-			};;;;
+			};;;;;
 		} else {
 			string[i] = *_code;
 		};
@@ -192,13 +194,15 @@ func lexCharacterLiteral() {
 			token->value = internLiteral("\\");
 		} else if (*_code == '\'') {
 			token->value = internLiteral("'");
+		} else if (*_code == '"') {
+			token->value = internLiteral("\"");
 		} else if (*_code == 'n') {
 			token->value = internLiteral("\n");
 		} else if (*_code == 't') {
 			token->value = internLiteral("\t");
 		} else {
 			LexerError();
-		};;;;
+		};;;;;
 	} else {
 		token->value = intern(_code, 1);
 	};
