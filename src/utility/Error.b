@@ -28,7 +28,7 @@ func ParserError(kind: TokenKind) {
 	fprintf(stderr, (char*)"error: unexpected token '");
 	printToken_error(token);
 	fprintf(stderr, (char*)"' expecting '");
-	printTokenKind_error(kind);
+	_printTokenKind(kind, stderr);
 	fprintf(stderr, (char*)"'\n");
 	_printUpToNewline(pos->start);
 	_printErrorLocation(pos->start, pos->column);

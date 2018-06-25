@@ -39,73 +39,73 @@ enum TokenKind {
 	case StringLiteral;
 };
 
-func printTokenKind_error(kind: TokenKind) {
+func _printTokenKind(kind: TokenKind, stream: FILE*) {
 	if (kind == .EOF) {
-		fprintf(stderr, (char*)"EOF");
+		fprintf(stream, (char*)"EOF");
 	} else if (kind == .Comma) {
-		fprintf(stderr, (char*)"COMMA (,)");
+		fprintf(stream, (char*)"COMMA");
 	} else if (kind == .Colon) {
-		fprintf(stderr, (char*)"COLON (:)");
+		fprintf(stream, (char*)"COLON");
 	} else if (kind == .Semicolon) {
-		fprintf(stderr, (char*)"SEMICOLON (;)");
+		fprintf(stream, (char*)"SEMICOLON");
 	} else if (kind == .OpenCurly) {
-		fprintf(stderr, (char*)"OPENCURLY ({)");
+		fprintf(stream, (char*)"OPENCURLY");
 	} else if (kind == .CloseCurly) {
-		fprintf(stderr, (char*)"CLOSECURLY (})");
+		fprintf(stream, (char*)"CLOSECURLY");
 	} else if (kind == .OpenBracket) {
-		fprintf(stderr, (char*)"OPENBRACKET ([)");
+		fprintf(stream, (char*)"OPENBRACKET");
 	} else if (kind == .CloseBracket) {
-		fprintf(stderr, (char*)"CLOSEBRACKET (])");
+		fprintf(stream, (char*)"CLOSEBRACKET");
 	} else if (kind == .OpenParenthesis) {
-		fprintf(stderr, (char*)"OPENPARENTHESIS (()");
+		fprintf(stream, (char*)"OPENPARENTHESIS");
 	} else if (kind == .CloseParenthesis) {
-		fprintf(stderr, (char*)"CLOSEPARENTHESIS ())");
+		fprintf(stream, (char*)"CLOSEPARENTHESIS");
 	} else if (kind == .At) {
-		fprintf(stderr, (char*)"AT (@)");
+		fprintf(stream, (char*)"AT");
 	} else if (kind == .Star) {
-		fprintf(stderr, (char*)"STAR (*)");
+		fprintf(stream, (char*)"STAR");
 	} else if (kind == .And) {
-		fprintf(stderr, (char*)"AND (&)");
+		fprintf(stream, (char*)"AND");
 	} else if (kind == .Plus) {
-		fprintf(stderr, (char*)"PLUS (+)");
+		fprintf(stream, (char*)"PLUS");
 	} else if (kind == .Minus) {
-		fprintf(stderr, (char*)"MINUS (-)");
+		fprintf(stream, (char*)"MINUS");
 	} else if (kind == .Slash) {
-		fprintf(stderr, (char*)"SLASH (/)");
+		fprintf(stream, (char*)"SLASH");
 	} else if (kind == .And) {
-		fprintf(stderr, (char*)"AND (&)");
+		fprintf(stream, (char*)"AND");
 	} else if (kind == .AndAnd) {
-		fprintf(stderr, (char*)"AND (&&)");
+		fprintf(stream, (char*)"AND");
 	} else if (kind == .OrOr) {
-		fprintf(stderr, (char*)"OR (||)");
+		fprintf(stream, (char*)"OR");
 	} else if (kind == .Not) {
-		fprintf(stderr, (char*)"NOT (!)");
+		fprintf(stream, (char*)"NOT");
 	} else if (kind == .Assign) {
-		fprintf(stderr, (char*)"ASSIGN (=)");
+		fprintf(stream, (char*)"ASSIGN");
 	} else if (kind == .Ellipses) {
-		fprintf(stderr, (char*)"ELLIPSES (...)");
+		fprintf(stream, (char*)"ELLIPSES");
 	} else if (kind == .Arrow) {
-		fprintf(stderr, (char*)"ARROW (->)");
+		fprintf(stream, (char*)"ARROW");
 	} else if (kind == .Dot) {
-		fprintf(stderr, (char*)"DOT (.)");
+		fprintf(stream, (char*)"DOT");
 	} else if (kind == .Equal) {
-		fprintf(stderr, (char*)"EQUAL (==)");
+		fprintf(stream, (char*)"EQUAL");
 	} else if (kind == .LessThan) {
-		fprintf(stderr, (char*)"LESSTHAN (<)");
+		fprintf(stream, (char*)"LESSTHAN");
 	} else if (kind == .LessThanEqual) {
-		fprintf(stderr, (char*)"LESSTHANEQUAL (<=)");
+		fprintf(stream, (char*)"LESSTHANEQUAL");
 	} else if (kind == .NotEqual) {
-		fprintf(stderr, (char*)"NOTEQUAL (!=)");
+		fprintf(stream, (char*)"NOTEQUAL");
 	} else if (kind == .Identifier) {
-		fprintf(stderr, (char*)"IDENTIFIER (_)");
+		fprintf(stream, (char*)"IDENTIFIER");
 	} else if (kind == .BooleanLiteral) {
-		fprintf(stderr, (char*)"BOOLEAN (_)");
+		fprintf(stream, (char*)"BOOLEAN");
 	} else if (kind == .IntegerLiteral) {
-		fprintf(stderr, (char*)"INTEGER (_)");
+		fprintf(stream, (char*)"INTEGER");
 	} else if (kind == .CharacterLiteral) {
-		fprintf(stderr, (char*)"CHARACTER (_)");
+		fprintf(stream, (char*)"CHARACTER");
 	} else if (kind == .StringLiteral) {
-		fprintf(stderr, (char*)"STRING (_)");
+		fprintf(stream, (char*)"STRING");
 	} else {
 		fprintf(stderr, (char*)"Unknown token kind: %u\n", kind);
 		abort();
