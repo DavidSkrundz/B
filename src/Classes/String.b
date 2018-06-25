@@ -29,8 +29,28 @@ func String_init_literal(string: UInt8*): String* {
 	return String_init(string, stringLength(string));
 };
 
-func String_print(string: String*, stream: FILE*) {
+func String_print(stream: FILE*, string: String*) {
 	fprintf(stream, (char*)"%.*s", (int)string->length, string->string);
+};
+
+func String_print_escaped(stream: FILE*, string: String*) {
+	var i = 0;
+	while (i < string->length) {
+		if (string->string[i] == '\t') {
+			fprintf(stream, (char*)"\\t");
+		} else if (string->string[i] == '\n') {
+			fprintf(stream, (char*)"\\n");
+		} else if (string->string[i] == '\\') {
+			fprintf(stream, (char*)"\\\\");
+		} else if (string->string[i] == '\'') {
+			fprintf(stream, (char*)"\\'");
+		} else if (string->string[i] == '\"') {
+			fprintf(stream, (char*)"\\\"");
+		} else {
+			fprintf(stream, (char*)"%c", string->string[i]);
+		};;;;;
+		i = i + 1;
+	};
 };
 
 
