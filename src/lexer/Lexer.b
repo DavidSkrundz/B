@@ -8,6 +8,28 @@ var _start: UInt8*;
 var _line = 0;
 var _column = 0;
 
+func _characterTo1TokenKind(character: UInt8): TokenKind {
+	if (*_code == ',') {        return .Comma;
+	} else if (*_code == ':') { return .Colon;
+	} else if (*_code == ';') { return .Semicolon;
+	} else if (*_code == '{') { return .OpenCurly;
+	} else if (*_code == '}') { return .CloseCurly;
+	} else if (*_code == '[') { return .OpenBracket;
+	} else if (*_code == ']') { return .CloseBracket;
+	} else if (*_code == '(') { return .OpenParenthesis;
+	} else if (*_code == ')') { return .CloseParenthesis;
+	} else if (*_code == '@') { return .At;
+	} else if (*_code == '*') { return .Star;
+	} else if (*_code == '+') { return .Plus;
+	} else if (*_code == '/') { return .Slash;
+	} else {                    return .Invalid;
+	};;;;;;;;;;;;;
+};
+
+func _isCharacterA1Token(character: UInt8): Bool {
+	return _characterTo1TokenKind(character) != .Invalid;
+};
+
 func Lex() {
 	_tokens = NULL;
 	InternKeywords();
@@ -27,38 +49,14 @@ func Lex() {
 					_start = _code;
 				};
 			};
-		} else if (*_code == ',') {
-			lexToken(.Comma);
-		} else if (*_code == ':') {
-			lexToken(.Colon);
-		} else if (*_code == ';') {
-			lexToken(.Semicolon);
-		} else if (*_code == '{') {
-			lexToken(.OpenCurly);
-		} else if (*_code == '}') {
-			lexToken(.CloseCurly);
-		} else if (*_code == '[') {
-			lexToken(.OpenBracket);
-		} else if (*_code == ']') {
-			lexToken(.CloseBracket);
-		} else if (*_code == '(') {
-			lexToken(.OpenParenthesis);
-		} else if (*_code == ')') {
-			lexToken(.CloseParenthesis);
-		} else if (*_code == '@') {
-			lexToken(.At);
-		} else if (*_code == '*') {
-			lexToken(.Star);
+		} else if (_isCharacterA1Token(*_code)) {
+			lexToken(_characterTo1TokenKind(*_code));
 		} else if (*_code == '&') {
 			lexToken2(.And, '&', .AndAnd);
 		} else if (*_code == '|') {
 			lexToken2(.Invalid, '|', .OrOr);
-		} else if (*_code == '+') {
-			lexToken(.Plus);
 		} else if (*_code == '-') {
 			lexToken2(.Minus, '>', .Arrow);
-		} else if (*_code == '/') {
-			lexToken(.Slash);
 		} else if (*_code == '!') {
 			lexToken2(.Not, '=', .NotEqual);
 		} else if (*_code == '=') {
@@ -84,7 +82,7 @@ func Lex() {
 			return;
 		} else {
 			LexerError();
-		};;;;;;;;;;;;;;;;;;;;;;;;;;;;
+		};;;;;;;;;;;;;;;;
 	};
 };
 
