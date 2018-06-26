@@ -46,7 +46,7 @@ func String_print_escaped(stream: FILE*, string: String*) {
 			fprintf(stream, (char*)"\\'");
 		} else if (string->string[i] == '\"') {
 			fprintf(stream, (char*)"\\\"");
-		} else if (string->string[i] == (UInt8)0) {
+		} else if (string->string[i] == '\0') {
 			fprintf(stream, (char*)"\\0");
 		} else {
 			fprintf(stream, (char*)"%c", string->string[i]);

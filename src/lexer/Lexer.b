@@ -79,7 +79,7 @@ func Lex() {
 			lexIdentifier();
 		} else if (*_code == '_') {
 			lexIdentifier();
-		} else if (*_code == (UInt8)0) {
+		} else if (*_code == '\0') {
 			lexToken(.EOF);
 			return;
 		} else {
@@ -168,7 +168,7 @@ func lexStringLiteral() {
 			} else if (*_code == 't') {
 				string[i] = '\t';
 			} else if (*_code == '0') {
-				string[i] = (UInt8)0;
+				string[i] = '\0';
 			} else {
 				LexerError();
 			};;;;;;
@@ -203,8 +203,7 @@ func lexCharacterLiteral() {
 		} else if (*_code == 't') {
 			token->string = String_init_literal("\t");
 		} else if (*_code == '0') {
-			var c = (UInt8)0;
-			token->string = String_init(&c, 1);
+			token->string = String_init("\0", 1);
 		} else {
 			LexerError();
 		};;;;;;
