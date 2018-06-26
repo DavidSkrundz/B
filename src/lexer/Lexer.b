@@ -26,8 +26,46 @@ func _characterTo1TokenKind(character: UInt8): TokenKind {
 	};;;;;;;;;;;;;
 };
 
-func _isCharacterA1Token(character: UInt8): Bool {
+func _isCharacter1Token(character: UInt8): Bool {
 	return _characterTo1TokenKind(character) != .Invalid;
+};
+
+func _characterTo2TokenKind1(character: UInt8): TokenKind {
+	if (*_code == '&') {        return .And;
+	} else if (*_code == '|') { return .Invalid;
+	} else if (*_code == '-') { return .Minus;
+	} else if (*_code == '!') { return .Not;
+	} else if (*_code == '=') { return .Assign;
+	} else if (*_code == '<') { return .LessThan;
+	} else {                    return .Invalid;
+	};;;;;;
+};
+
+func _characterTo2TokenKind2(character: UInt8): TokenKind {
+	if (*_code == '&') {        return .AndAnd;
+	} else if (*_code == '|') { return .OrOr;
+	} else if (*_code == '-') { return .Arrow;
+	} else if (*_code == '!') { return .NotEqual;
+	} else if (*_code == '=') { return .Equal;
+	} else if (*_code == '<') { return .LessThanEqual;
+	} else {                    return .Invalid;
+	};;;;;;
+};
+
+func _characterTo2TokenCharacter2(character: UInt8): UInt8 {
+	if (*_code == '&') {        return '&';
+	} else if (*_code == '|') { return '|';
+	} else if (*_code == '-') { return '>';
+	} else if (*_code == '!') { return '=';
+	} else if (*_code == '=') { return '=';
+	} else if (*_code == '<') { return '=';
+	} else {                    return '\0';
+	};;;;;;
+};
+
+func _isCharacter2Token(character: UInt8): Bool {
+	return _characterTo2TokenKind1(character) != .Invalid ||
+	       _characterTo2TokenKind2(character) != .Invalid;
 };
 
 func Lex() {
@@ -49,20 +87,12 @@ func Lex() {
 					_start = _code;
 				};
 			};
-		} else if (_isCharacterA1Token(*_code)) {
+		} else if (_isCharacter1Token(*_code)) {
 			lexToken(_characterTo1TokenKind(*_code));
-		} else if (*_code == '&') {
-			lexToken2(.And, '&', .AndAnd);
-		} else if (*_code == '|') {
-			lexToken2(.Invalid, '|', .OrOr);
-		} else if (*_code == '-') {
-			lexToken2(.Minus, '>', .Arrow);
-		} else if (*_code == '!') {
-			lexToken2(.Not, '=', .NotEqual);
-		} else if (*_code == '=') {
-			lexToken2(.Assign, '=', .Equal);
-		} else if (*_code == '<') {
-			lexToken2(.LessThan, '=', .LessThanEqual);
+		} else if (_isCharacter2Token(*_code)) {
+			lexToken2(_characterTo2TokenKind1(*_code),
+			          _characterTo2TokenCharacter2(*_code),
+			          _characterTo2TokenKind2(*_code));
 		} else if (*_code == '.') {
 			lexElipses();
 		} else if (*_code == '"') {
@@ -82,7 +112,7 @@ func Lex() {
 			return;
 		} else {
 			LexerError();
-		};;;;;;;;;;;;;;;;
+		};;;;;;;;;;;
 	};
 };
 
