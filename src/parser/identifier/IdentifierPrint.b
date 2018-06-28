@@ -1,3 +1,5 @@
 func printIdentifier(identifier: Identifier*) {
-	printf((char*)"(identifier %s)", (char*)identifier->name);
+	printf((char*)"(identifier ");
+	String_print(stdout, identifier->name);
+	printf((char*)")");
 };

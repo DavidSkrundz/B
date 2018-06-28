@@ -16,7 +16,7 @@ func resolveTypespecIdentifier(typespec: TypespecIdentifier*): Type* {
 		};
 	};
 	if (type == NULL) {
-		ResolverError(typespec->name->pos, "invalid type '", typespec->name->name, "'");
+		ResolverError(typespec->name->pos, "invalid type '", typespec->name->name->string, "'");
 	};
 	return type;
 };

@@ -77,7 +77,7 @@ func resolveDeclarationDefinition(declaration: Declaration*) {
 	if (declaration->state == .Resolved) { return; }
 	else if (declaration->state == .Unresolved) {}
 	else if (declaration->state == .Resolving) {
-		ResolverError(declaration->pos, "cyclic dependency for '", declaration->name->name, "'");
+		ResolverError(declaration->pos, "cyclic dependency for '", declaration->name->name->string, "'");
 	} else {
 		ProgrammingError("called resolveDeclarationDefinition on a .Invalid state");
 	};;;

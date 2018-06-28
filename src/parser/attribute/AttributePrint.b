@@ -1,8 +1,8 @@
 func printAttribute(attribute: Attribute*) {
-	printf((char*)"@%s(", attribute->name->name);
+	printf((char*)"@%s(", attribute->name->name->string);
 	var i = 0;
 	while (i < Buffer_getCount((Void**)attribute->parameters)) {
-		printf((char*)"%s", attribute->parameters[i]->name);
+		String_print(stdout, attribute->parameters[i]->name);
 		i = i + 1;
 		if (i + 1 <= Buffer_getCount((Void**)attribute->parameters)) {
 			printf((char*)", ");

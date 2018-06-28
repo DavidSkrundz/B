@@ -1,15 +1,15 @@
-var TypeNameVoid: UInt8*;
-var TypeNameInt: UInt8*;
-var TypeNameBool: UInt8*;
-var TypeNameUInt: UInt8*;
-var TypeNameInt8: UInt8*;
-var TypeNameUInt8: UInt8*;
-var TypeNameInt16: UInt8*;
-var TypeNameUInt16: UInt8*;
-var TypeNameInt32: UInt8*;
-var TypeNameUInt32: UInt8*;
-var TypeNameInt64: UInt8*;
-var TypeNameUInt64: UInt8*;
+var TypeNameVoid: String*;
+var TypeNameInt: String*;
+var TypeNameBool: String*;
+var TypeNameUInt: String*;
+var TypeNameInt8: String*;
+var TypeNameUInt8: String*;
+var TypeNameInt16: String*;
+var TypeNameUInt16: String*;
+var TypeNameInt32: String*;
+var TypeNameUInt32: String*;
+var TypeNameInt64: String*;
+var TypeNameUInt64: String*;
 
 var TypeVoid: Type*;
 var TypeBool: Type*;
@@ -29,18 +29,18 @@ var TypeCharacter: Type*;
 var TypeString: Type*;
 
 func InitBuiltinTypes() {
-	TypeNameVoid = internLiteral("Void");
-	TypeNameBool = internLiteral("Bool");
-	TypeNameInt = internLiteral("Int");
-	TypeNameUInt = internLiteral("UInt");
-	TypeNameInt8 = internLiteral("Int8");
-	TypeNameUInt8 = internLiteral("UInt8");
-	TypeNameInt16 = internLiteral("Int16");
-	TypeNameUInt16 = internLiteral("UInt16");
-	TypeNameInt32 = internLiteral("Int32");
-	TypeNameUInt32 = internLiteral("UInt32");
-	TypeNameInt64 = internLiteral("Int64");
-	TypeNameUInt64 = internLiteral("UInt64");
+	TypeNameVoid = String_init_literal("Void");
+	TypeNameBool = String_init_literal("Bool");
+	TypeNameInt = String_init_literal("Int");
+	TypeNameUInt = String_init_literal("UInt");
+	TypeNameInt8 = String_init_literal("Int8");
+	TypeNameUInt8 = String_init_literal("UInt8");
+	TypeNameInt16 = String_init_literal("Int16");
+	TypeNameUInt16 = String_init_literal("UInt16");
+	TypeNameInt32 = String_init_literal("Int32");
+	TypeNameUInt32 = String_init_literal("UInt32");
+	TypeNameInt64 = String_init_literal("Int64");
+	TypeNameUInt64 = String_init_literal("UInt64");
 	
 	TypeVoid = createTypeIdentifierString(TypeNameVoid);
 	TypeBool = createTypeIdentifierString(TypeNameBool);

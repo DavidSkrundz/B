@@ -27,14 +27,14 @@ func CodegenBuiltins() {
 	printf((char*)"\n");
 };
 
-var Attribute_Foreign: UInt8*;
+var Attribute_Foreign: String*;
 func CodegenForeignImports() {
 	var i = 0;
 	while (i < Buffer_getCount((Void**)_declarations)) {
 		if (_declarations[i]->attribute != NULL) {
 			if (_declarations[i]->attribute->name->name == Attribute_Foreign) {
 				if (Buffer_getCount((Void**)_declarations[i]->attribute->parameters) == 2) {
-					printf((char*)"#include <%s.h>\n", _declarations[i]->attribute->parameters[1]->name);
+					printf((char*)"#include <%s.h>\n", _declarations[i]->attribute->parameters[1]->name->string);
 				};
 			};
 		};
@@ -44,7 +44,7 @@ func CodegenForeignImports() {
 };
 
 func Codegen() {
-	Attribute_Foreign = internLiteral("foreign");
+	Attribute_Foreign = String_init_literal("foreign");
 	
 	CodegenBuiltins();
 	CodegenForeignImports();

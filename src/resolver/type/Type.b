@@ -4,7 +4,7 @@ struct Type {
 };
 
 struct TypeIdentifier {
-	var name: UInt8*;
+	var name: String*;
 };
 
 struct TypePointer {

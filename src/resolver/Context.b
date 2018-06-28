@@ -11,7 +11,7 @@ func addTo(context: Context*, name: Identifier*, type: Type*) {
 	var i = 0;
 	while (i < Buffer_getCount((Void**)context->names)) {
 		if (context->names[i]->name == name->name) {
-			ResolverError(name->pos, "duplicate definition of '", name->name, "'");
+			ResolverError(name->pos, "duplicate definition of '", name->name->string, "'");
 		};
 		i = i + 1;
 	};

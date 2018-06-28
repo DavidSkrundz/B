@@ -1,6 +1,6 @@
 struct Identifier {
 	var pos: SrcPos*;
-	var name: UInt8*;
+	var name: String*;
 };
 
 func newIdentifier(): Identifier* {

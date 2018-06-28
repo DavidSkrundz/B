@@ -1,5 +1,5 @@
 func codegenTypeIdentifier(type: TypeIdentifier*) {
-	printf((char*)"%s", type->name);
+	String_print(stdout, type->name);
 };
 
 func codegenTypePointer(type: TypePointer*) {

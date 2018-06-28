@@ -83,7 +83,7 @@ func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: B
 	return NULL;
 };
 
-func createTypeIdentifierString(name: UInt8*): Type* {
+func createTypeIdentifierString(name: String*): Type* {
 	var identifier = newIdentifier();
 	identifier->pos = newSrcPos("builtin", "builtin", 0, 0);
 	identifier->name = name;
@@ -92,7 +92,7 @@ func createTypeIdentifierString(name: UInt8*): Type* {
 
 func createTypeIdentifier(name: Identifier*): Type* {
 	if (resolveTypeIdentifier(name) != NULL) {
-		ResolverError(name->pos, "duplicate definition of type '", name->name, "'");
+		ResolverError(name->pos, "duplicate definition of type '", name->name->string, "'");
 	};
 	var typeIdentifier = newTypeIdentifier();
 	typeIdentifier->name = name->name;

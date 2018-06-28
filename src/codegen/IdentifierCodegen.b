@@ -1,3 +1,3 @@
 func codegenIdentifier(identifier: Identifier*) {
-	printf((char*)"%s", identifier->name);
+	String_print(stdout, identifier->name);
 };

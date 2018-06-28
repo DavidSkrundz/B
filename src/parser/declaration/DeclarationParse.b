@@ -90,7 +90,7 @@ func expectDeclarationEnum(declaration: Declaration*): DeclarationEnum* {
 		var i = 0;
 		while (i < Buffer_getCount((Void**)decl->cases)) {
 			if (decl->cases[i]->name->name == caseName->name) {
-				fprintf(stderr, (char*)"Duplicate enum case %s\n", caseName->name);
+				fprintf(stderr, (char*)"Duplicate enum case %s\n", caseName->name->string);
 				exit(EXIT_FAILURE);
 			};
 			i = i + 1;

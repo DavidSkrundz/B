@@ -45,7 +45,7 @@ func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Ty
 		i = i + 1;
 	};
 	if (expression->resolvedType == NULL) {
-		ResolverError(expression->field->pos, "struct field '", expression->field->name, "' not found");
+		ResolverError(expression->field->pos, "struct field '", expression->field->name->string, "' not found");
 	};
 	expression->resolvedType = structType;
 	return TypeUInt;
@@ -136,13 +136,13 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 		var name = structDeclaration->fields[i]->name;
 		if (name->name == expression->field->name) {
 			if (expectedType != NULL && expectedType != structDeclaration->fields[i]->resolvedType) {
-				ResolverError(expression->field->pos, "struct field '", expression->field->name, "' is the wrong type");
+				ResolverError(expression->field->pos, "struct field '", expression->field->name->string, "' is the wrong type");
 			};
 			return structDeclaration->fields[i]->resolvedType;
 		};
 		i = i + 1;
 	};
-	ResolverError(expression->field->pos, "struct field '", expression->field->name, "' not found");
+	ResolverError(expression->field->pos, "struct field '", expression->field->name->string, "' not found");
 	return NULL;
 };
 
@@ -158,7 +158,7 @@ func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type
 		};
 		i = i + 1;
 	};
-	ResolverError(expression->field->pos, "enum field '", expression->field->name, "' not found");
+	ResolverError(expression->field->pos, "enum field '", expression->field->name->string, "' not found");
 	return NULL;
 };
 
@@ -226,13 +226,13 @@ func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType
 	while (i < Buffer_getCount((Void**)_context->names)) {
 		if (_context->names[i]->name == expression->identifier->name) {
 			if (expectedType != NULL && expectedType != _context->types[i]) {
-				ResolverError(expression->identifier->pos, "identifier '", expression->identifier->name, "' is the wrong type");
+				ResolverError(expression->identifier->pos, "identifier '", expression->identifier->name->string, "' is the wrong type");
 			};
 			return _context->types[i];
 		};
 		i = i + 1;
 	};
-	ResolverError(expression->identifier->pos, "identifier '", expression->identifier->name, "' is not a variable or function");
+	ResolverError(expression->identifier->pos, "identifier '", expression->identifier->name->string, "' is not a variable or function");
 	return NULL;
 };
 
