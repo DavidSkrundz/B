@@ -26,7 +26,7 @@ func String_init(str: UInt8*, length: UInt): String* {
 };
 
 func String_init_literal(string: UInt8*): String* {
-	return String_init(string, stringLength(string));
+	return String_init(string, StringLength(string));
 };
 
 func String_print(stream: FILE*, string: String*) {
@@ -62,7 +62,7 @@ var _strings: UInt8**;
 func intern(string: UInt8*, length: UInt): UInt8* {
 	var i = 0;
 	while (i < Buffer_getCount((Void**)_strings)) {
-		if (length == stringLength(_strings[i])) {
+		if (length == StringLength(_strings[i])) {
 			if (strncmp((char*)_strings[i], (char*)string, length) == (int)0) {
 				return _strings[i];
 			};
@@ -75,9 +75,5 @@ func intern(string: UInt8*, length: UInt): UInt8* {
 };
 
 func internLiteral(string: UInt8*): UInt8* {
-	return intern(string, stringLength(string));
-};
-
-func stringLength(string: UInt8*): UInt {
-	return strlen((char*)string);
+	return intern(string, StringLength(string));
 };

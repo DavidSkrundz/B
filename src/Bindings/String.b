@@ -5,3 +5,7 @@ func StringEqual(str1: UInt8*, str2: UInt8*, length: UInt): Bool {
 func StringDuplicate(str: UInt8*, length: UInt): UInt8* {
 	return (UInt8*)strndup((char*)str, length);
 };
+
+func StringLength(string: UInt8*): UInt {
+	return strlen((char*)string);
+};
