@@ -4,7 +4,7 @@ func expectTypespecIdentifier(): TypespecIdentifier* {
 	return typespecIdentifier;
 };
 
-func parseTypespec(tokens: Token***): Typespec* {
+func parseTypespec(): Typespec* {
 	var typespec = newTypespec();
 	if (isToken(.Identifier)) {
 		typespec->pos = _tokens[0]->pos;

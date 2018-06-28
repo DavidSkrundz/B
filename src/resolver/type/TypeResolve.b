@@ -22,13 +22,13 @@ func registerType(type: Type*) {
 	Buffer_append((Void***)&_types, (Void*)type);
 };
 
-func resolveTypeIdentifier(name: Identifier*): Type* {
+func resolveTypeIdentifier(name: String*): Type* {
 	var i = 0;
 	while (i < Buffer_getCount((Void**)_types)) {
 		var type = _types[i];
 		if (type->kind == .Identifier) {
 			var identifier = (TypeIdentifier*)type->type;
-			if (identifier->name == name->name) {
+			if (identifier->name == name) {
 				return type;
 			};
 		};
@@ -84,18 +84,18 @@ func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: B
 };
 
 func createTypeIdentifierString(name: String*): Type* {
-	var identifier = newIdentifier();
-	identifier->pos = newSrcPos("builtin", "builtin", 0, 0);
-	identifier->name = name;
-	return createTypeIdentifier(identifier);
+	var token = newToken();
+	token->pos = newSrcPos("builtin", "builtin", 0, 0);
+	token->string = name;
+	return createTypeIdentifier(token);
 };
 
-func createTypeIdentifier(name: Identifier*): Type* {
-	if (resolveTypeIdentifier(name) != NULL) {
-		ResolverError(name->pos, "duplicate definition of type '", name->name->string, "'");
+func createTypeIdentifier(name: Token*): Type* {
+	if (resolveTypeIdentifier(name->string) != NULL) {
+		ResolverError(name->pos, "duplicate definition of type '", name->string->string, "'");
 	};
 	var typeIdentifier = newTypeIdentifier();
-	typeIdentifier->name = name->name;
+	typeIdentifier->name = name->string;
 	var type = newType();
 	type->kind = .Identifier;
 	type->type = (Void*)typeIdentifier;

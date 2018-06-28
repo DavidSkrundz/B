@@ -1,3 +1,3 @@
-func codegenIdentifier(identifier: Identifier*) {
-	String_print(stdout, identifier->name);
+func codegenIdentifier(identifier: String*) {
+	String_print(stdout, identifier);
 };

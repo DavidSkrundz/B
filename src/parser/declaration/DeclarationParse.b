@@ -16,7 +16,7 @@ func expectDeclarationVar(declaration: Declaration*): DeclarationVar* {
 
 func parseDeclarationFuncArgument(): DeclarationFuncArg* {
 	var arg = newDeclarationFuncArg();
-	arg->name = parseIdentifier(&_tokens);
+	arg->name = parseIdentifier();
 	if (arg->name == NULL) { return NULL; };
 	arg->pos = arg->name->pos;
 	expectToken(.Colon);
@@ -89,8 +89,8 @@ func expectDeclarationEnum(declaration: Declaration*): DeclarationEnum* {
 		expectToken(.Semicolon);
 		var i = 0;
 		while (i < Buffer_getCount((Void**)decl->cases)) {
-			if (decl->cases[i]->name->name == caseName->name) {
-				fprintf(stderr, (char*)"Duplicate enum case %s\n", caseName->name->string);
+			if (decl->cases[i]->name->string == caseName->string) {
+				fprintf(stderr, (char*)"Duplicate enum case %s\n", caseName->string->string);
 				exit(EXIT_FAILURE);
 			};
 			i = i + 1;
@@ -106,7 +106,7 @@ func expectDeclarationEnum(declaration: Declaration*): DeclarationEnum* {
 
 func expectDeclaration(): Declaration* {
 	var declaration = newDeclaration();
-	declaration->attribute = parseAttribute(&_tokens);
+	declaration->attribute = parseAttribute();
 	declaration->state = .Unresolved;
 	if (isTokenKeyword(Keyword_Var)) {
 		declaration->kind = .Var;

@@ -4,19 +4,19 @@ func resolveTypespecPointer(typespec: TypespecPointer*): Type* {
 };
 
 func resolveTypespecIdentifier(typespec: TypespecIdentifier*): Type* {
-	var type = resolveTypeIdentifier(typespec->name);
+	var type = resolveTypeIdentifier(typespec->name->string);
 	if (type == NULL) {
 		var i = 0;
 		while (i < Buffer_getCount((Void**)_declarations)) {
-			if (_declarations[i]->name->name == typespec->name->name) {
+			if (_declarations[i]->name->string == typespec->name->string) {
 				resolveDeclarationType(_declarations[i]);
-				type = resolveTypeIdentifier(typespec->name);
+				type = resolveTypeIdentifier(typespec->name->string);
 			};
 			i = i + 1;
 		};
 	};
 	if (type == NULL) {
-		ResolverError(typespec->name->pos, "invalid type '", typespec->name->name->string, "'");
+		ResolverError(typespec->name->pos, "invalid type '", typespec->name->string->string, "'");
 	};
 	return type;
 };

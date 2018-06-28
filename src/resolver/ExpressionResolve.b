@@ -39,13 +39,13 @@ func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Ty
 	i = 0;
 	while (i < Buffer_getCount((Void**)structDeclaration->fields)) {
 		var name = structDeclaration->fields[i]->name;
-		if (name->name == expression->field->name) {
+		if (name->string == expression->field->string) {
 			expression->resolvedType = structDeclaration->fields[i]->resolvedType;
 		};
 		i = i + 1;
 	};
 	if (expression->resolvedType == NULL) {
-		ResolverError(expression->field->pos, "struct field '", expression->field->name->string, "' not found");
+		ResolverError(expression->field->pos, "struct field '", expression->field->string->string, "' not found");
 	};
 	expression->resolvedType = structType;
 	return TypeUInt;
@@ -134,15 +134,15 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 	i = 0;
 	while (i < Buffer_getCount((Void**)structDeclaration->fields)) {
 		var name = structDeclaration->fields[i]->name;
-		if (name->name == expression->field->name) {
+		if (name->string == expression->field->string) {
 			if (expectedType != NULL && expectedType != structDeclaration->fields[i]->resolvedType) {
-				ResolverError(expression->field->pos, "struct field '", expression->field->name->string, "' is the wrong type");
+				ResolverError(expression->field->pos, "struct field '", expression->field->string->string, "' is the wrong type");
 			};
 			return structDeclaration->fields[i]->resolvedType;
 		};
 		i = i + 1;
 	};
-	ResolverError(expression->field->pos, "struct field '", expression->field->name->string, "' not found");
+	ResolverError(expression->field->pos, "struct field '", expression->field->string->string, "' not found");
 	return NULL;
 };
 
@@ -150,7 +150,7 @@ func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type
 	var i = 0;
 	while (i < Buffer_getCount((Void**)_declarations)) {
 		if (_declarations[i]->kind == .Enum) {
-			if (expression->base == NULL || expression->base->name == _declarations[i]->name->name) {
+			if (expression->base == NULL || expression->base->string == _declarations[i]->name->string) {
 				if (expectedType == NULL || _declarations[i]->resolvedType == expectedType) {
 					return _declarations[i]->resolvedType;
 				};
@@ -158,7 +158,7 @@ func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type
 		};
 		i = i + 1;
 	};
-	ResolverError(expression->field->pos, "enum field '", expression->field->name->string, "' not found");
+	ResolverError(expression->field->pos, "enum field '", expression->field->string->string, "' not found");
 	return NULL;
 };
 
@@ -224,15 +224,15 @@ func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): 
 func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType: Type*): Type* {
 	var i = 0;
 	while (i < Buffer_getCount((Void**)_context->names)) {
-		if (_context->names[i]->name == expression->identifier->name) {
+		if (_context->names[i]->string == expression->identifier->string) {
 			if (expectedType != NULL && expectedType != _context->types[i]) {
-				ResolverError(expression->identifier->pos, "identifier '", expression->identifier->name->string, "' is the wrong type");
+				ResolverError(expression->identifier->pos, "identifier '", expression->identifier->string->string, "' is the wrong type");
 			};
 			return _context->types[i];
 		};
 		i = i + 1;
 	};
-	ResolverError(expression->identifier->pos, "identifier '", expression->identifier->name->string, "' is not a variable or function");
+	ResolverError(expression->identifier->pos, "identifier '", expression->identifier->string->string, "' is not a variable or function");
 	return NULL;
 };
 

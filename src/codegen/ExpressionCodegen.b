@@ -46,7 +46,7 @@ func codegenExpressionOffsetof(expression: Expression*, expr: ExpressionOffsetof
 	printf((char*)"offsetof(");
 	codegenType(expr->resolvedType);
 	printf((char*)", ");
-	codegenIdentifier(expr->field);
+	codegenIdentifier(expr->field->string);
 	printf((char*)")");
 };
 
@@ -77,7 +77,7 @@ func codegenExpressionArrow(expression: Expression*, expr: ExpressionArrow*) {
 	printf((char*)"(");
 	codegenExpression(expr->base);
 	printf((char*)"->");
-	codegenIdentifier(expr->field);
+	codegenIdentifier(expr->field->string);
 	printf((char*)")");
 };
 
@@ -87,13 +87,13 @@ func codegenExpressionDot(expression: Expression*, expr: ExpressionDot*) {
 	while (i < Buffer_getCount((Void**)_declarations)) {
 		if (_declarations[i]->kind == .Enum) {
 			if (_declarations[i]->resolvedType == expression->resolvedType) {
-				codegenIdentifier(_declarations[i]->name);
+				codegenIdentifier(_declarations[i]->name->string);
 			};
 		};
 		i = i + 1;
 	};
 	printf((char*)"_");
-	codegenIdentifier(expr->field);
+	codegenIdentifier(expr->field->string);
 	printf((char*)")");
 };
 
@@ -109,7 +109,7 @@ func codegenExpressionInfixOperator(expression: Expression*, expr: ExpressionInf
 
 func codegenExpressionIdentifier(expression: Expression*, expr: ExpressionIdentifier*) {
 	printf((char*)"(");
-	codegenIdentifier(expr->identifier);
+	codegenIdentifier(expr->identifier->string);
 	printf((char*)")");
 };
 

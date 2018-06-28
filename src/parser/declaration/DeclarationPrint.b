@@ -1,4 +1,4 @@
-func printDeclarationVar(declaration: DeclarationVar*, name: Identifier*) {
+func printDeclarationVar(declaration: DeclarationVar*, name: Token*) {
 	printf((char*)"(var ");
 	printIdentifier(name);
 	if (declaration->type != NULL) {
@@ -47,7 +47,7 @@ func printDeclarationFuncArgs(args: DeclarationFuncArgs*) {
 	printf((char*)")");
 };
 
-func printDeclarationFunc(declaration: DeclarationFunc*, name: Identifier*) {
+func printDeclarationFunc(declaration: DeclarationFunc*, name: Token*) {
 	printf((char*)"(func ");
 	printIdentifier(name);
 	printf((char*)" ");
@@ -71,7 +71,7 @@ func printDeclarationFunc(declaration: DeclarationFunc*, name: Identifier*) {
 	printf((char*)")");
 };
 
-func printDeclarationStruct(declaration: DeclarationStruct*, name: Identifier*) {
+func printDeclarationStruct(declaration: DeclarationStruct*, name: Token*) {
 	printf((char*)"(struct\n");
 	depth = depth + 1;
 	printDepth();
@@ -104,7 +104,7 @@ func printDeclarationEnumCase(enumCase: DeclarationEnumCase*) {
 	printf((char*)")");
 };
 
-func printDeclarationEnum(declaration: DeclarationEnum*, name: Identifier*) {
+func printDeclarationEnum(declaration: DeclarationEnum*, name: Token*) {
 	printf((char*)"(enum\n");
 	depth = depth + 1;
 	printDepth();

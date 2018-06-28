@@ -17,7 +17,7 @@ struct ExpressionSizeof {
 
 struct ExpressionOffsetof {
 	var type: Typespec*;
-	var field: Identifier*;
+	var field: Token*;
 	var resolvedType: Type*;
 };
 
@@ -41,12 +41,12 @@ struct ExpressionSubscript {
 
 struct ExpressionArrow {
 	var base: Expression*;
-	var field: Identifier*;
+	var field: Token*;
 };
 
 struct ExpressionDot {
-	var base: Identifier*;
-	var field: Identifier*;
+	var base: Token*;
+	var field: Token*;
 };
 
 struct ExpressionInfix {
@@ -56,7 +56,7 @@ struct ExpressionInfix {
 };
 
 struct ExpressionIdentifier {
-	var identifier: Identifier*;
+	var identifier: Token*;
 };
 
 struct ExpressionBooleanLiteral {
@@ -107,7 +107,7 @@ func newExpressionSubscript(): ExpressionSubscript* {
 	return (ExpressionSubscript*)xcalloc(1, sizeof(ExpressionSubscript));
 };
 
-func newExpressionArrow(field: Identifier*): ExpressionArrow* {
+func newExpressionArrow(field: Token*): ExpressionArrow* {
 	var expression = (ExpressionArrow*)xcalloc(1, sizeof(ExpressionArrow));
 	expression->field = field;
 	return expression;

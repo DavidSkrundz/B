@@ -1,19 +1,19 @@
 func codegenDeclarationStructDeclaration(declaration: Declaration*, decl: DeclarationStruct*) {
 	printf((char*)"typedef struct ");
-	codegenIdentifier(declaration->name);
+	codegenIdentifier(declaration->name->string);
 	printf((char*)" ");
-	codegenIdentifier(declaration->name);
+	codegenIdentifier(declaration->name->string);
 	printf((char*)";\n");
 };
 
 func codegenDeclarationEnumDeclaration(declaration: Declaration*, decl: DeclarationEnum*) {
 	codegenLine(declaration->pos);
 	printf((char*)"typedef enum ");
-	codegenIdentifier(declaration->name);
+	codegenIdentifier(declaration->name->string);
 	printf((char*)" {\n");
-	codegenDeclarationEnumCasesDefinition(decl->cases, declaration->name);
+	codegenDeclarationEnumCasesDefinition(decl->cases, declaration->name->string);
 	printf((char*)"} ");
-	codegenIdentifier(declaration->name);
+	codegenIdentifier(declaration->name->string);
 	printf((char*)";\n");
 };
 
@@ -44,7 +44,7 @@ func codegenDeclarationVarDefinition(declaration: Declaration*, decl: Declaratio
 	codegenLine(declaration->pos);
 	codegenType(declaration->resolvedType);
 	printf((char*)" ");
-	codegenIdentifier(declaration->name);
+	codegenIdentifier(declaration->name->string);
 	printf((char*)" = ");
 	if (decl->value == NULL) {
 		codegenNullExpression(declaration->resolvedType);
@@ -57,7 +57,7 @@ func codegenDeclarationVarDefinition(declaration: Declaration*, decl: Declaratio
 func codegenDeclarationFuncArg(argument: DeclarationFuncArg*) {
 	codegenType(argument->resolvedType);
 	printf((char*)" ");
-	codegenIdentifier(argument->name);
+	codegenIdentifier(argument->name->string);
 };
 
 func codegenDeclarationFuncArgs(args: DeclarationFuncArgs*) {
@@ -81,7 +81,7 @@ func codegenDeclarationFuncDefinition(declaration: Declaration*, decl: Declarati
 	var funcType = (TypeFunction*)declaration->resolvedType->type;
 	codegenType(funcType->returnType);
 	printf((char*)" ");
-	codegenIdentifier(declaration->name);
+	codegenIdentifier(declaration->name->string);
 	codegenDeclarationFuncArgs(decl->args);
 	printf((char*)";\n");
 };
@@ -93,14 +93,14 @@ func codegenDeclarationStructFieldDefinition(field: Declaration*) {
 	printf((char*)"\t");
 	codegenType(field->resolvedType);
 	printf((char*)" ");
-	codegenIdentifier(field->name);
+	codegenIdentifier(field->name->string);
 	printf((char*)";\n");
 };
 
 func codegenDeclarationStructDefinition(declaration: Declaration*, decl: DeclarationStruct*) {
 	codegenLine(declaration->pos);
 	printf((char*)"struct ");
-	codegenIdentifier(declaration->name);
+	codegenIdentifier(declaration->name->string);
 	printf((char*)" {\n");
 	var i = 0;
 	while (i < Buffer_getCount((Void**)decl->fields)) {
@@ -110,13 +110,13 @@ func codegenDeclarationStructDefinition(declaration: Declaration*, decl: Declara
 	printf((char*)"};\n");
 };
 
-func codegenDeclarationEnumCasesDefinition(cases: DeclarationEnumCase**, name: Identifier*) {
+func codegenDeclarationEnumCasesDefinition(cases: DeclarationEnumCase**, name: String*) {
 	var i = 0;
 	while (i < Buffer_getCount((Void**)cases)) {
 		printf((char*)"\t");
 		codegenIdentifier(name);
 		printf((char*)"_");
-		codegenIdentifier(cases[i]->name);
+		codegenIdentifier(cases[i]->name->string);
 		printf((char*)",\n");
 		i = i + 1;
 	};
@@ -154,7 +154,7 @@ func codegenDeclarationFuncImplementation(declaration: Declaration*, decl: Decla
 	var funcType = (TypeFunction*)declaration->resolvedType->type;
 	codegenType(funcType->returnType);
 	printf((char*)" ");
-	codegenIdentifier(declaration->name);
+	codegenIdentifier(declaration->name->string);
 	codegenDeclarationFuncArgs(decl->args);
 	printf((char*)" ");
 	codegenStatementBlock(decl->block);

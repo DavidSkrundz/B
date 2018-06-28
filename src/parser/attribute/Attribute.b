@@ -1,7 +1,7 @@
 struct Attribute {
 	var pos: SrcPos*;
-	var name: Identifier*;
-	var parameters: Identifier**;
+	var name: Token*;
+	var parameters: Token**;
 };
 
 func newAttribute(): Attribute* {

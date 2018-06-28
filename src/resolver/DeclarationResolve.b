@@ -1,4 +1,4 @@
-func resolveDeclarationVar(declaration: DeclarationVar*, name: Identifier*): Type* {
+func resolveDeclarationVar(declaration: DeclarationVar*, name: Token*): Type* {
 	var type: Type*;
 	if (declaration->type != NULL) {
 		type = resolveTypespec(declaration->type);
@@ -26,7 +26,7 @@ func resolveDeclarationFuncArgs(args: DeclarationFuncArgs*): Type** {
 	return argumentTypes;
 };
 
-func resolveDeclarationTypeFunc(declaration: DeclarationFunc*, name: Identifier*): Type* {
+func resolveDeclarationTypeFunc(declaration: DeclarationFunc*, name: Token*): Type* {
 	var argumentTypes = resolveDeclarationFuncArgs(declaration->args);
 	var returnType = TypeVoid;
 	if (declaration->returnType != NULL) {
@@ -40,15 +40,15 @@ func resolveDeclarationTypeFunc(declaration: DeclarationFunc*, name: Identifier*
 	return type;
 };
 
-func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Identifier*): Type* {
+func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Type* {
 	return createTypeIdentifier(name);
 };
 
-func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Identifier*): Type* {
+func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Token*): Type* {
 	return createTypeIdentifier(name);
 };
 
-func resolveDeclarationDefinitionStruct(declaration: DeclarationStruct*, name: Identifier*) {
+func resolveDeclarationDefinitionStruct(declaration: DeclarationStruct*, name: Token*) {
 	var before = Buffer_getCount((Void**)_context->names);
 	if (declaration->fields != NULL) {
 		var i = 0;
@@ -77,7 +77,7 @@ func resolveDeclarationDefinition(declaration: Declaration*) {
 	if (declaration->state == .Resolved) { return; }
 	else if (declaration->state == .Unresolved) {}
 	else if (declaration->state == .Resolving) {
-		ResolverError(declaration->pos, "cyclic dependency for '", declaration->name->name->string, "'");
+		ResolverError(declaration->pos, "cyclic dependency for '", declaration->name->string->string, "'");
 	} else {
 		ProgrammingError("called resolveDeclarationDefinition on a .Invalid state");
 	};;;
@@ -96,7 +96,7 @@ func resolveDeclarationDefinition(declaration: Declaration*) {
 	declaration->state = .Resolved;
 };
 
-func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: Identifier*): Type* {
+func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: String*): Type* {
 	var argumentTypes = resolveDeclarationFuncArgs(declaration->args);
 	var returnType = TypeVoid;
 	if (declaration->returnType != NULL) {
@@ -127,7 +127,7 @@ func resolveDeclarationImplementation(declaration: Declaration*) {
 	};
 	if (declaration->kind == .Var) {
 	} else if (declaration->kind == .Func) {
-		declaration->resolvedType = resolveDeclarationImplementationFunc((DeclarationFunc*)declaration->declaration, declaration->name);
+		declaration->resolvedType = resolveDeclarationImplementationFunc((DeclarationFunc*)declaration->declaration, declaration->name->string);
 	} else if (declaration->kind == .Struct) {
 	} else if (declaration->kind == .Enum) {
 	} else {

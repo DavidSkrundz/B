@@ -171,7 +171,7 @@ func expectExpressionCast(): Expression* {
 		expression->kind = .Cast;
 		var expressionCast = newExpressionCast();
 		expression->expression = (Void*)expressionCast;
-		expressionCast->type = parseTypespec(&_tokens);
+		expressionCast->type = parseTypespec();
 		if (expressionCast->type == NULL) {
 			_tokens = save;
 			return expectExpressionUnary();

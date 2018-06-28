@@ -3,7 +3,7 @@ struct Declaration {
 	var kind: DeclarationKind;
 	var state: DeclarationState;
 	var attribute: Attribute*;
-	var name: Identifier*;
+	var name: Token*;
 	var declaration: Void*;
 	var resolvedType: Type*;
 };
@@ -15,7 +15,7 @@ struct DeclarationVar {
 
 struct DeclarationFuncArg {
 	var pos: SrcPos*;
-	var name: Identifier*;
+	var name: Token*;
 	var type: Typespec*;
 	var resolvedType: Type*;
 };
@@ -36,7 +36,7 @@ struct DeclarationStruct {
 };
 
 struct DeclarationEnumCase {
-	var name: Identifier*;
+	var name: Token*;
 };
 
 struct DeclarationEnum {

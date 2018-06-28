@@ -1,5 +1,5 @@
 struct Context {
-	var names: Identifier**;
+	var names: Token**;
 	var types: Type**;
 };
 
@@ -7,11 +7,11 @@ func newContext(): Context* {
 	return (Context*)xcalloc(1, sizeof(Context));
 };
 
-func addTo(context: Context*, name: Identifier*, type: Type*) {
+func addTo(context: Context*, name: Token*, type: Type*) {
 	var i = 0;
 	while (i < Buffer_getCount((Void**)context->names)) {
-		if (context->names[i]->name == name->name) {
-			ResolverError(name->pos, "duplicate definition of '", name->name->string, "'");
+		if (context->names[i]->string == name->string) {
+			ResolverError(context->names[i]->pos, "duplicate definition of '", name->string->string, "'");
 		};
 		i = i + 1;
 	};

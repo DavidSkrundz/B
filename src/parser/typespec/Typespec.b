@@ -9,7 +9,7 @@ struct TypespecPointer {
 };
 
 struct TypespecIdentifier {
-	var name: Identifier*;
+	var name: Token*;
 };
 
 func newTypespec(): Typespec* {

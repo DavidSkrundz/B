@@ -1,4 +1,4 @@
-func parseAttribute(tokens: Token***): Attribute* {
+func parseAttribute(): Attribute* {
 	var attribute: Attribute*;
 	if (checkToken(.At)) {
 		attribute = newAttribute();

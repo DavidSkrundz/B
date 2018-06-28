@@ -46,7 +46,7 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 
 List of things so I don't forget.
 
-- Better solution to string handling (in the compiler not the language)
+- Ternary operator (for parseIdentifier())
 - Introduce Symbols that the resolver and codegen modules operate on
 - Dead code detection/omission
 - Improve awareness of resolver in different contexts
