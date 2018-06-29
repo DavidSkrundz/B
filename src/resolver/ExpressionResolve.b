@@ -93,7 +93,6 @@ func resolveExpressionFunctionCall(expression: ExpressionFunctionCall*, expected
 		resolveExpression(expression->arguments[i], funcType->argumentTypes[i]);
 		i = i + 1;
 	};
-	i = 0;
 	while (i < Buffer_getCount((Void**)expression->arguments)) {
 		resolveExpression(expression->arguments[i], NULL);
 		i = i + 1;
