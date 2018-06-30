@@ -2,11 +2,7 @@ func readFile(fileName: char*, buffer: UInt8**): UInt {
 	var file: FILE*;
 	
 	file = fopen(fileName, (char*)"r");
-	if (file == NULL) {
-		fprintf(stderr, (char*)"could not open ");
-		perror(fileName);
-		exit(EXIT_FAILURE);
-	};
+	if (file == NULL) { FileError(fileName, "could not open "); };
 	fseek(file, 0, SEEK_END);
 	var length = ftell(file);
 	fseek(file, 0, SEEK_SET);
@@ -14,15 +10,16 @@ func readFile(fileName: char*, buffer: UInt8**): UInt {
 	*buffer = (UInt8*)xcalloc(length + 1, sizeof(char));
 	
 	if (fread(*buffer, length, 1, file) == 1) {
-	} else {
-		fclose(file);
-		fprintf(stderr, (char*)"could not open ");
-		perror(fileName);
-		exit(EXIT_FAILURE);
-	};
+	} else { FileError(fileName, "could not read "); };
 	
 	fclose(file);
 	
 	(*buffer)[length] = (UInt8)0;
 	return length;
+};
+
+func FileError(file: char*, message: UInt8*) {
+	fprintf(stderr, (char*)"%s", (char*)message);
+	perror(file);
+	exit(EXIT_FAILURE);
 };
