@@ -7,7 +7,7 @@ func resolveDeclarationVar(declaration: DeclarationVar*, name: Token*): Type* {
 		var expressionType = resolveExpression(declaration->value, type);
 		if (type == NULL) { type = expressionType; };
 	};
-	addTo(_context, name, type);
+	addTo(_OldContext, name, type);
 	return type;
 };
 
@@ -36,7 +36,7 @@ func resolveDeclarationTypeFunc(declaration: DeclarationFunc*, name: Token*): Ty
 	if (type == NULL) {
 		type = createTypeFunction(returnType, argumentTypes, declaration->args->isVariadic);
 	};
-	addTo(_context, name, type);
+	addTo(_OldContext, name, type);
 	return type;
 };
 
@@ -49,7 +49,7 @@ func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Token*): Type* 
 };
 
 func resolveDeclarationDefinitionStruct(declaration: DeclarationStruct*, name: Token*) {
-	var before = Buffer_getCount((Void**)_context->names);
+	var before = Buffer_getCount((Void**)_OldContext->names);
 	if (declaration->fields != NULL) {
 		var i = 0;
 		while (i < Buffer_getCount((Void**)declaration->fields)) {
@@ -57,8 +57,8 @@ func resolveDeclarationDefinitionStruct(declaration: DeclarationStruct*, name: T
 			i = i + 1;
 		};
 	};
-	Buffer_setCount((Void**)_context->names, before);
-	Buffer_setCount((Void**)_context->types, before);
+	Buffer_setCount((Void**)_OldContext->names, before);
+	Buffer_setCount((Void**)_OldContext->types, before);
 };
 
 func resolveDeclarationType(declaration: Declaration*) {
@@ -103,16 +103,16 @@ func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: S
 		returnType = resolveTypespec(declaration->returnType);
 	};
 	if (declaration->block != NULL) {
-		var oldContextCount = Buffer_getCount((Void**)_context->names);
+		var oldOldContextCount = Buffer_getCount((Void**)_OldContext->names);
 		var i = 0;
 		while (i < Buffer_getCount((Void**)declaration->args->args)) {
 			var argument = declaration->args->args[i];
-			addTo(_context, argument->name, argument->resolvedType);
+			addTo(_OldContext, argument->name, argument->resolvedType);
 			i = i + 1;
 		};
 		resolveStatementBlock(declaration->block, returnType);
-		Buffer_setCount((Void**)_context->names, oldContextCount);
-		Buffer_setCount((Void**)_context->types, oldContextCount);
+		Buffer_setCount((Void**)_OldContext->names, oldOldContextCount);
+		Buffer_setCount((Void**)_OldContext->types, oldOldContextCount);
 	};
 	var type = resolveTypeFunction(returnType, argumentTypes, declaration->args->isVariadic);
 	if (type == NULL) {

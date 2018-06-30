@@ -1,7 +1,7 @@
-var _context: Context*;
+var _OldContext: OldContext*;
 
 func Resolve() {
-	_context = newContext();
+	_OldContext = newOldContext();
 	
 	InitBuiltinTypes();
 	

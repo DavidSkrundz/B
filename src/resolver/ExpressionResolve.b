@@ -222,12 +222,12 @@ func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): 
 
 func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType: Type*): Type* {
 	var i = 0;
-	while (i < Buffer_getCount((Void**)_context->names)) {
-		if (_context->names[i]->string == expression->identifier->string) {
-			if (expectedType != NULL && expectedType != _context->types[i]) {
+	while (i < Buffer_getCount((Void**)_OldContext->names)) {
+		if (_OldContext->names[i]->string == expression->identifier->string) {
+			if (expectedType != NULL && expectedType != _OldContext->types[i]) {
 				ResolverError(expression->identifier->pos, "identifier '", expression->identifier->string->string, "' is the wrong type");
 			};
-			return _context->types[i];
+			return _OldContext->types[i];
 		};
 		i = i + 1;
 	};

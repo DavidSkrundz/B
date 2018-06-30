@@ -1,20 +1,20 @@
-struct Context {
+struct OldContext {
 	var names: Token**;
 	var types: Type**;
 };
 
-func newContext(): Context* {
-	return (Context*)xcalloc(1, sizeof(Context));
+func newOldContext(): OldContext* {
+	return (OldContext*)xcalloc(1, sizeof(OldContext));
 };
 
-func addTo(context: Context*, name: Token*, type: Type*) {
+func addTo(OldContext: OldContext*, name: Token*, type: Type*) {
 	var i = 0;
-	while (i < Buffer_getCount((Void**)context->names)) {
-		if (context->names[i]->string == name->string) {
-			ResolverError(context->names[i]->pos, "duplicate definition of '", name->string->string, "'");
+	while (i < Buffer_getCount((Void**)OldContext->names)) {
+		if (OldContext->names[i]->string == name->string) {
+			ResolverError(OldContext->names[i]->pos, "duplicate definition of '", name->string->string, "'");
 		};
 		i = i + 1;
 	};
-	Buffer_append((Void***)&context->names, (Void*)name);
-	Buffer_append((Void***)&context->types, (Void*)type);
+	Buffer_append((Void***)&OldContext->names, (Void*)name);
+	Buffer_append((Void***)&OldContext->types, (Void*)type);
 };
