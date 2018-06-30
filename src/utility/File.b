@@ -9,7 +9,7 @@ func readFile(fileName: char*, buffer: UInt8**): UInt {
 	
 	*buffer = (UInt8*)xcalloc(length + 1, sizeof(char));
 	
-	if (fread(*buffer, length, 1, file) == 1) {
+	if (length == 0 || fread(*buffer, length, 1, file) == 1) {
 	} else { FileError(fileName, "could not read "); };
 	
 	fclose(file);
