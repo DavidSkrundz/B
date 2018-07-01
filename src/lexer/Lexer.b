@@ -8,8 +8,9 @@ var _start: UInt8*;
 var _line = 0;
 var _column = 0;
 
-func _characterTo1TokenKind(character: UInt8): TokenKind {
-	if (*_code == ',') {        return .Comma;
+func charToTokenKind(character: UInt8): TokenKind {
+	if (*_code == '\0') {       return .EOF;
+	} else if (*_code == ',') { return .Comma;
 	} else if (*_code == ':') { return .Colon;
 	} else if (*_code == ';') { return .Semicolon;
 	} else if (*_code == '{') { return .OpenCurly;
@@ -18,54 +19,74 @@ func _characterTo1TokenKind(character: UInt8): TokenKind {
 	} else if (*_code == ']') { return .CloseBracket;
 	} else if (*_code == '(') { return .OpenParenthesis;
 	} else if (*_code == ')') { return .CloseParenthesis;
-	} else if (*_code == '@') { return .At;
-	} else if (*_code == '*') { return .Star;
+	} else if (*_code == '?') { return .Question;
 	} else if (*_code == '+') { return .Plus;
+	} else if (*_code == '*') { return .Star;
 	} else if (*_code == '/') { return .Slash;
+	} else if (*_code == '^') { return .Xor;
+	} else if (*_code == '@') { return .At;
 	} else {                    return .Invalid;
-	};;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;
 };
 
-func _isCharacter1Token(character: UInt8): Bool {
-	return _characterTo1TokenKind(character) != .Invalid;
+func isCharToken(character: UInt8): Bool {
+	return charToTokenKind(character) != .Invalid;
 };
 
-func _characterTo2TokenKind1(character: UInt8): TokenKind {
-	if (*_code == '&') {        return .And;
-	} else if (*_code == '|') { return .Invalid;
-	} else if (*_code == '-') { return .Minus;
-	} else if (*_code == '!') { return .Not;
-	} else if (*_code == '=') { return .Assign;
-	} else if (*_code == '<') { return .LessThan;
-	} else {                    return .Invalid;
-	};;;;;;
+func char2ToTokenKind(character1: UInt8, character2: UInt8): TokenKind {
+	if (character1 == '-') {
+		if (character2 == '>') { return .Arrow; };
+		return .Minus;
+	} else if (character1 == '|') {
+		if (character2 == '|') { return .OrOr; };
+		return .Or;
+	} else if (character1 == '&') {
+		if (character2 == '&') { return .AndAnd; };
+		return .And;
+	} else if (character1 == '<') {
+		if (character2 == '<') { return .LeftShift; };
+		if (character2 == '=') { return .LessThanEqual; };
+		return .LessThan;
+	} else if (character1 == '>') {
+		if (character2 == '>') { return .RightShift; };
+		if (character2 == '=') { return .GreaterThanEqual; };
+		return .GreaterThan;
+	} else if (character1 == '!') {
+		if (character2 == '=') { return .NotEqual; };
+		return .Not;
+	} else if (character1 == '=') {
+		if (character2 == '=') { return .Equal; };
+		return .Assign;
+	};;;;;;;
+	return .Invalid;
 };
 
-func _characterTo2TokenKind2(character: UInt8): TokenKind {
-	if (*_code == '&') {        return .AndAnd;
-	} else if (*_code == '|') { return .OrOr;
-	} else if (*_code == '-') { return .Arrow;
-	} else if (*_code == '!') { return .NotEqual;
-	} else if (*_code == '=') { return .Equal;
-	} else if (*_code == '<') { return .LessThanEqual;
-	} else {                    return .Invalid;
-	};;;;;;
-};
-
-func _characterTo2TokenCharacter2(character: UInt8): UInt8 {
-	if (*_code == '&') {        return '&';
-	} else if (*_code == '|') { return '|';
-	} else if (*_code == '-') { return '>';
-	} else if (*_code == '!') { return '=';
-	} else if (*_code == '=') { return '=';
-	} else if (*_code == '<') { return '=';
-	} else {                    return '\0';
-	};;;;;;
-};
-
-func _isCharacter2Token(character: UInt8): Bool {
-	return _characterTo2TokenKind1(character) != .Invalid ||
-	       _characterTo2TokenKind2(character) != .Invalid;
+func char2TokenLength(character1: UInt8, character2: UInt8): UInt {
+	if (character1 == '-') {
+		if (character2 == '>') { return 2; };
+		return 1;
+	} else if (character1 == '|') {
+		if (character2 == '|') { return 2; };
+		return 1;
+	} else if (character1 == '&') {
+		if (character2 == '&') { return 2; };
+		return 1;
+	} else if (character1 == '<') {
+		if (character2 == '<') { return 2; };
+		if (character2 == '=') { return 2; };
+		return 1;
+	} else if (character1 == '>') {
+		if (character2 == '>') { return 2; };
+		if (character2 == '=') { return 2; };
+		return 1;
+	} else if (character1 == '!') {
+		if (character2 == '=') { return 2; };
+		return 1;
+	} else if (character1 == '=') {
+		if (character2 == '=') { return 2; };
+		return 1;
+	};;;;;;;
+	return 0;
 };
 
 func Lex() {
@@ -87,12 +108,12 @@ func Lex() {
 					_start = _code;
 				};
 			};
-		} else if (_isCharacter1Token(*_code)) {
-			lexToken(_characterTo1TokenKind(*_code));
-		} else if (_isCharacter2Token(*_code)) {
-			lexToken2(_characterTo2TokenKind1(*_code),
-			          _characterTo2TokenCharacter2(*_code),
-			          _characterTo2TokenKind2(*_code));
+		} else if (*_code == '\0') {
+			return lexToken1();
+		} else if (isCharToken(*_code)) {
+			lexToken1();
+		} else if (0 < char2TokenLength(*_code, '\0')) {
+			lexToken2();
 		} else if (*_code == '.') {
 			lexElipses();
 		} else if (*_code == '"') {
@@ -107,13 +128,14 @@ func Lex() {
 			lexIdentifier();
 		} else if (*_code == '_') {
 			lexIdentifier();
-		} else if (*_code == '\0') {
-			lexToken(.EOF);
-			return;
 		} else {
 			LexerError();
 		};;;;;;;;;;;
 	};
+};
+
+func nextCode(): UInt8* {
+	return (UInt8*)((UInt)_code + sizeof(UInt8));
 };
 
 func advanceLexer(amount: UInt) {
@@ -121,28 +143,23 @@ func advanceLexer(amount: UInt) {
 	_code = (UInt8*)((UInt)_code + amount * sizeof(UInt8));
 };
 
-func lexToken(kind: TokenKind) {
+func lexToken1() {
 	var token = newToken();
-	token->kind = kind;
+	token->kind = charToTokenKind(*_code);
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	token->string = String_init(_code, 1);
 	advanceLexer(1);
 	Buffer_append((Void***)&_tokens, (Void*)token);
 };
 
-func lexToken2(kind: TokenKind, character2: UInt8, kind2: TokenKind) {
+func lexToken2() {
 	var token = newToken();
-	token->kind = kind;
+	token->kind = char2ToTokenKind(*_code, *nextCode());
 	token->pos = newSrcPos(_file, _start, _line, _column);
 	var start = _code;
-	advanceLexer(1);
-	if (*_code == character2) {
-		token->string = String_init(start, 2);
-		token->kind = kind2;
-		advanceLexer(1);
-	} else {
-		token->string = String_init(start, 1);
-	};
+	var length = char2TokenLength(*_code, *nextCode());
+	advanceLexer(length);
+	token->string = String_init(start, length);
 	Buffer_append((Void***)&_tokens, (Void*)token);
 };
 

@@ -5,6 +5,7 @@ enum TokenKind {
 	case Comma;
 	case Colon;
 	case Semicolon;
+	
 	case OpenCurly;
 	case CloseCurly;
 	case OpenBracket;
@@ -12,25 +13,36 @@ enum TokenKind {
 	case OpenParenthesis;
 	case CloseParenthesis;
 	
-	case At;
-	case Star;
-	case And;
-	case Assign;
-	case Ellipses;
-	case Arrow;
-	case Dot;
-	
-	case AndAnd;
-	case OrOr;
+	case Question;
 	
 	case Plus;
 	case Minus;
+	case Star;
 	case Slash;
+	
+	case Or;
+	case And;
+	case Xor;
+	case LeftShift;
+	case RightShift;
+	
 	case Not;
+	case OrOr;
+	case AndAnd;
 	case Equal;
-	case LessThan;
-	case LessThanEqual;
 	case NotEqual;
+	case LessThan;
+	case GreaterThan;
+	case LessThanEqual;
+	case GreaterThanEqual;
+	
+	case At;
+	case Ellipses;
+	
+	case Assign;
+	
+	case Dot;
+	case Arrow;
 	
 	case Identifier;
 	case BooleanLiteral;
@@ -64,8 +76,18 @@ func _printTokenKind(kind: TokenKind, stream: FILE*) {
 		fprintf(stream, (char*)"AT");
 	} else if (kind == .Star) {
 		fprintf(stream, (char*)"STAR");
+	} else if (kind == .Or) {
+		fprintf(stream, (char*)"OR");
 	} else if (kind == .And) {
 		fprintf(stream, (char*)"AND");
+	} else if (kind == .Xor) {
+		fprintf(stream, (char*)"XOR");
+	} else if (kind == .LeftShift) {
+		fprintf(stream, (char*)"LEFTSHIFT");
+	} else if (kind == .RightShift) {
+		fprintf(stream, (char*)"RIGHTSHIFT");
+	} else if (kind == .Question) {
+		fprintf(stream, (char*)"QUESTION");
 	} else if (kind == .Plus) {
 		fprintf(stream, (char*)"PLUS");
 	} else if (kind == .Minus) {
@@ -92,8 +114,12 @@ func _printTokenKind(kind: TokenKind, stream: FILE*) {
 		fprintf(stream, (char*)"EQUAL");
 	} else if (kind == .LessThan) {
 		fprintf(stream, (char*)"LESSTHAN");
+	} else if (kind == .GreaterThan) {
+		fprintf(stream, (char*)"GREATERTHAN");
 	} else if (kind == .LessThanEqual) {
 		fprintf(stream, (char*)"LESSTHANEQUAL");
+	} else if (kind == .GreaterThanEqual) {
+		fprintf(stream, (char*)"GREATERTHANEQUAL");
 	} else if (kind == .NotEqual) {
 		fprintf(stream, (char*)"NOTEQUAL");
 	} else if (kind == .Identifier) {
@@ -109,5 +135,5 @@ func _printTokenKind(kind: TokenKind, stream: FILE*) {
 	} else {
 		fprintf(stderr, (char*)"Unknown token kind: %u\n", kind);
 		abort();
-	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 };
