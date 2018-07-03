@@ -9,13 +9,13 @@ func main(argc: int, argv: char**): int {
 	
 	var flags = (UInt8)0;
 	if (argv[1][1] == (char)'l') {
-		flags = (UInt8)1;
+		flags = (UInt8)(1 << 0);
 	} else if (argv[1][1] == (char)'p') {
-		flags = (UInt8)2;
+		flags = (UInt8)(1 << 1);
 	} else if (argv[1][1] == (char)'r') {
-		flags = (UInt8)4;
+		flags = (UInt8)(1 << 2);
 	} else if (argv[1][1] == (char)'g') {
-		flags = (UInt8)8;
+		flags = (UInt8)(1 << 3);
 	} else { printUsage(argv[0]); };;;;
 	bmain(&argv[2], (UInt)argc - 2, flags);
 	
@@ -48,7 +48,7 @@ func bmain(files: char**, fileCount: UInt, flags: UInt8) {
 		_file = (UInt8*)files[i];
 		Lex();
 		if (flags & (UInt8)1 != (UInt8)0) { printTokens(); };
-		flags = flags / (UInt8)2;
+		flags = flags >> (UInt8)1;
 		if (flags != (UInt8)0) {
 			Parse();
 			if (flags & (UInt8)1 != (UInt8)0) { printDeclarations(); };
@@ -59,11 +59,11 @@ func bmain(files: char**, fileCount: UInt, flags: UInt8) {
 		i = i + 1;
 	};
 	
-	flags = flags / (UInt8)4;
+	flags = flags >> (UInt8)2;
 	if (flags == (UInt8)0) { return; };
 	
 	Resolve();
-	flags = flags / (UInt8)2;
+	flags = flags >> (UInt8)1;
 	if (flags == (UInt8)0) { return; };
 	
 	Codegen();
