@@ -49,10 +49,21 @@ struct ExpressionDot {
 	var field: Token*;
 };
 
+struct ExpressionPrefix {
+	var expression: Expression*;
+	var operator: Token*;
+};
+
 struct ExpressionInfix {
 	var lhs: Expression*;
 	var rhs: Expression*;
 	var operator: Token*;
+};
+
+struct ExpressionTernary {
+	var condition: Expression*;
+	var positive: Expression*;
+	var negative: Expression*;
 };
 
 struct ExpressionIdentifier {
@@ -117,8 +128,16 @@ func newExpressionDot(): ExpressionDot* {
 	return (ExpressionDot*)xcalloc(1, sizeof(ExpressionDot));
 };
 
+func newExpressionPrefix(): ExpressionPrefix* {
+	return (ExpressionPrefix*)xcalloc(1, sizeof(ExpressionPrefix));
+};
+
 func newExpressionInfixOperator(): ExpressionInfix* {
 	return (ExpressionInfix*)xcalloc(1, sizeof(ExpressionInfix));
+};
+
+func newExpressionTernary(): ExpressionTernary* {
+	return (ExpressionTernary*)xcalloc(1, sizeof(ExpressionTernary));
 };
 
 func newExpressionIdentifier(): ExpressionIdentifier* {

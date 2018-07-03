@@ -191,6 +191,19 @@ func resolveExpressionInfixLogical(expression: ExpressionInfix*, expectedType: T
 	return TypeBool;
 };
 
+func resolveExpressionPrefix(expression: ExpressionPrefix*, expectedType: Type*): Type* {
+	if (expression->operator->kind == .Not) {
+		if (expectedType != NULL && expectedType != TypeBool) {
+			ResolverError(expression->operator->pos, "not expecting boolean result from logical not", "", "");
+		};
+		resolveExpression(expression->expression, TypeBool);
+		return TypeBool;
+	} else {
+		ProgrammingError("called resolveExpressionPrefix on a .Invalid");
+		return NULL;
+	};
+};
+
 func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): Type* {
 	if (expression->operator->kind == .Equal) {
 		return resolveExpressionInfixComparison(expression, expectedType);
@@ -198,7 +211,11 @@ func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): 
 		return resolveExpressionInfixComparison(expression, expectedType);
 	} else if (expression->operator->kind == .LessThan) {
 		return resolveExpressionInfixComparison(expression, expectedType);
+	} else if (expression->operator->kind == .GreaterThan) {
+		return resolveExpressionInfixComparison(expression, expectedType);
 	} else if (expression->operator->kind == .LessThanEqual) {
+		return resolveExpressionInfixComparison(expression, expectedType);
+	} else if (expression->operator->kind == .GreaterThanEqual) {
 		return resolveExpressionInfixComparison(expression, expectedType);
 	} else if (expression->operator->kind == .Plus) {
 		return resolveExpressionInfixAddition(expression, expectedType);
@@ -212,12 +229,26 @@ func resolveExpressionInfix(expression: ExpressionInfix*, expectedType: Type*): 
 		return resolveExpressionInfixMultiplication(expression, expectedType);
 	} else if (expression->operator->kind == .AndAnd) {
 		return resolveExpressionInfixLogical(expression, expectedType);
+	} else if (expression->operator->kind == .Or) {
+		return resolveExpressionInfixMultiplication(expression, expectedType);
 	} else if (expression->operator->kind == .OrOr) {
 		return resolveExpressionInfixLogical(expression, expectedType);
+	} else if (expression->operator->kind == .Xor) {
+		return resolveExpressionInfixMultiplication(expression, expectedType);
+	} else if (expression->operator->kind == .LeftShift) {
+		return resolveExpressionInfixMultiplication(expression, expectedType);
+	} else if (expression->operator->kind == .RightShift) {
+		return resolveExpressionInfixMultiplication(expression, expectedType);
 	} else {
 		ProgrammingError("called resolveExpressionInfix on a .Invalid");
 		return NULL;
-	};;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;
+};
+
+func resolveExpressionTernary(expression: ExpressionTernary*, expectedType: Type*): Type* {
+	resolveExpression(expression->condition, TypeBool);
+	var type = resolveExpression(expression->positive, expectedType);
+	return resolveExpression(expression->negative, type);
 };
 
 func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType: Type*): Type* {
@@ -284,8 +315,12 @@ func resolveExpression(expression: Expression*, expectedType: Type*): Type* {
 		expression->resolvedType = resolveExpressionArrow((ExpressionArrow*)expression->expression, expectedType);
 	} else if (expression->kind == .Dot) {
 		expression->resolvedType = resolveExpressionDot((ExpressionDot*)expression->expression, expectedType);
+	} else if (expression->kind == .PrefixOperator) {
+		expression->resolvedType = resolveExpressionPrefix((ExpressionPrefix*)expression->expression, expectedType);
 	} else if (expression->kind == .InfixOperator) {
 		expression->resolvedType = resolveExpressionInfix((ExpressionInfix*)expression->expression, expectedType);
+	} else if (expression->kind == .Ternary) {
+		expression->resolvedType = resolveExpressionTernary((ExpressionTernary*)expression->expression, expectedType);
 	} else if (expression->kind == .Identifier) {
 		expression->resolvedType = resolveExpressionIdentifier((ExpressionIdentifier*)expression->expression, expectedType);
 	} else if (expression->kind == .Null) {
@@ -300,7 +335,7 @@ func resolveExpression(expression: Expression*, expectedType: Type*): Type* {
 		expression->resolvedType = resolveExpressionStringLiteral((ExpressionStringLiteral*)expression->expression, expectedType);
 	} else {
 		ProgrammingError("called resolveExpression on a .Invalid");
-	};;;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;;;
 	if (expression->resolvedType == NULL) {
 		ProgrammingError("expression missing resolvedType");
 	};

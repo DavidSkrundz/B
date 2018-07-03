@@ -97,6 +97,13 @@ func codegenExpressionDot(expression: Expression*, expr: ExpressionDot*) {
 	printf((char*)")");
 };
 
+func codegenExpressionPrefixOperator(expression: Expression*, expr: ExpressionPrefix*) {
+	printf((char*)"(");
+	String_print(stdout, expr->operator->string);
+	codegenExpression(expr->expression);
+	printf((char*)")");
+};
+
 func codegenExpressionInfixOperator(expression: Expression*, expr: ExpressionInfix*) {
 	printf((char*)"(");
 	codegenExpression(expr->lhs);
@@ -104,6 +111,16 @@ func codegenExpressionInfixOperator(expression: Expression*, expr: ExpressionInf
 	String_print(stdout, expr->operator->string);
 	printf((char*)" ");
 	codegenExpression(expr->rhs);
+	printf((char*)")");
+};
+
+func codegenExpressionTernary(expression: Expression*, expr: ExpressionTernary*) {
+	printf((char*)"(");
+	codegenExpression(expr->condition);
+	printf((char*)" ? ");
+	codegenExpression(expr->positive);
+	printf((char*)" : ");
+	codegenExpression(expr->negative);
 	printf((char*)")");
 };
 
@@ -158,8 +175,12 @@ func codegenExpression(expression: Expression*) {
 		codegenExpressionArrow(expression, (ExpressionArrow*)expression->expression);
 	} else if (expression->kind == .Dot) {
 		codegenExpressionDot(expression, (ExpressionDot*)expression->expression);
+	} else if (expression->kind == .PrefixOperator) {
+		codegenExpressionPrefixOperator(expression, (ExpressionPrefix*)expression->expression);
 	} else if (expression->kind == .InfixOperator) {
 		codegenExpressionInfixOperator(expression, (ExpressionInfix*)expression->expression);
+	} else if (expression->kind == .Ternary) {
+		codegenExpressionTernary(expression, (ExpressionTernary*)expression->expression);
 	} else if (expression->kind == .Identifier) {
 		codegenExpressionIdentifier(expression, (ExpressionIdentifier*)expression->expression);
 	} else if (expression->kind == .Null) {
@@ -174,5 +195,5 @@ func codegenExpression(expression: Expression*) {
 		codegenExpressionStringLiteral(expression, (ExpressionStringLiteral*)expression->expression);
 	} else {
 		ProgrammingError("called codegenExpression on a .Invalid");
-	};;;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;;;
 };

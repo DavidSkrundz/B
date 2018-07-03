@@ -158,9 +158,18 @@ func expectExpressionUnary(): Expression* {
 		expression->kind = .Dot;
 		expression->expression = (Void*)expr;
 		return expression;
+	} else if (checkToken(.Not)) {
+		var expr = newExpressionPrefix();
+		expr->operator = previousToken();
+		expr->expression = expectExpressionPostfix();
+		var expression = newExpression();
+		expression->pos = pos;
+		expression->kind = .PrefixOperator;
+		expression->expression = (Void*)expr;
+		return expression;
 	} else {
 		return expectExpressionPostfix();
-	};;;;;
+	};;;;;;
 };
 
 func expectExpressionCast(): Expression* {
@@ -187,28 +196,44 @@ func expectExpressionCast(): Expression* {
 	};
 };
 
-func expectExpressionMultiplicative(): Expression* {
+func expectExpressionBitwiseShift(): Expression* {
 	var expression = expectExpressionCast();
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
-		if (isToken(.Star)) {
-			infix->operator = *_tokens;
-			checkToken(.Star);
-		} else if (isToken(.Slash)) {
-			infix->operator = *_tokens;
-			checkToken(.Slash);
-		} else if (isToken(.And)) {
-			infix->operator = *_tokens;
-			checkToken(.And);
-		} else { loop = false; };;;
+		if (checkToken(.LeftShift)) {}
+		else if (checkToken(.RightShift)) {}
+		else { loop = false; };;
 		if (loop) {
+			infix->operator = previousToken();
 			infix->lhs = expression;
-			infix->rhs = expectExpressionCast();
 			expression = newExpression();
 			expression->pos = previousToken()->pos;
 			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
+			infix->rhs = expectExpressionCast();
+		};
+	};
+	return expression;
+};
+
+func expectExpressionMultiplicative(): Expression* {
+	var expression = expectExpressionBitwiseShift();
+	var loop = true;
+	while (loop) {
+		var infix = newExpressionInfixOperator();
+		if (checkToken(.Star)) {}
+		else if (checkToken(.Slash)) {}
+		else if (checkToken(.And)) {}
+		else { loop = false; };;;
+		if (loop) {
+			infix->operator = previousToken();
+			infix->lhs = expression;
+			expression = newExpression();
+			expression->pos = previousToken()->pos;
+			expression->kind = .InfixOperator;
+			expression->expression = (Void*)infix;
+			infix->rhs = expectExpressionBitwiseShift();
 		};
 	};
 	return expression;
@@ -219,20 +244,19 @@ func expectExpressionAdditive(): Expression* {
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
-		if (isToken(.Plus)) {
-			infix->operator = *_tokens;
-			checkToken(.Plus);
-		} else if (isToken(.Minus)) {
-			infix->operator = *_tokens;
-			checkToken(.Minus);
-		} else { loop = false; };;
+		if (checkToken(.Plus)) {}
+		else if (checkToken(.Minus)) {}
+		else if (checkToken(.Or)) {}
+		else if (checkToken(.Xor)) {}
+		else { loop = false; };;;;
 		if (loop) {
+			infix->operator = previousToken();
 			infix->lhs = expression;
-			infix->rhs = expectExpressionMultiplicative();
 			expression = newExpression();
 			expression->pos = previousToken()->pos;
 			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
+			infix->rhs = expectExpressionMultiplicative();
 		};
 	};
 	return expression;
@@ -243,20 +267,19 @@ func expectExpressionComparison(): Expression* {
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
-		if (isToken(.LessThan)) {
-			infix->operator = *_tokens;
-			checkToken(.LessThan);
-		} else if (isToken(.LessThanEqual)) {
-			infix->operator = *_tokens;
-			checkToken(.LessThanEqual);
-		} else { loop = false; };;
+		if (checkToken(.LessThan)) {}
+		else if (checkToken(.LessThanEqual)) {}
+		else if (checkToken(.GreaterThan)) {}
+		else if (checkToken(.GreaterThanEqual)) {}
+		else { loop = false; };;;;
 		if (loop) {
+			infix->operator = previousToken();
 			infix->lhs = expression;
-			infix->rhs = expectExpressionAdditive();
 			expression = newExpression();
 			expression->pos = previousToken()->pos;
 			expression->kind = .InfixOperator;
 			expression->expression = (Void*)infix;
+			infix->rhs = expectExpressionAdditive();
 		};
 	};
 	return expression;
@@ -267,67 +290,68 @@ func expectExpressionEquality(): Expression* {
 	var loop = true;
 	while (loop) {
 		var infix = newExpressionInfixOperator();
-		if (isToken(.Equal)) {
-			infix->operator = *_tokens;
-			checkToken(.Equal);
-		} else if (isToken(.NotEqual)) {
-			infix->operator = *_tokens;
-			checkToken(.NotEqual);
-		} else { loop = false; };;
+		if (checkToken(.Equal)) {}
+		else if (checkToken(.NotEqual)) {}
+		else { loop = false; };;
 		if (loop) {
+			infix->operator = previousToken();
 			infix->lhs = expression;
+			expression = newExpression();
+			expression->pos = previousToken()->pos;
+			expression->kind = .InfixOperator;
+			expression->expression = (Void*)infix;
 			infix->rhs = expectExpressionComparison();
-			expression = newExpression();
-			expression->pos = previousToken()->pos;
-			expression->kind = .InfixOperator;
-			expression->expression = (Void*)infix;
 		};
 	};
 	return expression;
 };
 
-func expectExpressionLogicalAND(): Expression* {
+func expectExpressionConjunction(): Expression* {
 	var expression = expectExpressionEquality();
-	var loop = true;
-	while (loop) {
+	while (checkToken(.AndAnd)) {
 		var infix = newExpressionInfixOperator();
-		if (isToken(.AndAnd)) {
-			infix->operator = *_tokens;
-			checkToken(.AndAnd);
-		} else { loop = false; };
-		if (loop) {
-			infix->lhs = expression;
-			infix->rhs = expectExpressionEquality();
-			expression = newExpression();
-			expression->pos = previousToken()->pos;
-			expression->kind = .InfixOperator;
-			expression->expression = (Void*)infix;
-		};
+		infix->operator = previousToken();
+		infix->lhs = expression;
+		expression = newExpression();
+		expression->pos = previousToken()->pos;
+		expression->kind = .InfixOperator;
+		expression->expression = (Void*)infix;
+		infix->rhs = expectExpressionEquality();
 	};
 	return expression;
 };
 
-func expectExpressionLogicalOR(): Expression* {
-	var expression = expectExpressionLogicalAND();
-	var loop = true;
-	while (loop) {
+func expectExpressionDisjunction(): Expression* {
+	var expression = expectExpressionConjunction();
+	while (checkToken(.OrOr)) {
 		var infix = newExpressionInfixOperator();
-		if (isToken(.OrOr)) {
-			infix->operator = *_tokens;
-			checkToken(.OrOr);
-		} else { loop = false; };
-		if (loop) {
-			infix->lhs = expression;
-			infix->rhs = expectExpressionLogicalAND();
-			expression = newExpression();
-			expression->pos = previousToken()->pos;
-			expression->kind = .InfixOperator;
-			expression->expression = (Void*)infix;
-		};
+		infix->operator = previousToken();
+		infix->lhs = expression;
+		expression = newExpression();
+		expression->pos = previousToken()->pos;
+		expression->kind = .InfixOperator;
+		expression->expression = (Void*)infix;
+		infix->rhs = expectExpressionConjunction();
+	};
+	return expression;
+};
+
+func expectExpressionTernary(): Expression* {
+	var expression = expectExpressionDisjunction();
+	if (checkToken(.Question)) {
+		var ternary = newExpressionTernary();
+		ternary->condition = expression;
+		expression = newExpression();
+		expression->pos = previousToken()->pos;
+		expression->kind = .Ternary;
+		expression->expression = (Void*)ternary;
+		ternary->positive = expectExpressionTernary();
+		expectToken(.Colon);
+		ternary->negative = expectExpressionTernary();
 	};
 	return expression;
 };
 
 func expectExpression(): Expression* {
-	return expectExpressionLogicalOR();
+	return expectExpressionTernary();
 };

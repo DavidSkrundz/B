@@ -1,0 +1,131 @@
+(var (identifier a) (expression
+  (PLUS (+)
+   (integer 1)
+   (integer 2)
+  )
+))
+
+(var (identifier b) (expression
+  (MINUS (-)
+   (integer 1)
+   (integer 2)
+  )
+))
+
+(var (identifier c) (expression
+  (STAR (*)
+   (integer 1)
+   (integer 2)
+  )
+))
+
+(var (identifier d) (expression
+  (SLASH (/)
+   (integer 1)
+   (integer 2)
+  )
+))
+
+(var (identifier e) (expression
+  (OR (|)
+   (integer 1)
+   (integer 2)
+  )
+))
+
+(var (identifier f) (expression
+  (AND (&)
+   (integer 1)
+   (integer 2)
+  )
+))
+
+(var (identifier g) (expression
+  (XOR (^)
+   (integer 1)
+   (integer 2)
+  )
+))
+
+(var (identifier h) (expression
+  (NOT (!) (boolean false))
+))
+
+(var (identifier i) (expression
+  (OR (||)
+   (boolean true)
+   (boolean false)
+  )
+))
+
+(var (identifier j) (expression
+  (AND (&&)
+   (boolean true)
+   (boolean false)
+  )
+))
+
+(var (identifier k) (expression
+  (EQUAL (==)
+   (boolean true)
+   (boolean false)
+  )
+))
+
+(var (identifier l) (expression
+  (NOTEQUAL (!=)
+   (boolean true)
+   (boolean false)
+  )
+))
+
+(var (identifier m) (expression
+  (LESSTHAN (<)
+   (integer 0)
+   (integer 1)
+  )
+))
+
+(var (identifier n) (expression
+  (GREATERTHAN (>)
+   (integer 0)
+   (integer 1)
+  )
+))
+
+(var (identifier o) (expression
+  (LESSTHANEQUAL (<=)
+   (integer 0)
+   (integer 1)
+  )
+))
+
+(var (identifier p) (expression
+  (GREATERTHANEQUAL (>=)
+   (integer 0)
+   (integer 1)
+  )
+))
+
+(var (identifier q) (expression
+  (RIGHTSHIFT (>>)
+   (integer 2)
+   (integer 1)
+  )
+))
+
+(var (identifier r) (expression
+  (LEFTSHIFT (<<)
+   (integer 1)
+   (integer 2)
+  )
+))
+
+(var (identifier s) (expression
+  (?:
+   (boolean false)
+   (integer 1)
+   (integer 2)
+  )
+))
+

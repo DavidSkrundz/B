@@ -99,6 +99,14 @@ func printExpressionDot(expression: ExpressionDot*) {
 	printf((char*)")");
 };
 
+func printExpressionPrefix(expression: ExpressionPrefix*) {
+	printf((char*)"(");
+	printToken(expression->operator);
+	printf((char*)" ");
+	printExpression(expression->expression);
+	printf((char*)")");
+};
+
 func printExpressionInfix(expression: ExpressionInfix*) {
 	printf((char*)"(");
 	printToken(expression->operator);
@@ -109,6 +117,24 @@ func printExpressionInfix(expression: ExpressionInfix*) {
 	printf((char*)"\n");
 	printDepth();
 	printExpression(expression->rhs);
+	printf((char*)"\n");
+	depth = depth - 1;
+	printDepth();
+	printf((char*)")");
+};
+
+func printExpressionTernary(expression: ExpressionTernary*) {
+	printf((char*)"(?:");
+	printf((char*)"\n");
+	depth = depth + 1;
+	printDepth();
+	printExpression(expression->condition);
+	printf((char*)"\n");
+	printDepth();
+	printExpression(expression->positive);
+	printf((char*)"\n");
+	printDepth();
+	printExpression(expression->negative);
 	printf((char*)"\n");
 	depth = depth - 1;
 	printDepth();
@@ -156,8 +182,12 @@ func printExpression(expression: Expression*) {
 		printExpressionArrow((ExpressionArrow*)expression->expression);
 	} else if (expression->kind == .Dot) {
 		printExpressionDot((ExpressionDot*)expression->expression);
+	} else if (expression->kind == .PrefixOperator) {
+		printExpressionPrefix((ExpressionPrefix*)expression->expression);
 	} else if (expression->kind == .InfixOperator) {
 		printExpressionInfix((ExpressionInfix*)expression->expression);
+	} else if (expression->kind == .Ternary) {
+		printExpressionTernary((ExpressionTernary*)expression->expression);
 	} else if (expression->kind == .Identifier) {
 		printExpressionIdentifier((ExpressionIdentifier*)expression->expression);
 	} else if (expression->kind == .Null) {
@@ -173,5 +203,5 @@ func printExpression(expression: Expression*) {
 	} else {
 		fprintf(stderr, (char*)"Invalid expression kind %u\n", expression->kind);
 		abort();
-	};;;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;;;
 };

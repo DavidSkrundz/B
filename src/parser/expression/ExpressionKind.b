@@ -10,7 +10,9 @@ enum ExpressionKind {
 	case Subscript;
 	case Arrow;
 	case Dot;
+	case PrefixOperator;
 	case InfixOperator;
+	case Ternary;
 	case Identifier;
 	case Null;
 	case BooleanLiteral;
