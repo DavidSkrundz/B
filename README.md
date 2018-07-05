@@ -73,3 +73,4 @@ List of things so I don't forget.
 - Represent the `Int` family as structs that wrap hidden primitives (eg. `__builtin_int`)
 - Line comments
 - Block comments (with nesting)
+- Improve VSCode plugin with compile/debug/autocompletion features
