@@ -1,4 +1,4 @@
-var _types: Type**;
+var types: Type**;
 
 func isPointer(type: Type*): Bool {
 	return type->kind == .Pointer;
@@ -19,13 +19,13 @@ func getPointerBase(type: Type*): Type* {
 };
 
 func registerType(type: Type*) {
-	Buffer_append((Void***)&_types, (Void*)type);
+	Buffer_append((Void***)&types, (Void*)type);
 };
 
 func resolveTypeIdentifier(name: String*): Type* {
 	var i = 0;
-	while (i < Buffer_getCount((Void**)_types)) {
-		var type = _types[i];
+	while (i < Buffer_getCount((Void**)types)) {
+		var type = types[i];
 		if (type->kind == .Identifier) {
 			var identifier = (TypeIdentifier*)type->type;
 			if (identifier->name == name) {
@@ -39,8 +39,8 @@ func resolveTypeIdentifier(name: String*): Type* {
 
 func resolveTypePointer(base: Type*): Type* {
 	var i = 0;
-	while (i < Buffer_getCount((Void**)_types)) {
-		var type = _types[i];
+	while (i < Buffer_getCount((Void**)types)) {
+		var type = types[i];
 		if (type->kind == .Pointer) {
 			var pointer = (TypePointer*)type->type;
 			if (pointer->base == base) { return type; };
@@ -58,8 +58,8 @@ func resolveTypePointer(base: Type*): Type* {
 
 func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: Bool): Type* {
 	var i = 0;
-	while (i < Buffer_getCount((Void**)_types)) {
-		var type = _types[i];
+	while (i < Buffer_getCount((Void**)types)) {
+		var type = types[i];
 		if (type->kind == .Function) {
 			var funcType = (TypeFunction*)type->type;
 			if (funcType->isVariadic == isVariadic) {
