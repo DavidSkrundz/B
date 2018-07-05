@@ -107,6 +107,7 @@ func expectDeclarationEnum(declaration: Declaration*): DeclarationEnum* {
 func expectDeclaration(): Declaration* {
 	var declaration = newDeclaration();
 	declaration->attribute = parseAttribute();
+	declaration->oldState = .Unresolved;
 	declaration->state = .Unresolved;
 	if (isTokenKeyword(Keyword_Var)) {
 		declaration->kind = .Var;

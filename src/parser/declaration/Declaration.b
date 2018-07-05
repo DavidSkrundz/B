@@ -1,6 +1,7 @@
 struct Declaration {
 	var pos: SrcPos*;
 	var kind: DeclarationKind;
+	var oldState: DeclarationState;
 	var state: DeclarationState;
 	var attribute: Attribute*;
 	var name: Token*;

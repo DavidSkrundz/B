@@ -74,15 +74,15 @@ func resolveDeclarationType(declaration: Declaration*) {
 };
 
 func resolveDeclarationDefinition(declaration: Declaration*) {
-	if (declaration->state == .Resolved) { return; }
-	else if (declaration->state == .Unresolved) {}
-	else if (declaration->state == .Resolving) {
+	if (declaration->oldState == .Resolved) { return; }
+	else if (declaration->oldState == .Unresolved) {}
+	else if (declaration->oldState == .Resolving) {
 		ResolverError(declaration->pos, "cyclic dependency for '", declaration->name->string->string, "'");
 	} else {
 		ProgrammingError("called resolveDeclarationDefinition on a .Invalid state");
 	};;;
 	
-	declaration->state = .Resolving;
+	declaration->oldState = .Resolving;
 	if (declaration->kind == .Var) {
 		declaration->resolvedType = resolveDeclarationVar((DeclarationVar*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Func) {
@@ -93,7 +93,7 @@ func resolveDeclarationDefinition(declaration: Declaration*) {
 	} else {
 		ProgrammingError("called resolveDeclarationDefinition on a .Invalid");
 	};;;;
-	declaration->state = .Resolved;
+	declaration->oldState = .Resolved;
 };
 
 func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: String*): Type* {
@@ -122,7 +122,7 @@ func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: S
 };
 
 func resolveDeclarationImplementation(declaration: Declaration*) {
-	if (declaration->state != .Resolved) {
+	if (declaration->oldState != .Resolved) {
 		ProgrammingError("Declaration not resolved before resolving implementation");
 	};
 	if (declaration->kind == .Var) {
