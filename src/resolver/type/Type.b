@@ -7,6 +7,12 @@ struct TypeIdentifier {
 	var name: String*;
 };
 
+func TypeIdentifier_init(name: String*): TypeIdentifier* {
+	var type = (TypeIdentifier*)xcalloc(1, sizeof(TypeIdentifier));
+	type->name = name;
+	return type;
+};
+
 struct TypePointer {
 	var base: Type*;
 };

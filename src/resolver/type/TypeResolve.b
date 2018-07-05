@@ -83,13 +83,6 @@ func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: B
 	return NULL;
 };
 
-func createTypeIdentifierString(name: String*): Type* {
-	var token = newToken();
-	token->pos = newSrcPos("builtin", "builtin", 0, 0);
-	token->string = name;
-	return createTypeIdentifier(token);
-};
-
 func createTypeIdentifier(name: Token*): Type* {
 	if (resolveTypeIdentifier(name->string) != NULL) {
 		ResolverError(name->pos, "duplicate definition of type '", name->string->string, "'");
