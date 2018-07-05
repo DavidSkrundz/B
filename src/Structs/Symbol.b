@@ -5,3 +5,7 @@ struct Symbol {
 	var pos: SrcPos*;
 	var useCount: UInt;
 };
+
+func Symbol_init(): Symbol* {
+	return (Symbol*)xcalloc(1, sizeof(Symbol));
+};
