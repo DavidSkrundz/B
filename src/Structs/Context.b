@@ -3,19 +3,34 @@ struct Context {
 	var symbols: Symbol**;
 };
 
+var rootContext: Context*;
 var context: Context*;
 
 func pushContext() {
 	var newContext = (Context*)xcalloc(1, sizeof(Context));
 	newContext->parent = context;
 	context = newContext;
+	if (rootContext == NULL) {
+		rootContext = context;
+	};
 };
 
 func popContext() {
-	if (context->parent == NULL) {
+	if (context == rootContext) {
 		ProgrammingError("popContext called on root");
 	};
 	context = context->parent;
+};
+
+func registerGlobalSymbol(symbol: Symbol*) {
+	var i = 0;
+	while (i < Buffer_getCount((Void**)rootContext->symbols)) {
+		if (rootContext->symbols[i]->name == symbol->name) {
+			ResolverError(rootContext->symbols[i]->pos, "duplicate definition of '", symbol->name->string, "'");
+		};
+		i = i + 1;
+	};
+	Buffer_append((Void***)&rootContext->symbols, (Void*)symbol);
 };
 
 func registerSymbol(symbol: Symbol*) {
@@ -40,6 +55,14 @@ func findSymbol(name: String*): Symbol* {
 			i = i + 1;
 		};
 		currentContext = currentContext->parent;
+	};
+	var i = 0;
+	while (i < Buffer_getCount((Void**)_declarations)) {
+		if (_declarations[i]->name->string == name) {
+			resolveDeclaration(_declarations[i], true);
+			return findSymbol(name);
+		};
+		i = i + 1;
 	};
 	return NULL;
 };

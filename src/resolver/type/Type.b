@@ -17,6 +17,12 @@ struct TypePointer {
 	var base: Type*;
 };
 
+func TypePointer_init(base: Type*): TypePointer* {
+	var type = (TypePointer*)xcalloc(1, sizeof(TypePointer));
+	type->base = base;
+	return type;
+};
+
 struct TypeFunction {
 	var returnType: Type*;
 	var argumentTypes: Type**;
@@ -25,14 +31,6 @@ struct TypeFunction {
 
 func newType(): Type* {
 	return (Type*)xcalloc(1, sizeof(Type));
-};
-
-func newTypeIdentifier(): TypeIdentifier* {
-	return (TypeIdentifier*)xcalloc(1, sizeof(TypeIdentifier));
-};
-
-func newTypePointer(): TypePointer* {
-	return (TypePointer*)xcalloc(1, sizeof(TypePointer));
 };
 
 func newTypeFunction(): TypeFunction* {

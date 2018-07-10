@@ -1,4 +1,4 @@
-func resolveDeclarationVar(declaration: DeclarationVar*, name: Token*): Type* {
+func resolveDeclarationVar(declaration: DeclarationVar*, name: Token*, isGlobal: Bool): Type* {
 	var type: Type*;
 	if (declaration->type != NULL) {
 		type = resolveTypespec(declaration->type);
@@ -7,7 +7,15 @@ func resolveDeclarationVar(declaration: DeclarationVar*, name: Token*): Type* {
 		var expressionType = resolveExpression(declaration->value, type);
 		if (type == NULL) { type = expressionType; };
 	};
-	addTo(_OldContext, name, type);
+	var symbol = Symbol_init();
+	symbol->name = name->string;
+	symbol->type = type;
+	symbol->pos = name->pos;
+	if (isGlobal) {
+		registerGlobalSymbol(symbol);
+	} else {
+		registerSymbol(symbol);
+	};
 	return type;
 };
 
@@ -26,7 +34,7 @@ func resolveDeclarationFuncArgs(args: DeclarationFuncArgs*): Type** {
 	return argumentTypes;
 };
 
-func resolveDeclarationTypeFunc(declaration: DeclarationFunc*, name: Token*): Type* {
+func resolveDeclarationFunc(declaration: DeclarationFunc*, name: Token*): Type* {
 	var argumentTypes = resolveDeclarationFuncArgs(declaration->args);
 	var returnType = TypeVoid;
 	if (declaration->returnType != NULL) {
@@ -36,101 +44,71 @@ func resolveDeclarationTypeFunc(declaration: DeclarationFunc*, name: Token*): Ty
 	if (type == NULL) {
 		type = createTypeFunction(returnType, argumentTypes, declaration->args->isVariadic);
 	};
-	addTo(_OldContext, name, type);
+	
+	var symbol = Symbol_init();
+	symbol->name = name->string;
+	symbol->type = type;
+	symbol->pos = name->pos;
+	registerGlobalSymbol(symbol);
+	
+	if (declaration->block != NULL) {
+		pushContext();
+		var i = 0;
+		while (i < Buffer_getCount((Void**)declaration->args->args)) {
+			var argument = declaration->args->args[i];
+			symbol = Symbol_init();
+			symbol->name = argument->name->string;
+			symbol->type = argument->resolvedType;
+			symbol->pos = argument->name->pos;
+			registerSymbol(symbol);
+			i = i + 1;
+		};
+		resolveStatementBlock(declaration->block, returnType);
+		popContext();
+	};
+	
 	return type;
 };
 
 func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Type* {
-	return createTypeIdentifier(name);
-};
-
-func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Token*): Type* {
-	return createTypeIdentifier(name);
-};
-
-func resolveDeclarationDefinitionStruct(declaration: DeclarationStruct*, name: Token*) {
-	var before = Buffer_getCount((Void**)_OldContext->names);
+	var type = createTypeIdentifier(name);
+	pushContext();
 	if (declaration->fields != NULL) {
 		var i = 0;
 		while (i < Buffer_getCount((Void**)declaration->fields)) {
-			resolveDeclarationDefinition(declaration->fields[i]);
+			resolveDeclaration(declaration->fields[i], false);
 			i = i + 1;
 		};
 	};
-	Buffer_setCount((Void**)_OldContext->names, before);
-	Buffer_setCount((Void**)_OldContext->types, before);
+	popContext();
+	return type;
 };
 
-func resolveDeclarationType(declaration: Declaration*) {
+func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Token*): Type* {
+	var type = createTypeIdentifier(name);
+	return type;
+};
+
+func resolveDeclaration(declaration: Declaration*, isGlobal: Bool) {
+	if (declaration->state == .Resolved) { return; }
+	else if (declaration->state == .Unresolved) {}
+	else if (declaration->state == .Resolving) {
+		ResolverError(declaration->pos, "cyclic dependency for '", declaration->name->string->string, "'");
+	} else {
+		ProgrammingError("called resolveDeclaration on a .Invalid state");
+	};;;
+	
+	declaration->state = .Resolving;
 	if (declaration->kind == .Var) {
+		declaration->resolvedType = resolveDeclarationVar((DeclarationVar*)declaration->declaration, declaration->name, isGlobal);
 	} else if (declaration->kind == .Func) {
+		declaration->resolvedType = resolveDeclarationFunc((DeclarationFunc*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Struct) {
 		declaration->resolvedType = resolveDeclarationStruct((DeclarationStruct*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Enum) {
 		declaration->resolvedType = resolveDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
 	} else {
-		ProgrammingError("called resolveDeclarationType on a .Invalid");
+		ProgrammingError("called resolveDeclaration on a .Invalid");
 	};;;;
-};
-
-func resolveDeclarationDefinition(declaration: Declaration*) {
-	if (declaration->oldState == .Resolved) { return; }
-	else if (declaration->oldState == .Unresolved) {}
-	else if (declaration->oldState == .Resolving) {
-		ResolverError(declaration->pos, "cyclic dependency for '", declaration->name->string->string, "'");
-	} else {
-		ProgrammingError("called resolveDeclarationDefinition on a .Invalid state");
-	};;;
-	
-	declaration->oldState = .Resolving;
-	if (declaration->kind == .Var) {
-		declaration->resolvedType = resolveDeclarationVar((DeclarationVar*)declaration->declaration, declaration->name);
-	} else if (declaration->kind == .Func) {
-		declaration->resolvedType = resolveDeclarationTypeFunc((DeclarationFunc*)declaration->declaration, declaration->name);
-	} else if (declaration->kind == .Struct) {
-		resolveDeclarationDefinitionStruct((DeclarationStruct*)declaration->declaration, declaration->name);
-	} else if (declaration->kind == .Enum) {
-	} else {
-		ProgrammingError("called resolveDeclarationDefinition on a .Invalid");
-	};;;;
-	declaration->oldState = .Resolved;
-};
-
-func resolveDeclarationImplementationFunc(declaration: DeclarationFunc*, name: String*): Type* {
-	var argumentTypes = resolveDeclarationFuncArgs(declaration->args);
-	var returnType = TypeVoid;
-	if (declaration->returnType != NULL) {
-		returnType = resolveTypespec(declaration->returnType);
-	};
-	if (declaration->block != NULL) {
-		var oldOldContextCount = Buffer_getCount((Void**)_OldContext->names);
-		var i = 0;
-		while (i < Buffer_getCount((Void**)declaration->args->args)) {
-			var argument = declaration->args->args[i];
-			addTo(_OldContext, argument->name, argument->resolvedType);
-			i = i + 1;
-		};
-		resolveStatementBlock(declaration->block, returnType);
-		Buffer_setCount((Void**)_OldContext->names, oldOldContextCount);
-		Buffer_setCount((Void**)_OldContext->types, oldOldContextCount);
-	};
-	var type = resolveTypeFunction(returnType, argumentTypes, declaration->args->isVariadic);
-	if (type == NULL) {
-		type = createTypeFunction(returnType, argumentTypes, declaration->args->isVariadic);
-	};
-	return type;
-};
-
-func resolveDeclarationImplementation(declaration: Declaration*) {
-	if (declaration->oldState != .Resolved) {
-		ProgrammingError("Declaration not resolved before resolving implementation");
-	};
-	if (declaration->kind == .Var) {
-	} else if (declaration->kind == .Func) {
-		declaration->resolvedType = resolveDeclarationImplementationFunc((DeclarationFunc*)declaration->declaration, declaration->name->string);
-	} else if (declaration->kind == .Struct) {
-	} else if (declaration->kind == .Enum) {
-	} else {
-		ProgrammingError("called resolveDeclarationImplementation on a .Invalid");
-	};;;;
+	declaration->state = .Resolved;
 };

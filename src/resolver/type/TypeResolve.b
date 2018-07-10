@@ -1,5 +1,56 @@
 var types: Type**;
 
+func registerType(type: Type*) {
+	Buffer_append((Void***)&types, (Void*)type);
+};
+
+func findTypeByName(name: String*): Type* {
+	var i = 0;
+	while (i < Buffer_getCount((Void**)types)) {
+		if (types[i]->kind == .Identifier) {
+			var identifier = (TypeIdentifier*)types[i]->type;
+			if (identifier->name == name) { return types[i]; };
+		};
+		i = i + 1;
+	};
+	return NULL;
+};
+
+func findTypeByBase(base: Type*): Type* {
+	var i = 0;
+	while (i < Buffer_getCount((Void**)types)) {
+		if (types[i]->kind == .Pointer) {
+			var pointer = (TypePointer*)types[i]->type;
+			if (pointer->base == base) { return types[i]; };
+		};
+		i = i + 1;
+	};
+	return NULL;
+};
+
+func resolveTypePointer(base: Type*): Type* {
+	var type = findTypeByBase(base);
+	if (type != NULL) { return type; };
+	type = newType();
+	type->kind = .Pointer;
+	type->type = (Void*)TypePointer_init(base);
+	registerType(type);
+	return type;
+};
+
+func resolveTypeIdentifier(name: String*): Type* {
+	var type = findTypeByName(name);
+	if (type != NULL) { return type; };
+	var i = 0;
+	while (i < Buffer_getCount((Void**)_declarations)) {
+		if (_declarations[i]->name->string == name) {
+			resolveDeclaration(_declarations[i], true);
+		};
+		i = i + 1;
+	};
+	return findTypeByName(name);
+};
+
 func isPointer(type: Type*): Bool {
 	return type->kind == .Pointer;
 };
@@ -18,40 +69,13 @@ func getPointerBase(type: Type*): Type* {
 	return NULL;
 };
 
-func registerType(type: Type*) {
-	Buffer_append((Void***)&types, (Void*)type);
-};
-
-func resolveTypeIdentifier(name: String*): Type* {
-	var i = 0;
-	while (i < Buffer_getCount((Void**)types)) {
-		var type = types[i];
-		if (type->kind == .Identifier) {
-			var identifier = (TypeIdentifier*)type->type;
-			if (identifier->name == name) {
-				return type;
-			};
-		};
-		i = i + 1;
+func createTypeIdentifier(name: Token*): Type* {
+	if (findTypeByName(name->string) != NULL) {
+		ResolverError(name->pos, "duplicate definition of type '", name->string->string, "'");
 	};
-	return NULL;
-};
-
-func resolveTypePointer(base: Type*): Type* {
-	var i = 0;
-	while (i < Buffer_getCount((Void**)types)) {
-		var type = types[i];
-		if (type->kind == .Pointer) {
-			var pointer = (TypePointer*)type->type;
-			if (pointer->base == base) { return type; };
-		};
-		i = i + 1;
-	};
-	var typePointer = newTypePointer();
-	typePointer->base = base;
 	var type = newType();
-	type->kind = .Pointer;
-	type->type = (Void*)typePointer;
+	type->kind = .Identifier;
+	type->type = (Void*)TypeIdentifier_init(name->string);
 	registerType(type);
 	return type;
 };
@@ -83,19 +107,6 @@ func resolveTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: B
 	return NULL;
 };
 
-func createTypeIdentifier(name: Token*): Type* {
-	if (resolveTypeIdentifier(name->string) != NULL) {
-		ResolverError(name->pos, "duplicate definition of type '", name->string->string, "'");
-	};
-	var typeIdentifier = newTypeIdentifier();
-	typeIdentifier->name = name->string;
-	var type = newType();
-	type->kind = .Identifier;
-	type->type = (Void*)typeIdentifier;
-	registerType(type);
-	return type;
-};
-
 func createTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: Bool): Type* {
 	if (resolveTypeFunction(returnType, argumentTypes, isVariadic) != NULL) {
 		ProgrammingError("attempting to create duplicate function type");
@@ -107,6 +118,6 @@ func createTypeFunction(returnType: Type*, argumentTypes: Type**, isVariadic: Bo
 	var type = newType();
 	type->kind = .Function;
 	type->type = (Void*)funcType;
-	registerType(type);
-	return type;
-};
+ 	registerType(type);
+ 	return type;
+ };

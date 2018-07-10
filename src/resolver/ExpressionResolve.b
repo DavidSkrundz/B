@@ -151,6 +151,9 @@ func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type
 		if (_declarations[i]->kind == .Enum) {
 			if (expression->base == NULL || expression->base->string == _declarations[i]->name->string) {
 				if (expectedType == NULL || _declarations[i]->resolvedType == expectedType) {
+					if (_declarations[i]->state == .Unresolved) {
+						resolveDeclaration(_declarations[i], true);
+					};
 					return _declarations[i]->resolvedType;
 				};
 			};
@@ -252,18 +255,14 @@ func resolveExpressionTernary(expression: ExpressionTernary*, expectedType: Type
 };
 
 func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType: Type*): Type* {
-	var i = 0;
-	while (i < Buffer_getCount((Void**)_OldContext->names)) {
-		if (_OldContext->names[i]->string == expression->identifier->string) {
-			if (expectedType != NULL && expectedType != _OldContext->types[i]) {
-				ResolverError(expression->identifier->pos, "identifier '", expression->identifier->string->string, "' is the wrong type");
-			};
-			return _OldContext->types[i];
-		};
-		i = i + 1;
+	var symbol = findSymbol(expression->identifier->string);
+	if (symbol == NULL) {
+		ResolverError(expression->identifier->pos, "identifier '", expression->identifier->string->string, "' is not a variable or function");
 	};
-	ResolverError(expression->identifier->pos, "identifier '", expression->identifier->string->string, "' is not a variable or function");
-	return NULL;
+	if (expectedType != NULL && expectedType != symbol->type) {
+		ResolverError(expression->identifier->pos, "identifier '", expression->identifier->string->string, "' is the wrong type");
+	};
+	return symbol->type;
 };
 
 func resolveExpressionBooleanLiteral(expression: ExpressionBooleanLiteral*, expectedType: Type*): Type* {
