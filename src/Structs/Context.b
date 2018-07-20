@@ -47,7 +47,7 @@ func registerSymbol(symbol: Symbol*) {
 	var i = 0;
 	while (i < Buffer_getCount((Void**)context->symbols)) {
 		if (context->symbols[i]->name == symbol->name) {
-			ResolverError(context->symbols[i]->pos, "duplicate definition of '", symbol->name->string, "'");
+			ResolverError(symbol->pos, "duplicate definition of '", symbol->name->string, "'");
 		};
 		i = i + 1;
 	};

@@ -51,7 +51,7 @@ func ParserKeywordError(keyword: String*) {
 
 func ResolverError(pos: SrcPos*, message1: UInt8*, message2: UInt8*, message3: UInt8*) {
 	fprintf(stderr, (char*)"%s:%zu:%zu: ", pos->file, pos->line, pos->column);
-	fprintf(stderr, (char*)"%s%s%s\n", message1, message2, message3);
+	fprintf(stderr, (char*)"error: %s%s%s\n", message1, message2, message3);
 	_printUpToNewline(pos->start);
 	_printErrorLocation(pos->start, pos->column);
 	exit(EXIT_FAILURE);
