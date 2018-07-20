@@ -51,6 +51,7 @@ func resolveDeclarationFunc(declaration: DeclarationFunc*, name: Token*): Type* 
 	symbol->pos = name->pos;
 	registerGlobalSymbol(symbol);
 	
+	var stash = stashContext();
 	if (declaration->block != NULL) {
 		pushContext();
 		var i = 0;
@@ -66,12 +67,14 @@ func resolveDeclarationFunc(declaration: DeclarationFunc*, name: Token*): Type* 
 		resolveStatementBlock(declaration->block, returnType);
 		popContext();
 	};
+	restoreContext(stash);
 	
 	return type;
 };
 
 func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Type* {
 	var type = createTypeIdentifier(name);
+	var stash = stashContext();
 	pushContext();
 	if (declaration->fields != NULL) {
 		var i = 0;
@@ -81,6 +84,7 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Ty
 		};
 	};
 	popContext();
+	restoreContext(stash);
 	return type;
 };
 

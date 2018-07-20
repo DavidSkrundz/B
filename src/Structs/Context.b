@@ -22,6 +22,16 @@ func popContext() {
 	context = context->parent;
 };
 
+func stashContext(): Context* {
+	var stash = context;
+	context = rootContext;
+	return stash;
+};
+
+func restoreContext(stash: Context*) {
+	context = stash;
+};
+
 func registerGlobalSymbol(symbol: Symbol*) {
 	var i = 0;
 	while (i < Buffer_getCount((Void**)rootContext->symbols)) {
