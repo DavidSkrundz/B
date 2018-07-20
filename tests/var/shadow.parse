@@ -1,0 +1,20 @@
+(func (identifier main) ()
+ (arguments
+ )
+ (block
+  (var (identifier a) (expression
+    (integer 0)
+  ))
+  (if (EQUAL (==)
+    (identifier a)
+    (integer 0)
+   )
+   (block
+    (var (identifier a) (expression
+      (integer 1)
+    ))
+   )
+  )
+ )
+)
+

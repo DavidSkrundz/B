@@ -51,6 +51,10 @@ func registerSymbol(symbol: Symbol*) {
 		};
 		i = i + 1;
 	};
+	var shadowedSymbol = findSymbol(symbol->name);
+	if (shadowedSymbol != NULL) {
+		ResolverWarning(symbol->pos, "symbol '", symbol->name->string, "' shadows symbol at ", shadowedSymbol->pos);
+	};
 	Buffer_append((Void***)&context->symbols, (Void*)symbol);
 };
 
