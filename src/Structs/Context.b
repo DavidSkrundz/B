@@ -53,6 +53,7 @@ func registerSymbol(symbol: Symbol*) {
 	};
 	var shadowedSymbol = findSymbol(symbol->name);
 	if (shadowedSymbol != NULL) {
+		shadowedSymbol->useCount = shadowedSymbol->useCount - 1;
 		ResolverWarning(symbol->pos, "symbol '", symbol->name->string, "' shadows symbol at ", shadowedSymbol->pos);
 	};
 	Buffer_append((Void***)&context->symbols, (Void*)symbol);
@@ -64,7 +65,9 @@ func findSymbol(name: String*): Symbol* {
 		var i = 0;
 		while (i < Buffer_getCount((Void**)currentContext->symbols)) {
 			if (currentContext->symbols[i]->name == name) {
-				return currentContext->symbols[i];
+				var sym = currentContext->symbols[i];
+				sym->useCount = sym->useCount + 1;
+				return sym;
 			};
 			i = i + 1;
 		};
