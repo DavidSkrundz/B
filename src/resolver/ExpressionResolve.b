@@ -151,9 +151,7 @@ func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type
 		if (_declarations[i]->kind == .Enum) {
 			if (expression->base == NULL || expression->base->string == _declarations[i]->name->string) {
 				if (expectedType == NULL || _declarations[i]->resolvedType == expectedType) {
-					if (_declarations[i]->state == .Unresolved) {
-						resolveDeclaration(_declarations[i], true);
-					};
+					resolveDeclaration(_declarations[i], true);
 					return _declarations[i]->resolvedType;
 				};
 			};
