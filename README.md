@@ -42,17 +42,20 @@ make test     # Run the new bc against the test cases
 make install  # Copy build/bc to bin/bc (if the tests pass)
 ```
 
+## Things to do
+
+- Create symbols for structs and their fields
+- Create symbols for enums and values
+- Perform type lookups using symbols
+- Perform struct field lookups using symbols
+- Perform enum value lookups using symbols
+- Add associated functions to structs (similar to fields, looked up with symbols)
+- Add associated functions to enums (similar to values, looked up with symbols)
+
 ## Things to do (eventually)
 
-List of things so I don't forget.
-
-- Update resolver to use Symbols and the new Contexts
-- Improve awareness of resolver in different contexts
-- Ensure the resolver passes over everything
-- Structs associated functions
 - Unions + nested struct/union
 - Allow `.` to get a struct field (currently only `->` on a pointer works)
-- Improve `Context` usage to allow enum cases and struct fields to have the same name as functions
 - Custom operators implemented as functions
 - Allow keywords to be used as second-level identifiers (enum cases, struct fields, ...)
 - Static arrays (lookup tables)
