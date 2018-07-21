@@ -30,8 +30,3 @@ func Buffer_getCount(list: Void**): UInt {
 	var buffer = _Buffer_get(&list);
 	return buffer->count;
 };
-
-func Buffer_setCount(list: Void**, count: UInt) {
-	var buffer = _Buffer_get(&list);
-	buffer->count = count;
-};

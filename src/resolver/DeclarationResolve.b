@@ -89,7 +89,7 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Ty
 	return type;
 };
 
-func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Token*): Type* {
+func resolveDeclarationEnum(name: Token*): Type* {
 	var type = createTypeIdentifier(name);
 	return type;
 };
@@ -111,7 +111,7 @@ func resolveDeclaration(declaration: Declaration*, isGlobal: Bool) {
 	} else if (declaration->kind == .Struct) {
 		declaration->resolvedType = resolveDeclarationStruct((DeclarationStruct*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Enum) {
-		declaration->resolvedType = resolveDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
+		declaration->resolvedType = resolveDeclarationEnum(declaration->name);
 	} else {
 		ProgrammingError("called resolveDeclaration on a .Invalid");
 	};;;;

@@ -1,4 +1,4 @@
-func codegenDeclarationStructDeclaration(declaration: Declaration*, decl: DeclarationStruct*) {
+func codegenDeclarationStructDeclaration(declaration: Declaration*) {
 	printf((char*)"typedef struct ");
 	codegenIdentifier(declaration->name->string);
 	printf((char*)" ");
@@ -23,7 +23,7 @@ func codegenDeclarationDeclaration(declaration: Declaration*) {
 	if (declaration->kind == .Var) {
 	} else if (declaration->kind == .Func) {
 	} else if (declaration->kind == .Struct) {
-		codegenDeclarationStructDeclaration(declaration, (DeclarationStruct*)declaration->declaration);
+		codegenDeclarationStructDeclaration(declaration);
 	} else if (declaration->kind == .Enum) {
 		codegenDeclarationEnumDeclaration(declaration, (DeclarationEnum*)declaration->declaration);
 	} else {

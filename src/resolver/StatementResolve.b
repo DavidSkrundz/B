@@ -1,13 +1,13 @@
-func resolveStatementExpression(statement: StatementExpression*, expectedType: Type*) {
+func resolveStatementExpression(statement: StatementExpression*) {
 	resolveExpression(statement->expression, NULL);
 };
 
-func resolveStatementAssign(statement: StatementAssign*, expectedType: Type*) {
+func resolveStatementAssign(statement: StatementAssign*) {
 	var lhs = resolveExpression(statement->lhs, NULL);
 	resolveExpression(statement->rhs, lhs);
 };
 
-func resolveStatementVar(statement: StatementVar*, expectedType: Type*) {
+func resolveStatementVar(statement: StatementVar*) {
 	resolveDeclaration(statement->declaration, false);
 };
 
@@ -38,11 +38,11 @@ func resolveStatement(statement: Statement*, expectedType: Type*) {
 	if (statement->kind == .Block) {
 		resolveStatementBlock((StatementBlock*)statement->statement, expectedType);
 	} else if (statement->kind == .Expression) {
-		resolveStatementExpression((StatementExpression*)statement->statement, expectedType);
+		resolveStatementExpression((StatementExpression*)statement->statement);
 	} else if (statement->kind == .Assign) {
-		resolveStatementAssign((StatementAssign*)statement->statement, expectedType);
+		resolveStatementAssign((StatementAssign*)statement->statement);
 	} else if (statement->kind == .Var) {
-		resolveStatementVar((StatementVar*)statement->statement, expectedType);
+		resolveStatementVar((StatementVar*)statement->statement);
 	} else if (statement->kind == .If) {
 		resolveStatementIf((StatementIf*)statement->statement, expectedType);
 	} else if (statement->kind == .While) {

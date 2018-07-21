@@ -1,16 +1,12 @@
-func codegenNullExpressionPointer(type: TypePointer*) {
-	printf((char*)"(NULL)");
-};
-
 func codegenNullExpression(type: Type*) {
 	if (type->kind == .Pointer) {
-		codegenNullExpressionPointer((TypePointer*)type->type);
+		printf((char*)"(NULL)");
 	} else {
 		ProgrammingError("called codegenNullExpression on a .Invalid");
 	};
 };
 
-func codegenExpressionGroup(expression: Expression*, expr: Expression*) {
+func codegenExpressionGroup(expr: Expression*) {
 	printf((char*)"(");
 	codegenExpression(expr);
 	printf((char*)")");
@@ -24,25 +20,25 @@ func codegenExpressionCast(expression: Expression*, expr: ExpressionCast*) {
 	printf((char*)")");
 };
 
-func codegenExpressionDereference(expression: Expression*, expr: ExpressionDereference*) {
+func codegenExpressionDereference(expr: ExpressionDereference*) {
 	printf((char*)"(*");
 	codegenExpression(expr->expression);
 	printf((char*)")");
 };
 
-func codegenExpressionReference(expression: Expression*, expr: ExpressionReference*) {
+func codegenExpressionReference(expr: ExpressionReference*) {
 	printf((char*)"(&");
 	codegenExpression(expr->expression);
 	printf((char*)")");
 };
 
-func codegenExpressionSizeof(expression: Expression*, expr: ExpressionSizeof*) {
+func codegenExpressionSizeof(expr: ExpressionSizeof*) {
 	printf((char*)"sizeof(");
 	codegenType(expr->resolvedType);
 	printf((char*)")");
 };
 
-func codegenExpressionOffsetof(expression: Expression*, expr: ExpressionOffsetof*) {
+func codegenExpressionOffsetof(expr: ExpressionOffsetof*) {
 	printf((char*)"offsetof(");
 	codegenType(expr->resolvedType);
 	printf((char*)", ");
@@ -50,7 +46,7 @@ func codegenExpressionOffsetof(expression: Expression*, expr: ExpressionOffsetof
 	printf((char*)")");
 };
 
-func codegenExpressionFunctionCall(expression: Expression*, expr: ExpressionFunctionCall*) {
+func codegenExpressionFunctionCall(expr: ExpressionFunctionCall*) {
 	printf((char*)"(");
 	codegenExpression(expr->function);
 	printf((char*)"(");
@@ -64,7 +60,7 @@ func codegenExpressionFunctionCall(expression: Expression*, expr: ExpressionFunc
 	printf((char*)")");
 };
 
-func codegenExpressionSubscript(expression: Expression*, expr: ExpressionSubscript*) {
+func codegenExpressionSubscript(expr: ExpressionSubscript*) {
 	printf((char*)"(");
 	codegenExpression(expr->base);
 	printf((char*)"[");
@@ -73,7 +69,7 @@ func codegenExpressionSubscript(expression: Expression*, expr: ExpressionSubscri
 	printf((char*)")");
 };
 
-func codegenExpressionArrow(expression: Expression*, expr: ExpressionArrow*) {
+func codegenExpressionArrow(expr: ExpressionArrow*) {
 	printf((char*)"(");
 	codegenExpression(expr->base);
 	printf((char*)"->");
@@ -97,14 +93,14 @@ func codegenExpressionDot(expression: Expression*, expr: ExpressionDot*) {
 	printf((char*)")");
 };
 
-func codegenExpressionPrefixOperator(expression: Expression*, expr: ExpressionPrefix*) {
+func codegenExpressionPrefixOperator(expr: ExpressionPrefix*) {
 	printf((char*)"(");
 	String_print(stdout, expr->operator->string);
 	codegenExpression(expr->expression);
 	printf((char*)")");
 };
 
-func codegenExpressionInfixOperator(expression: Expression*, expr: ExpressionInfix*) {
+func codegenExpressionInfixOperator(expr: ExpressionInfix*) {
 	printf((char*)"(");
 	codegenExpression(expr->lhs);
 	printf((char*)" ");
@@ -114,7 +110,7 @@ func codegenExpressionInfixOperator(expression: Expression*, expr: ExpressionInf
 	printf((char*)")");
 };
 
-func codegenExpressionTernary(expression: Expression*, expr: ExpressionTernary*) {
+func codegenExpressionTernary(expr: ExpressionTernary*) {
 	printf((char*)"(");
 	codegenExpression(expr->condition);
 	printf((char*)" ? ");
@@ -124,31 +120,31 @@ func codegenExpressionTernary(expression: Expression*, expr: ExpressionTernary*)
 	printf((char*)")");
 };
 
-func codegenExpressionIdentifier(expression: Expression*, expr: ExpressionIdentifier*) {
+func codegenExpressionIdentifier(expr: ExpressionIdentifier*) {
 	printf((char*)"(");
 	codegenIdentifier(expr->identifier->string);
 	printf((char*)")");
 };
 
-func codegenExpressionBooleanLiteral(expression: Expression*, expr: ExpressionBooleanLiteral*) {
+func codegenExpressionBooleanLiteral(expr: ExpressionBooleanLiteral*) {
 	printf((char*)"(");
 	String_print(stdout, expr->literal->string);
 	printf((char*)")");
 };
 
-func codegenExpressionIntegerLiteral(expression: Expression*, expr: ExpressionIntegerLiteral*) {
+func codegenExpressionIntegerLiteral(expr: ExpressionIntegerLiteral*) {
 	printf((char*)"(");
 	String_print(stdout, expr->literal->string);
 	printf((char*)")");
 };
 
-func codegenExpressionCharacterLiteral(expression: Expression*, expr: ExpressionCharacterLiteral*) {
+func codegenExpressionCharacterLiteral(expr: ExpressionCharacterLiteral*) {
 	printf((char*)"((UInt8)'");
 	String_print_escaped(stdout, expr->literal->string);
 	printf((char*)"')");
 };
 
-func codegenExpressionStringLiteral(expression: Expression*, expr: ExpressionStringLiteral*) {
+func codegenExpressionStringLiteral(expr: ExpressionStringLiteral*) {
 	printf((char*)"((UInt8*)\"");
 	String_print_escaped(stdout, expr->literal->string);
 	printf((char*)"\")");
@@ -156,43 +152,43 @@ func codegenExpressionStringLiteral(expression: Expression*, expr: ExpressionStr
 
 func codegenExpression(expression: Expression*) {
 	if (expression->kind == .Group) {
-		codegenExpressionGroup(expression, (Expression*)expression->expression);
+		codegenExpressionGroup((Expression*)expression->expression);
 	} else if (expression->kind == .Cast) {
 		codegenExpressionCast(expression, (ExpressionCast*)expression->expression);
 	} else if (expression->kind == .Sizeof) {
-		codegenExpressionSizeof(expression, (ExpressionSizeof*)expression->expression);
+		codegenExpressionSizeof((ExpressionSizeof*)expression->expression);
 	} else if (expression->kind == .Offsetof) {
-		codegenExpressionOffsetof(expression, (ExpressionOffsetof*)expression->expression);
+		codegenExpressionOffsetof((ExpressionOffsetof*)expression->expression);
 	} else if (expression->kind == .Dereference) {
-		codegenExpressionDereference(expression, (ExpressionDereference*)expression->expression);
+		codegenExpressionDereference((ExpressionDereference*)expression->expression);
 	} else if (expression->kind == .Reference) {
-		codegenExpressionReference(expression, (ExpressionReference*)expression->expression);
+		codegenExpressionReference((ExpressionReference*)expression->expression);
 	} else if (expression->kind == .FunctionCall) {
-		codegenExpressionFunctionCall(expression, (ExpressionFunctionCall*)expression->expression);
+		codegenExpressionFunctionCall((ExpressionFunctionCall*)expression->expression);
 	} else if (expression->kind == .Subscript) {
-		codegenExpressionSubscript(expression, (ExpressionSubscript*)expression->expression);
+		codegenExpressionSubscript((ExpressionSubscript*)expression->expression);
 	} else if (expression->kind == .Arrow) {
-		codegenExpressionArrow(expression, (ExpressionArrow*)expression->expression);
+		codegenExpressionArrow((ExpressionArrow*)expression->expression);
 	} else if (expression->kind == .Dot) {
 		codegenExpressionDot(expression, (ExpressionDot*)expression->expression);
 	} else if (expression->kind == .PrefixOperator) {
-		codegenExpressionPrefixOperator(expression, (ExpressionPrefix*)expression->expression);
+		codegenExpressionPrefixOperator((ExpressionPrefix*)expression->expression);
 	} else if (expression->kind == .InfixOperator) {
-		codegenExpressionInfixOperator(expression, (ExpressionInfix*)expression->expression);
+		codegenExpressionInfixOperator((ExpressionInfix*)expression->expression);
 	} else if (expression->kind == .Ternary) {
-		codegenExpressionTernary(expression, (ExpressionTernary*)expression->expression);
+		codegenExpressionTernary((ExpressionTernary*)expression->expression);
 	} else if (expression->kind == .Identifier) {
-		codegenExpressionIdentifier(expression, (ExpressionIdentifier*)expression->expression);
+		codegenExpressionIdentifier((ExpressionIdentifier*)expression->expression);
 	} else if (expression->kind == .Null) {
 		printf((char*)"NULL");
 	} else if (expression->kind == .BooleanLiteral) {
-		codegenExpressionBooleanLiteral(expression, (ExpressionBooleanLiteral*)expression->expression);
+		codegenExpressionBooleanLiteral((ExpressionBooleanLiteral*)expression->expression);
 	} else if (expression->kind == .IntegerLiteral) {
-		codegenExpressionIntegerLiteral(expression, (ExpressionIntegerLiteral*)expression->expression);
+		codegenExpressionIntegerLiteral((ExpressionIntegerLiteral*)expression->expression);
 	} else if (expression->kind == .CharacterLiteral) {
-		codegenExpressionCharacterLiteral(expression, (ExpressionCharacterLiteral*)expression->expression);
+		codegenExpressionCharacterLiteral((ExpressionCharacterLiteral*)expression->expression);
 	} else if (expression->kind == .StringLiteral) {
-		codegenExpressionStringLiteral(expression, (ExpressionStringLiteral*)expression->expression);
+		codegenExpressionStringLiteral((ExpressionStringLiteral*)expression->expression);
 	} else {
 		ProgrammingError("called codegenExpression on a .Invalid");
 	};;;;;;;;;;;;;;;;;;;
