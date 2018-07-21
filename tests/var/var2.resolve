@@ -1,0 +1,33 @@
+tests/var/var2.b:1:5: warning: unused symbol 'a'
+var a = '\\';
+    ^
+tests/var/var2.b:2:5: warning: unused symbol 'b'
+var b = '\t';
+    ^
+tests/var/var2.b:3:5: warning: unused symbol 'c'
+var c = '\n';
+    ^
+tests/var/var2.b:4:5: warning: unused symbol 'd'
+var d = '\'';
+    ^
+tests/var/var2.b:5:5: warning: unused symbol 'e'
+var e = '"';
+    ^
+tests/var/var2.b:7:5: warning: unused symbol 'f'
+var f = "\\";
+    ^
+tests/var/var2.b:8:5: warning: unused symbol 'g'
+var g = "\t";
+    ^
+tests/var/var2.b:9:5: warning: unused symbol 'h'
+var h = "\n";
+    ^
+tests/var/var2.b:10:5: warning: unused symbol 'i'
+var i = "'";
+    ^
+tests/var/var2.b:11:5: warning: unused symbol 'j'
+var j = "\"";
+    ^
+tests/var/var2.b:12:5: warning: unused symbol 'k'
+var k = "\"\n\t";
+    ^

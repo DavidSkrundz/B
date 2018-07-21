@@ -1,3 +1,60 @@
+tests/operator/op.b:1:5: warning: unused symbol 'a'
+var a = 1 + 2;
+    ^
+tests/operator/op.b:2:5: warning: unused symbol 'b'
+var b = 1 - 2;
+    ^
+tests/operator/op.b:3:5: warning: unused symbol 'c'
+var c = 1 * 2;
+    ^
+tests/operator/op.b:4:5: warning: unused symbol 'd'
+var d = 1 / 2;
+    ^
+tests/operator/op.b:6:5: warning: unused symbol 'e'
+var e = 1 | 2;
+    ^
+tests/operator/op.b:7:5: warning: unused symbol 'f'
+var f = 1 & 2;
+    ^
+tests/operator/op.b:8:5: warning: unused symbol 'g'
+var g = 1 ^ 2;
+    ^
+tests/operator/op.b:10:5: warning: unused symbol 'h'
+var h = !false;
+    ^
+tests/operator/op.b:11:5: warning: unused symbol 'i'
+var i = true || false;
+    ^
+tests/operator/op.b:12:5: warning: unused symbol 'j'
+var j = true && false;
+    ^
+tests/operator/op.b:13:5: warning: unused symbol 'k'
+var k = true == false;
+    ^
+tests/operator/op.b:14:5: warning: unused symbol 'l'
+var l = true != false;
+    ^
+tests/operator/op.b:15:5: warning: unused symbol 'm'
+var m = 0 < 1;
+    ^
+tests/operator/op.b:16:5: warning: unused symbol 'n'
+var n = 0 > 1;
+    ^
+tests/operator/op.b:17:5: warning: unused symbol 'o'
+var o = 0 <= 1;
+    ^
+tests/operator/op.b:18:5: warning: unused symbol 'p'
+var p = 0 >= 1;
+    ^
+tests/operator/op.b:20:5: warning: unused symbol 'q'
+var q = 2 >> 1;
+    ^
+tests/operator/op.b:21:5: warning: unused symbol 'r'
+var r = 1 << 2;
+    ^
+tests/operator/op.b:23:5: warning: unused symbol 's'
+var s = false ? 1 : 2;
+    ^
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

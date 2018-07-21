@@ -47,7 +47,6 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 List of things so I don't forget.
 
 - Update resolver to use Symbols and the new Contexts
-- Dead code detection/omission
 - Improve awareness of resolver in different contexts
 - Ensure the resolver passes over everything
 - Structs associated functions

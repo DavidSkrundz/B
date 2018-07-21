@@ -1,3 +1,12 @@
+tests/operator/lte.b:1:5: warning: unused symbol 'a'
+var a = 3 <= 2;
+    ^
+tests/operator/lte.b:2:5: warning: unused symbol 'b'
+var b = 2 <= 2;
+    ^
+tests/operator/lte.b:3:5: warning: unused symbol 'c'
+var c = 1 <= 2;
+    ^
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

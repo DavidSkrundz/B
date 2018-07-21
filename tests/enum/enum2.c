@@ -1,3 +1,6 @@
+tests/enum/enum2.b:1:5: warning: unused symbol 'a'
+var a = Enum.Case;
+    ^
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

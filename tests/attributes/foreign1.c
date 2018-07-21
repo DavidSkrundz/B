@@ -1,3 +1,6 @@
+tests/attributes/foreign1.b:3:5: warning: unused symbol 'c'
+var c: char = (char)0;
+    ^
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

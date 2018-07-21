@@ -1,4 +1,8 @@
+var mainString: String*;
+
 func Resolve() {
+	mainString = String_init_literal("main");
+	
 	pushContext();
 	InitBuiltinTypes();
 	
@@ -7,6 +11,17 @@ func Resolve() {
 		resolveDeclaration(_declarations[i], true);
 		i = i + 1;
 	};
+	
+	restoreContext(rootContext);
+	i = 0;
+	while (i < Buffer_getCount((Void**)context->symbols)) {
+		var symbol = context->symbols[i];
+		if (symbol->name == mainString && symbol->type->kind == .Function) {
+			symbol->useCount = symbol->useCount + 1;
+		};
+		i = i + 1;
+	};
+	warnUnusedVariables();
 };
 
 func warnUnusedVariables() {

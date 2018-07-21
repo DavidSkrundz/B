@@ -1,3 +1,12 @@
+tests/var/var1.b:1:5: warning: unused symbol 'a'
+var a: Void*;
+    ^
+tests/var/var1.b:2:5: warning: unused symbol 'b'
+var b: Bool = true;
+    ^
+tests/var/var1.b:3:5: warning: unused symbol 'c'
+var c = 1;
+    ^
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

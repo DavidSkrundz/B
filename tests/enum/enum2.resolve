@@ -1,0 +1,3 @@
+tests/enum/enum2.b:1:5: warning: unused symbol 'a'
+var a = Enum.Case;
+    ^
