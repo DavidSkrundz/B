@@ -1,3 +1,6 @@
+tests/func/func2.b:1:11: warning: unused symbol 'a'
+func main(a: Int) {};
+          ^
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

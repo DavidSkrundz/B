@@ -65,6 +65,7 @@ func resolveDeclarationFunc(declaration: DeclarationFunc*, name: Token*): Type* 
 			i = i + 1;
 		};
 		resolveStatementBlock(declaration->block, returnType);
+		warnUnusedVariables();
 		popContext();
 	};
 	restoreContext(stash);

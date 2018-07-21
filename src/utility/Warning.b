@@ -4,3 +4,10 @@ func ResolverWarning(pos: SrcPos*, message1: UInt8*, message2: UInt8*, message3:
 	_printUpToNewline(pos->start);
 	_printErrorLocation(pos->start, pos->column);
 };
+
+func ResolverWarning2(pos: SrcPos*, message1: UInt8*, message2: UInt8*, message3: UInt8*) {
+	fprintf(stderr, (char*)"%s:%zu:%zu: ", pos->file, pos->line, pos->column);
+	fprintf(stderr, (char*)"warning: %s%s%s\n", message1, message2, message3);
+	_printUpToNewline(pos->start);
+	_printErrorLocation(pos->start, pos->column);
+};

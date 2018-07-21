@@ -1,6 +1,9 @@
 tests/var/shadow.b:4:7: warning: symbol 'a' shadows symbol at tests/var/shadow.b:2:6
 		var a = 1;
 		    ^
+tests/var/shadow.b:4:7: warning: unused symbol 'a'
+		var a = 1;
+		    ^
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

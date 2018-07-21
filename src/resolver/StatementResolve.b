@@ -61,5 +61,6 @@ func resolveStatementBlock(block: StatementBlock*, expectedType: Type*) {
 		resolveStatement(block->statements[i], expectedType);
 		i = i + 1;
 	};
+	warnUnusedVariables();
 	popContext();
 };
