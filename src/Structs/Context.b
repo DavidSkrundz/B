@@ -66,7 +66,7 @@ func findSymbol(name: String*): Symbol* {
 		while (i < Buffer_getCount((Void**)currentContext->symbols)) {
 			if (currentContext->symbols[i]->name == name) {
 				var sym = currentContext->symbols[i];
-				sym->useCount = sym->useCount + 1;
+				Symbol_use(sym);
 				return sym;
 			};
 			i = i + 1;
