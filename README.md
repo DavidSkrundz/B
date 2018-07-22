@@ -54,6 +54,8 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 
 ## Things to do (eventually)
 
+- Rvalue/Lvalue (warn about write-only variables)
+- Overload functions
 - Unions + nested struct/union
 - Allow `.` to get a struct field (currently only `->` on a pointer works)
 - Custom operators implemented as functions
