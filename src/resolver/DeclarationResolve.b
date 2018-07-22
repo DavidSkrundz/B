@@ -51,7 +51,6 @@ func resolveDeclarationFunc(declaration: DeclarationFunc*, name: Token*): Type* 
 	symbol->pos = name->pos;
 	registerGlobalSymbol(symbol);
 	
-	var stash = stashContext();
 	if (declaration->block != NULL) {
 		pushContext();
 		var i = 0;
@@ -68,14 +67,12 @@ func resolveDeclarationFunc(declaration: DeclarationFunc*, name: Token*): Type* 
 		warnUnusedVariables();
 		popContext();
 	};
-	restoreContext(stash);
 	
 	return type;
 };
 
 func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Type* {
 	var type = createTypeIdentifier(name);
-	var stash = stashContext();
 	pushContext();
 	if (declaration->fields != NULL) {
 		var i = 0;
@@ -85,7 +82,6 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Ty
 		};
 	};
 	popContext();
-	restoreContext(stash);
 	return type;
 };
 
@@ -103,6 +99,9 @@ func resolveDeclaration(declaration: Declaration*, isGlobal: Bool) {
 		ProgrammingError("called resolveDeclaration on a .Invalid state");
 	};;;
 	
+	var stash: Context*;
+	if (isGlobal) { stash = stashContext(); };
+	
 	declaration->state = .Resolving;
 	if (declaration->kind == .Var) {
 		declaration->resolvedType = resolveDeclarationVar((DeclarationVar*)declaration->declaration, declaration->name, isGlobal);
@@ -116,4 +115,6 @@ func resolveDeclaration(declaration: Declaration*, isGlobal: Bool) {
 		ProgrammingError("called resolveDeclaration on a .Invalid");
 	};;;;
 	declaration->state = .Resolved;
+	
+	if (isGlobal) { restoreContext(stash); };
 };
