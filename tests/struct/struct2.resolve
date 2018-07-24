@@ -1,0 +1,3 @@
+tests/struct/struct2.b:1:8: warning: unused symbol 'MyStruct'
+struct MyStruct {
+       ^

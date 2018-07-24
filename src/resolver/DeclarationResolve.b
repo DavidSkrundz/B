@@ -72,7 +72,12 @@ func resolveDeclarationFunc(declaration: DeclarationFunc*, name: Token*): Type* 
 };
 
 func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Type* {
-	var type = createTypeIdentifier(name);
+	var symbol = Symbol_init();
+	symbol->type = createTypeIdentifier(name);
+	symbol->name = name->string;
+	symbol->pos = name->pos;
+	symbol->isType = true;
+	
 	pushContext();
 	if (declaration->fields != NULL) {
 		var i = 0;
@@ -81,8 +86,11 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Ty
 			i = i + 1;
 		};
 	};
+	symbol->children = context;
 	popContext();
-	return type;
+	
+	registerSymbol(symbol);
+	return symbol->type;
 };
 
 func resolveDeclarationEnum(name: Token*): Type* {

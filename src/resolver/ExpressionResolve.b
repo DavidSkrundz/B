@@ -253,7 +253,7 @@ func resolveExpressionTernary(expression: ExpressionTernary*, expectedType: Type
 };
 
 func resolveExpressionIdentifier(expression: ExpressionIdentifier*, expectedType: Type*): Type* {
-	var symbol = findSymbol(expression->identifier->string);
+	var symbol = resolveSymbol(expression->identifier->string);
 	if (symbol == NULL) {
 		ResolverError(expression->identifier->pos, "identifier '", expression->identifier->string->string, "' is not a variable or function");
 	};

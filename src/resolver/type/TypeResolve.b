@@ -5,6 +5,11 @@ func registerType(type: Type*) {
 };
 
 func findTypeByName(name: String*): Type* {
+	var symbol = findSymbol(name);
+	if (symbol != NULL && symbol->isType) {
+		return symbol->type;
+	};
+	
 	var i = 0;
 	while (i < Buffer_getCount((Void**)types)) {
 		if (types[i]->kind == .Identifier) {

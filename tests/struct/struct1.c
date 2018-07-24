@@ -1,3 +1,6 @@
+tests/struct/struct1.b:1:8: warning: unused symbol 'MyStruct'
+struct MyStruct {};
+       ^
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

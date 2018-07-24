@@ -44,13 +44,13 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 
 ## Things to do
 
-- Create symbols for structs and their fields
 - Create symbols for enums and values
 - Perform type lookups using symbols
 - Perform struct field lookups using symbols
 - Perform enum value lookups using symbols
 - Add associated functions to structs (similar to fields, looked up with symbols)
 - Add associated functions to enums (similar to values, looked up with symbols)
+- Warn when a struct field/function is unused
 
 ## Things to do (eventually)
 

@@ -73,11 +73,20 @@ func findSymbol(name: String*): Symbol* {
 		};
 		currentContext = currentContext->parent;
 	};
+	return NULL;
+};
+
+func resolveSymbol(name: String*): Symbol* {
+	var symbol = findSymbol(name);
+	if (symbol != NULL) {
+		Symbol_use(symbol);
+		return symbol;
+	};
 	var i = 0;
 	while (i < Buffer_getCount((Void**)_declarations)) {
 		if (_declarations[i]->name->string == name) {
 			resolveDeclaration(_declarations[i], true);
-			return findSymbol(name);
+			return resolveSymbol(name);
 		};
 		i = i + 1;
 	};
