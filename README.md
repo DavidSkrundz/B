@@ -54,9 +54,10 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 ## Things to do (eventually)
 
 - Rvalue/Lvalue (warn about write-only variables)
-- Overload functions
+- Overload functions (with swift labels?)
 - Unions + nested struct/union
 - Allow `.` to get a struct field (currently only `->` on a pointer works)
+- Allow `Struct.Field` to resolve the symbol of that field for use in `sizeof` and `offsetof`
 - Custom operators implemented as functions
 - Allow keywords to be used as second-level identifiers (enum cases, struct fields, ...)
 - Static arrays (lookup tables)
