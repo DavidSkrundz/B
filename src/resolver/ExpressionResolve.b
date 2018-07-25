@@ -146,17 +146,26 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 };
 
 func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type* {
-	var i = 0;
-	while (i < Buffer_getCount((Void**)_declarations)) {
-		if (_declarations[i]->kind == .Enum) {
-			if (expression->base == NULL || expression->base->string == _declarations[i]->name->string) {
-				if (expectedType == NULL || _declarations[i]->resolvedType == expectedType) {
-					resolveDeclaration(_declarations[i], true);
-					return _declarations[i]->resolvedType;
+	if (expression->base == NULL) {
+		var i = 0;
+		while (i < Buffer_getCount((Void**)_declarations)) {
+			if (_declarations[i]->kind == .Enum) {
+				if (expression->base == NULL || expression->base->string == _declarations[i]->name->string) {
+					if (expectedType == NULL || _declarations[i]->resolvedType == expectedType) {
+						resolveDeclaration(_declarations[i], true);
+						return _declarations[i]->resolvedType;
+					};
 				};
 			};
+			i = i + 1;
 		};
-		i = i + 1;
+	};
+	
+	var symbol = resolveSymbol(expression->base->string);
+	if (symbol != NULL && symbol->isType) {
+		if (expectedType == NULL || expectedType == symbol->type) {
+			return symbol->type;
+		};
 	};
 	ResolverError(expression->field->pos, "enum field '", expression->field->string->string, "' not found");
 	return NULL;

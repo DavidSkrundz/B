@@ -93,9 +93,32 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Ty
 	return symbol->type;
 };
 
-func resolveDeclarationEnum(name: Token*): Type* {
-	var type = createTypeIdentifier(name);
-	return type;
+func resolveDeclarationEnumCase(enumCase: DeclarationEnumCase*, type: Type*) {
+	var symbol = Symbol_init();
+	symbol->type = type;
+	symbol->name = enumCase->name->string;
+	symbol->pos = enumCase->name->pos;
+	registerSymbol(symbol);
+};
+
+func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Token*): Type* {
+	var symbol = Symbol_init();
+	symbol->type = createTypeIdentifier(name);
+	symbol->name = name->string;
+	symbol->pos = name->pos;
+	symbol->isType = true;
+	
+	pushContext();
+	var i = 0;
+	while (i < Buffer_getCount((Void**)declaration->cases)) {
+		resolveDeclarationEnumCase(declaration->cases[i], symbol->type);
+		i = i + 1;
+	};
+	symbol->children = context;
+	popContext();
+	
+	registerSymbol(symbol);
+	return symbol->type;
 };
 
 func resolveDeclaration(declaration: Declaration*, isGlobal: Bool) {
@@ -118,7 +141,7 @@ func resolveDeclaration(declaration: Declaration*, isGlobal: Bool) {
 	} else if (declaration->kind == .Struct) {
 		declaration->resolvedType = resolveDeclarationStruct((DeclarationStruct*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Enum) {
-		declaration->resolvedType = resolveDeclarationEnum(declaration->name);
+		declaration->resolvedType = resolveDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
 	} else {
 		ProgrammingError("called resolveDeclaration on a .Invalid");
 	};;;;
