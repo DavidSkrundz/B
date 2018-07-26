@@ -20,21 +20,6 @@ func popContext() {
 	contexts->context = contexts->context->parent;
 };
 
-func stashContext(): Context* {
-	if (contexts->context == NULL) {
-		ProgrammingError("stashContext called with no Context present");
-	};
-	var context = contexts->context;
-	contexts->context = context->parent;
-	context->parent = NULL;
-	return context;
-};
-
-func restoreContext(context: Context*) {
-	context->parent = contexts->context;
-	contexts->context = context;
-};
-
 func stashContextToRoot(): Context* {
 	var context = contexts->context;
 	while (contexts->context->parent != NULL) { popContext(); };
