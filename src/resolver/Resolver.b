@@ -3,19 +3,23 @@ var mainString: String*;
 func Resolve() {
 	mainString = String_init_literal("main");
 	
+	pushContextChain();
 	pushContext();
 	InitBuiltinTypes();
 	
 	var i = 0;
 	while (i < Buffer_getCount((Void**)_declarations)) {
-		resolveDeclaration(_declarations[i], true);
+		var chainStash = stashContextChainToRoot();
+		var contextStash = stashContextToRoot();
+		resolveDeclaration(_declarations[i]);
+		restoreContextFromRoot(contextStash);
+		restoreContextChainFromRoot(chainStash);
 		i = i + 1;
 	};
 	
-	restoreContext(rootContext);
 	i = 0;
-	while (i < Buffer_getCount((Void**)context->symbols)) {
-		var symbol = context->symbols[i];
+	while (i < Buffer_getCount((Void**)contexts->context->symbols)) {
+		var symbol = contexts->context->symbols[i];
 		if (symbol->name == mainString && symbol->type->kind == .Function) {
 			Symbol_use(symbol);
 		};
@@ -26,8 +30,8 @@ func Resolve() {
 
 func warnUnusedVariables() {
 	var i = 0;
-	while (i < Buffer_getCount((Void**)context->symbols)) {
-		var symbol = context->symbols[i];
+	while (i < Buffer_getCount((Void**)contexts->context->symbols)) {
+		var symbol = contexts->context->symbols[i];
 		if (Symbol_unused(symbol)) {
 			ResolverWarning2(symbol->pos, "unused symbol '", symbol->name->string, "'");
 		};

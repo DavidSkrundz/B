@@ -152,7 +152,11 @@ func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type
 			if (_declarations[i]->kind == .Enum) {
 				if (expression->base == NULL || expression->base->string == _declarations[i]->name->string) {
 					if (expectedType == NULL || _declarations[i]->resolvedType == expectedType) {
-						resolveDeclaration(_declarations[i], true);
+						var chainStash = stashContextChainToRoot();
+						var contextStash = stashContextToRoot();
+						resolveDeclaration(_declarations[i]);
+						restoreContextFromRoot(contextStash);
+						restoreContextChainFromRoot(chainStash);
 						return _declarations[i]->resolvedType;
 					};
 				};

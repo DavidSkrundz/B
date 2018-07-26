@@ -8,7 +8,7 @@ func resolveStatementAssign(statement: StatementAssign*) {
 };
 
 func resolveStatementVar(statement: StatementVar*) {
-	resolveDeclaration(statement->declaration, false);
+	resolveDeclaration(statement->declaration);
 };
 
 func resolveStatementIf(statement: StatementIf*, expectedType: Type*) {

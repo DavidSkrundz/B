@@ -1,4 +1,4 @@
-func resolveDeclarationVar(declaration: DeclarationVar*, name: Token*, isGlobal: Bool): Type* {
+func resolveDeclarationVar(declaration: DeclarationVar*, name: Token*): Type* {
 	var type: Type*;
 	if (declaration->type != NULL) {
 		type = resolveTypespec(declaration->type);
@@ -11,11 +11,7 @@ func resolveDeclarationVar(declaration: DeclarationVar*, name: Token*, isGlobal:
 	symbol->name = name->string;
 	symbol->type = type;
 	symbol->pos = name->pos;
-	if (isGlobal) {
-		registerGlobalSymbol(symbol);
-	} else {
-		registerSymbol(symbol);
-	};
+	registerSymbol(symbol);
 	return type;
 };
 
@@ -49,7 +45,7 @@ func resolveDeclarationFunc(declaration: DeclarationFunc*, name: Token*): Type* 
 	symbol->name = name->string;
 	symbol->type = type;
 	symbol->pos = name->pos;
-	registerGlobalSymbol(symbol);
+	registerSymbol(symbol);
 	
 	if (declaration->block != NULL) {
 		pushContext();
@@ -82,11 +78,11 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Ty
 	if (declaration->fields != NULL) {
 		var i = 0;
 		while (i < Buffer_getCount((Void**)declaration->fields)) {
-			resolveDeclaration(declaration->fields[i], false);
+			resolveDeclaration(declaration->fields[i]);
 			i = i + 1;
 		};
 	};
-	symbol->children = context;
+	symbol->children = contexts->context;
 	popContext();
 	
 	registerSymbol(symbol);
@@ -114,14 +110,14 @@ func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Token*): Type* 
 		resolveDeclarationEnumCase(declaration->cases[i], symbol->type);
 		i = i + 1;
 	};
-	symbol->children = context;
+	symbol->children = contexts->context;
 	popContext();
 	
 	registerSymbol(symbol);
 	return symbol->type;
 };
 
-func resolveDeclaration(declaration: Declaration*, isGlobal: Bool) {
+func resolveDeclaration(declaration: Declaration*) {
 	if (declaration->state == .Resolved) { return; }
 	else if (declaration->state == .Unresolved) {}
 	else if (declaration->state == .Resolving) {
@@ -130,12 +126,9 @@ func resolveDeclaration(declaration: Declaration*, isGlobal: Bool) {
 		ProgrammingError("called resolveDeclaration on a .Invalid state");
 	};;;
 	
-	var stash: Context*;
-	if (isGlobal) { stash = stashContext(); };
-	
 	declaration->state = .Resolving;
 	if (declaration->kind == .Var) {
-		declaration->resolvedType = resolveDeclarationVar((DeclarationVar*)declaration->declaration, declaration->name, isGlobal);
+		declaration->resolvedType = resolveDeclarationVar((DeclarationVar*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Func) {
 		declaration->resolvedType = resolveDeclarationFunc((DeclarationFunc*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Struct) {
@@ -146,6 +139,4 @@ func resolveDeclaration(declaration: Declaration*, isGlobal: Bool) {
 		ProgrammingError("called resolveDeclaration on a .Invalid");
 	};;;;
 	declaration->state = .Resolved;
-	
-	if (isGlobal) { restoreContext(stash); };
 };

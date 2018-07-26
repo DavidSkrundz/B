@@ -49,7 +49,11 @@ func resolveTypeIdentifier(name: String*): Type* {
 	var i = 0;
 	while (i < Buffer_getCount((Void**)_declarations)) {
 		if (_declarations[i]->name->string == name) {
-			resolveDeclaration(_declarations[i], true);
+			var chainStash = stashContextChainToRoot();
+			var contextStash = stashContextToRoot();
+			resolveDeclaration(_declarations[i]);
+			restoreContextFromRoot(contextStash);
+			restoreContextChainFromRoot(chainStash);
 		};
 		i = i + 1;
 	};
