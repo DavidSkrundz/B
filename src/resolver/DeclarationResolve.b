@@ -104,6 +104,7 @@ func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Token*): Type* 
 	symbol->pos = name->pos;
 	symbol->isType = true;
 	
+	pushContextChain();
 	pushContext();
 	var i = 0;
 	while (i < Buffer_getCount((Void**)declaration->cases)) {
@@ -112,6 +113,7 @@ func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Token*): Type* 
 	};
 	symbol->children = contexts->context;
 	popContext();
+	popContextChain();
 	
 	registerSymbol(symbol);
 	return symbol->type;
