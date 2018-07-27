@@ -46,6 +46,23 @@ func registerSymbol(symbol: Symbol*) {
 	Buffer_append((Void***)&contexts->context->symbols, (Void*)symbol);
 };
 
+func findSymbolByType(type: Type*): Symbol* {
+	var currentContext = contexts->context;
+	while (currentContext != NULL) {
+		var i = 0;
+		while (i < Buffer_getCount((Void**)currentContext->symbols)) {
+			if (currentContext->symbols[i]->type == type && currentContext->symbols[i]->isType) {
+				var sym = currentContext->symbols[i];
+				Symbol_use(sym);
+				return sym;
+			};
+			i = i + 1;
+		};
+		currentContext = currentContext->parent;
+	};
+	return NULL;
+};
+
 func findSymbol(name: String*): Symbol* {
 	var currentContext = contexts->context;
 	while (currentContext != NULL) {

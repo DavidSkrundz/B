@@ -145,33 +145,29 @@ func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): 
 	return NULL;
 };
 
+func resolveExpressionDotInner(symbol: Symbol*, expression: ExpressionDot*): Type* {
+	pushContextChain();
+	restoreContextFromRoot(symbol->children);
+	var fieldSymbol = findSymbol(expression->field->string);
+	popContextChain();
+	if (fieldSymbol != NULL) { return symbol->type; };
+	ResolverError(expression->field->pos, "enum field '", expression->field->string->string, "' not found");
+	return NULL;
+};
+
 func resolveExpressionDot(expression: ExpressionDot*, expectedType: Type*): Type* {
 	if (expression->base == NULL) {
-		var i = 0;
-		while (i < Buffer_getCount((Void**)_declarations)) {
-			if (_declarations[i]->kind == .Enum) {
-				if (expression->base == NULL || expression->base->string == _declarations[i]->name->string) {
-					if (expectedType == NULL || _declarations[i]->resolvedType == expectedType) {
-						var chainStash = stashContextChainToRoot();
-						var contextStash = stashContextToRoot();
-						resolveDeclaration(_declarations[i]);
-						restoreContextFromRoot(contextStash);
-						restoreContextChainFromRoot(chainStash);
-						return _declarations[i]->resolvedType;
-					};
-				};
-			};
-			i = i + 1;
-		};
+		var symbol = findSymbolByType(expectedType);
+		return resolveExpressionDotInner(symbol, expression);
 	};
 	
 	var symbol = resolveSymbol(expression->base->string);
 	if (symbol != NULL && symbol->isType) {
 		if (expectedType == NULL || expectedType == symbol->type) {
-			return symbol->type;
+			return resolveExpressionDotInner(symbol, expression);
 		};
 	};
-	ResolverError(expression->field->pos, "enum field '", expression->field->string->string, "' not found");
+	ResolverError(expression->field->pos, "enum '", expression->base->string->string, "' not found");
 	return NULL;
 };
 

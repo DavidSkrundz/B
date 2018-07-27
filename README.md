@@ -45,10 +45,12 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 ## Things to do
 
 - Perform struct field lookups using symbols
-- Perform enum value lookups using symbols
 - Add associated functions to structs (similar to fields, looked up with symbols)
 - Add associated functions to enums (similar to values, looked up with symbols)
 - Warn when a struct field/function is unused
+
+- Rewrite `resolveExpressionDot` to handle `Enum.Case`, `Struct.Field`, and `struct.field`
+- `resolveExpressionArrow` should dereference the value then call `resolveExpressionArrow`
 
 ## Things to do (eventually)
 
