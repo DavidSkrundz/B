@@ -44,7 +44,6 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 
 ## Things to do
 
-- Perform type lookups using symbols
 - Perform struct field lookups using symbols
 - Perform enum value lookups using symbols
 - Add associated functions to structs (similar to fields, looked up with symbols)

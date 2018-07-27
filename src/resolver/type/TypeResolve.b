@@ -9,15 +9,6 @@ func findTypeByName(name: String*): Type* {
 	if (symbol != NULL && symbol->isType) {
 		return symbol->type;
 	};
-	
-	var i = 0;
-	while (i < Buffer_getCount((Void**)types)) {
-		if (types[i]->kind == .Identifier) {
-			var identifier = (TypeIdentifier*)types[i]->type;
-			if (identifier->name == name) { return types[i]; };
-		};
-		i = i + 1;
-	};
 	return NULL;
 };
 
