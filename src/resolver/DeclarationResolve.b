@@ -73,6 +73,7 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Ty
 	symbol->name = name->string;
 	symbol->pos = name->pos;
 	symbol->isType = true;
+	registerSymbol(symbol);
 	
 	pushContext();
 	if (declaration->fields != NULL) {
@@ -85,7 +86,6 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Ty
 	symbol->children = contexts->context;
 	popContext();
 	
-	registerSymbol(symbol);
 	return symbol->type;
 };
 
