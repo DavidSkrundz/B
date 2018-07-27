@@ -34,11 +34,18 @@ func InitBuiltinTypes() {
 	TypeString = resolveTypePointer(TypeCharacter);
 };
 
-func registerBuiltinType(name: UInt8*): Type* {
-	var stringName = String_init_literal(name);
-	var type = newType();
-	type->kind = .Identifier;
-	type->type = (Void*)TypeIdentifier_init(stringName);
-	registerType(type);
-	return type;
+func registerBuiltinType(nameString: UInt8*): Type* {
+	var name = newToken();
+	name->kind = .Identifier;
+	name->pos = newSrcPos(_file, _start, _line, _column);
+	name->string = String_init_literal(nameString);
+	
+	var symbol = Symbol_init();
+	symbol->type = createTypeIdentifier(name);
+	symbol->name = name->string;
+	symbol->pos = name->pos;
+	symbol->isType = true;
+	symbol->useCount = 1;
+	registerSymbol(symbol);
+	return symbol->type;
 };
