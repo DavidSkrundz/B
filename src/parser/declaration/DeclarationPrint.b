@@ -135,10 +135,13 @@ func printDeclaration(declaration: Declaration*) {
 		printDeclarationStruct((DeclarationStruct*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Enum) {
 		printDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
+	} else if (declaration->kind == .Invalid) {
+		fprintf(stderr, (char*)"Invalid declaration kind %u\n", declaration->kind);
+		abort();
 	} else {
 		fprintf(stderr, (char*)"Invalid declaration kind %u\n", declaration->kind);
 		abort();
-	};;;;
+	};;;;;
 };
 
 func printDeclarations() {

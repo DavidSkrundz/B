@@ -63,9 +63,11 @@ func getPointerBase(type: Type*): Type* {
 		return pointer->base;
 	} else if (type->kind == .Function) {
 		ProgrammingError("called getPointerBase on a .Function");
+	} else if (type->kind == .Invalid) {
+		ProgrammingError("called getPointerBase on a .Invalid");
 	} else {
 		ProgrammingError("called getPointerBase on a .Invalid");
-	};;;
+	};;;;
 	return NULL;
 };
 

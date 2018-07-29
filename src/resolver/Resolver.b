@@ -35,6 +35,12 @@ func warnUnusedVariables() {
 		if (Symbol_unused(symbol)) {
 			ResolverWarning2(symbol->pos, "unused symbol '", symbol->name->string, "'");
 		};
+		if (symbol->isType && symbol->children != NULL) {
+			pushContextChain();
+			restoreContextFromRoot(symbol->children);
+			warnUnusedVariables();
+			popContextChain();
+		};
 		i = i + 1;
 	};
 };

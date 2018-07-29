@@ -44,7 +44,6 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 
 ## Things to do
 
-- Warn when a struct field/function is unused
 - Add associated functions to structs (similar to fields, looked up with symbols)
 - Add associated functions to enums (similar to values, looked up with symbols)
 

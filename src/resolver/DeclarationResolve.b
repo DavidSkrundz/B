@@ -124,9 +124,11 @@ func resolveDeclaration(declaration: Declaration*) {
 	else if (declaration->state == .Unresolved) {}
 	else if (declaration->state == .Resolving) {
 		ResolverError(declaration->pos, "cyclic dependency for '", declaration->name->string->string, "'");
+	} else if (declaration->state == .Invalid) {
+		ProgrammingError("called resolveDeclaration on a .Invalid state");
 	} else {
 		ProgrammingError("called resolveDeclaration on a .Invalid state");
-	};;;
+	};;;;
 	
 	declaration->state = .Resolving;
 	if (declaration->kind == .Var) {

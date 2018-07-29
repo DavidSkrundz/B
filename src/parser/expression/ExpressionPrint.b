@@ -200,8 +200,11 @@ func printExpression(expression: Expression*) {
 		printExpressionCharacterLiteral((ExpressionCharacterLiteral*)expression->expression);
 	} else if (expression->kind == .StringLiteral) {
 		printExpressionStringLiteral((ExpressionStringLiteral*)expression->expression);
+	} else if (expression->kind == .Invalid) {
+		fprintf(stderr, (char*)"Invalid expression kind %u\n", expression->kind);
+		abort();
 	} else {
 		fprintf(stderr, (char*)"Invalid expression kind %u\n", expression->kind);
 		abort();
-	};;;;;;;;;;;;;;;;;;;
+	};;;;;;;;;;;;;;;;;;;;
 };

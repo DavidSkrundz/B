@@ -17,10 +17,13 @@ func printTypespecPointer(typespec: TypespecPointer*) {
 		printTypespecPointer((TypespecPointer*)typespec->base->spec);
 	} else if (typespec->base->kind == .Identifier) {
 		printTypespecIdentifier((TypespecIdentifier*)typespec->base->spec);
+	} else if (typespec->base->kind == .Invalid) {
+		fprintf(stderr, (char*)"Invalid typespec kind %u\n", typespec->base->kind);
+		abort();
 	} else {
 		fprintf(stderr, (char*)"Invalid typespec kind %u\n", typespec->base->kind);
 		abort();
-	};;
+	};;;
 	printf((char*)")");
 };
 

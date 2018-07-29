@@ -75,10 +75,13 @@ func printStatement(statement: Statement*) {
 		printStatementWhile((StatementWhile*)statement->statement);
 	} else if (statement->kind == .Return) {
 		printStatementReturn((StatementReturn*)statement->statement);
+	} else if (statement->kind == .Invalid) {
+		fprintf(stderr, (char*)"Invalid statement kind %u\n", statement->kind);
+		abort();
 	} else {
 		fprintf(stderr, (char*)"Invalid statement kind %u\n", statement->kind);
 		abort();
-	};;;;;;;
+	};;;;;;;;
 };
 
 func printStatementBlock(block: StatementBlock*) {
