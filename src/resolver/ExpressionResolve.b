@@ -117,29 +117,20 @@ func resolveExpressionSubscript(expression: ExpressionSubscript*, expectedType: 
 func resolveExpressionArrow(expression: ExpressionArrow*, expectedType: Type*): Type* {
 	var pointerType = resolveExpression(expression->base, NULL);
 	var baseType = getPointerBase(pointerType);
-	var structDeclaration: DeclarationStruct*;
-	var i = 0;
-	while (i < Buffer_getCount((Void**)_declarations)) {
-		if (_declarations[i]->kind == .Struct) {
-			if (_declarations[i]->resolvedType == baseType) {
-				structDeclaration = (DeclarationStruct*)_declarations[i]->declaration;
-			};
-		};
-		i = i + 1;
+	var structSymbol = findSymbolByType(baseType);
+	if (structSymbol == NULL || structSymbol->isType == false) {
+		ResolverError(expression->base->pos, "unable to apply -> to non-struct pointer", "", "");
 	};
-	if (structDeclaration == NULL) {
-		ResolverError(expression->base->pos, "unable to apply -> to non-struct", "", "");
-	};
-	i = 0;
-	while (i < Buffer_getCount((Void**)structDeclaration->fields)) {
-		var name = structDeclaration->fields[i]->name;
-		if (name->string == expression->field->string) {
-			if (expectedType != NULL && expectedType != structDeclaration->fields[i]->resolvedType) {
-				ResolverError(expression->field->pos, "struct field '", expression->field->string->string, "' is the wrong type");
-			};
-			return structDeclaration->fields[i]->resolvedType;
+	
+	pushContextChain();
+	restoreContextFromRoot(structSymbol->children);
+	var fieldSymbol = findSymbol(expression->field->string);
+	popContextChain();
+	if (fieldSymbol != NULL) {
+		if (expectedType == NULL || expectedType == fieldSymbol->type) {
+			return fieldSymbol->type;
 		};
-		i = i + 1;
+		ResolverError(expression->field->pos, "struct field '", expression->field->string->string, "' is wrong type");
 	};
 	ResolverError(expression->field->pos, "struct field '", expression->field->string->string, "' not found");
 	return NULL;
