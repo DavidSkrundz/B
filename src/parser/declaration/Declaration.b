@@ -5,7 +5,7 @@ struct Declaration {
 	var attribute: Attribute*;
 	var name: Token*;
 	var declaration: Void*;
-	var resolvedType: Type*;
+	var symbol: Symbol*;
 };
 
 struct DeclarationVar {

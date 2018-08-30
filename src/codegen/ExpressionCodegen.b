@@ -1,5 +1,5 @@
-func codegenNullExpression(type: Type*) {
-	if (type->kind == .Pointer) {
+func codegenNullExpression(symbol: Symbol*) {
+	if (symbol->type->kind == .Pointer) {
 		printf((char*)"(NULL)");
 	} else {
 		ProgrammingError("called codegenNullExpression on a .Invalid");
@@ -79,15 +79,8 @@ func codegenExpressionArrow(expr: ExpressionArrow*) {
 
 func codegenExpressionDot(expression: Expression*, expr: ExpressionDot*) {
 	printf((char*)"(");
-	var i = 0;
-	while (i < Buffer_getCount((Void**)_declarations)) {
-		if (_declarations[i]->kind == .Enum) {
-			if (_declarations[i]->resolvedType == expression->resolvedType) {
-				codegenIdentifier(_declarations[i]->name->string);
-			};
-		};
-		i = i + 1;
-	};
+	var enumSymbol = findSymbolByType(expression->resolvedType);
+	codegenIdentifier(enumSymbol->name);
 	printf((char*)"_");
 	codegenIdentifier(expr->field->string);
 	printf((char*)")");

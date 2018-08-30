@@ -1,4 +1,4 @@
-func resolveDeclarationVar(declaration: DeclarationVar*, name: Token*): Type* {
+func resolveDeclarationVar(declaration: DeclarationVar*, name: Token*): Symbol* {
 	var type: Type*;
 	if (declaration->type != NULL) {
 		type = resolveTypespec(declaration->type);
@@ -12,7 +12,7 @@ func resolveDeclarationVar(declaration: DeclarationVar*, name: Token*): Type* {
 	symbol->type = type;
 	symbol->pos = name->pos;
 	registerSymbol(symbol);
-	return type;
+	return symbol;
 };
 
 func resolveDeclarationFuncArg(argument: DeclarationFuncArg*): Type* {
@@ -30,7 +30,7 @@ func resolveDeclarationFuncArgs(args: DeclarationFuncArgs*): Type** {
 	return argumentTypes;
 };
 
-func resolveDeclarationFunc(declaration: DeclarationFunc*, name: Token*): Type* {
+func resolveDeclarationFunc(declaration: DeclarationFunc*, name: Token*): Symbol* {
 	var argumentTypes = resolveDeclarationFuncArgs(declaration->args);
 	var returnType = TypeVoid;
 	if (declaration->returnType != NULL) {
@@ -52,11 +52,11 @@ func resolveDeclarationFunc(declaration: DeclarationFunc*, name: Token*): Type* 
 		var i = 0;
 		while (i < Buffer_getCount((Void**)declaration->args->args)) {
 			var argument = declaration->args->args[i];
-			symbol = Symbol_init();
-			symbol->name = argument->name->string;
-			symbol->type = argument->resolvedType;
-			symbol->pos = argument->name->pos;
-			registerSymbol(symbol);
+			var symbol2 = Symbol_init();
+			symbol2->name = argument->name->string;
+			symbol2->type = argument->resolvedType;
+			symbol2->pos = argument->name->pos;
+			registerSymbol(symbol2);
 			i = i + 1;
 		};
 		resolveStatementBlock(declaration->block, returnType);
@@ -64,10 +64,10 @@ func resolveDeclarationFunc(declaration: DeclarationFunc*, name: Token*): Type* 
 		popContext();
 	};
 	
-	return type;
+	return symbol;
 };
 
-func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Type* {
+func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Symbol* {
 	var symbol = Symbol_init();
 	symbol->type = createTypeIdentifier(name);
 	symbol->name = name->string;
@@ -86,7 +86,7 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Ty
 	symbol->children = contexts->context;
 	popContext();
 	
-	return symbol->type;
+	return symbol;
 };
 
 func resolveDeclarationEnumCase(enumCase: DeclarationEnumCase*, type: Type*) {
@@ -97,7 +97,7 @@ func resolveDeclarationEnumCase(enumCase: DeclarationEnumCase*, type: Type*) {
 	registerSymbol(symbol);
 };
 
-func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Token*): Type* {
+func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Token*): Symbol* {
 	var symbol = Symbol_init();
 	symbol->type = createTypeIdentifier(name);
 	symbol->name = name->string;
@@ -116,11 +116,11 @@ func resolveDeclarationEnum(declaration: DeclarationEnum*, name: Token*): Type* 
 	popContextChain();
 	
 	registerSymbol(symbol);
-	return symbol->type;
+	return symbol;
 };
 
-func resolveDeclaration(declaration: Declaration*) {
-	if (declaration->state == .Resolved) { return; }
+func resolveDeclaration(declaration: Declaration*): Symbol* {
+	if (declaration->state == .Resolved) { return declaration->symbol; }
 	else if (declaration->state == .Unresolved) {}
 	else if (declaration->state == .Resolving) {
 		ResolverError(declaration->pos, "cyclic dependency for '", declaration->name->string->string, "'");
@@ -132,15 +132,16 @@ func resolveDeclaration(declaration: Declaration*) {
 	
 	declaration->state = .Resolving;
 	if (declaration->kind == .Var) {
-		declaration->resolvedType = resolveDeclarationVar((DeclarationVar*)declaration->declaration, declaration->name);
+		declaration->symbol = resolveDeclarationVar((DeclarationVar*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Func) {
-		declaration->resolvedType = resolveDeclarationFunc((DeclarationFunc*)declaration->declaration, declaration->name);
+		declaration->symbol = resolveDeclarationFunc((DeclarationFunc*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Struct) {
-		declaration->resolvedType = resolveDeclarationStruct((DeclarationStruct*)declaration->declaration, declaration->name);
+		declaration->symbol = resolveDeclarationStruct((DeclarationStruct*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Enum) {
-		declaration->resolvedType = resolveDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
+		declaration->symbol = resolveDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
 	} else {
 		ProgrammingError("called resolveDeclaration on a .Invalid");
 	};;;;
 	declaration->state = .Resolved;
+	return declaration->symbol;
 };

@@ -42,12 +42,12 @@ func CodegenDeclarationDeclarations() {
 
 func codegenDeclarationVarDefinition(declaration: Declaration*, decl: DeclarationVar*) {
 	codegenLine(declaration->pos);
-	codegenType(declaration->resolvedType);
+	codegenSymbolType(declaration->symbol);
 	printf((char*)" ");
 	codegenIdentifier(declaration->name->string);
 	printf((char*)" = ");
 	if (decl->value == NULL) {
-		codegenNullExpression(declaration->resolvedType);
+		codegenNullExpression(declaration->symbol);
 	} else {
 		codegenExpression(decl->value);
 	};
@@ -75,10 +75,10 @@ func codegenDeclarationFuncArgs(args: DeclarationFuncArgs*) {
 };
 
 func codegenDeclarationFuncDefinition(declaration: Declaration*, decl: DeclarationFunc*) {
-	if (declaration->resolvedType->kind != .Function) {
+	if (declaration->symbol->type->kind != .Function) {
 		ProgrammingError("called codegenDeclarationFuncDefinition non-.Function");
 	};
-	var funcType = (TypeFunction*)declaration->resolvedType->type;
+	var funcType = (TypeFunction*)declaration->symbol->type->type;
 	codegenType(funcType->returnType);
 	printf((char*)" ");
 	codegenIdentifier(declaration->name->string);
@@ -91,7 +91,7 @@ func codegenDeclarationStructFieldDefinition(field: Declaration*) {
 		ProgrammingError("called codegenDeclarationStructFieldDefinition with non-.Var");
 	};
 	printf((char*)"\t");
-	codegenType(field->resolvedType);
+	codegenType(field->symbol->type);
 	printf((char*)" ");
 	codegenIdentifier(field->name->string);
 	printf((char*)";\n");
@@ -147,11 +147,11 @@ func CodegenDeclarationDefinitions() {
 };
 
 func codegenDeclarationFuncImplementation(declaration: Declaration*, decl: DeclarationFunc*) {
-	if (declaration->resolvedType->kind != .Function) {
+	if (declaration->symbol->type->kind != .Function) {
 		ProgrammingError("called codegenDeclarationFuncImplementation non-.Function");
 	};
 	codegenLine(declaration->pos);
-	var funcType = (TypeFunction*)declaration->resolvedType->type;
+	var funcType = (TypeFunction*)declaration->symbol->type->type;
 	codegenType(funcType->returnType);
 	printf((char*)" ");
 	codegenIdentifier(declaration->name->string);

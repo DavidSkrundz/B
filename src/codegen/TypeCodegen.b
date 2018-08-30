@@ -7,6 +7,10 @@ func codegenTypePointer(type: TypePointer*) {
 	printf((char*)"*");
 };
 
+func codegenSymbolType(symbol: Symbol*) {
+	codegenType(symbol->type);
+};
+
 func codegenType(type: Type*) {
 	if (type->kind == .Identifier) {
 		codegenTypeIdentifier((TypeIdentifier*)type->type);

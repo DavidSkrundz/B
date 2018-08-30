@@ -23,28 +23,15 @@ func resolveExpressionOffsetof(expression: ExpressionOffsetof*, expectedType: Ty
 		ResolverError(expression->type->pos, "not expecting UInt result from offsetof operator", "", "");
 	};
 	var structType = resolveTypespec(expression->type);
-	var structDeclaration: DeclarationStruct*;
-	var i = 0;
-	while (i < Buffer_getCount((Void**)_declarations)) {
-		if (_declarations[i]->kind == .Struct) {
-			if (_declarations[i]->resolvedType == structType) {
-				structDeclaration = (DeclarationStruct*)_declarations[i]->declaration;
-			};
-		};
-		i = i + 1;
+	var structSymbol = findSymbolByType(structType);
+	if (structSymbol == NULL) {
+		ResolverError(expression->type->pos, "unknown type", "", "");
 	};
-	if (structDeclaration == NULL) {
-		ResolverError(expression->type->pos, "unable to get the offset of a non-struct", "", "");
-	};
-	i = 0;
-	while (i < Buffer_getCount((Void**)structDeclaration->fields)) {
-		var name = structDeclaration->fields[i]->name;
-		if (name->string == expression->field->string) {
-			expression->resolvedType = structDeclaration->fields[i]->resolvedType;
-		};
-		i = i + 1;
-	};
-	if (expression->resolvedType == NULL) {
+	pushContextChain();
+	restoreContextFromRoot(structSymbol->children);
+	var fieldSymbol = findSymbol(expression->field->string);
+	popContextChain();
+	if (fieldSymbol == NULL) {
 		ResolverError(expression->field->pos, "struct field '", expression->field->string->string, "' not found");
 	};
 	expression->resolvedType = structType;
