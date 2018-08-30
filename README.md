@@ -76,3 +76,4 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 - Line comments
 - Block comments (with nesting)
 - Improve VSCode plugin with compile/debug/autocompletion features
+- When `make test` fails to compile running it again gives a different, irrelevant error
