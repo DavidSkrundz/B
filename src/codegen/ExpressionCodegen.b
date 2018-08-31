@@ -50,6 +50,11 @@ func codegenExpressionFunctionCall(expr: ExpressionFunctionCall*) {
 	printf((char*)"(");
 	codegenExpression(expr->function);
 	printf((char*)"(");
+	if (expr->function->kind == .Arrow) {
+		var arrow = (ExpressionArrow*)expr->function->expression;
+		codegenExpression(arrow->base);
+		if (Buffer_getCount((Void**)expr->arguments) > 0) { printf((char*)", "); };
+	};
 	var i = 0;
 	while (i < Buffer_getCount((Void**)expr->arguments)) {
 		codegenExpression(expr->arguments[i]);
@@ -69,12 +74,27 @@ func codegenExpressionSubscript(expr: ExpressionSubscript*) {
 	printf((char*)")");
 };
 
-func codegenExpressionArrow(expr: ExpressionArrow*) {
-	printf((char*)"(");
-	codegenExpression(expr->base);
-	printf((char*)"->");
-	codegenIdentifier(expr->field->string);
-	printf((char*)")");
+func codegenExpressionArrow(expression: Expression*, expr: ExpressionArrow*) {
+	if (expression->resolvedType->kind != .Function) {
+		printf((char*)"(");
+		codegenExpression(expr->base);
+		printf((char*)"->");
+		codegenIdentifier(expr->field->string);
+		printf((char*)")");
+	} else {
+		var pointerType = expr->base->resolvedType;
+		var baseType = getPointerBase(pointerType);
+		var structSymbol = findSymbolByType(baseType);
+		
+		pushContextChain();
+		restoreContextFromRoot(structSymbol->children);
+		var fieldSymbol = findSymbol(expr->field->string);
+		popContextChain();
+		
+		codegenIdentifier(fieldSymbol->parent->name);
+		printf((char*)"_");
+		codegenIdentifier(expr->field->string);
+	};
 };
 
 func codegenExpressionDot(expression: Expression*, expr: ExpressionDot*) {
@@ -161,7 +181,7 @@ func codegenExpression(expression: Expression*) {
 	} else if (expression->kind == .Subscript) {
 		codegenExpressionSubscript((ExpressionSubscript*)expression->expression);
 	} else if (expression->kind == .Arrow) {
-		codegenExpressionArrow((ExpressionArrow*)expression->expression);
+		codegenExpressionArrow(expression, (ExpressionArrow*)expression->expression);
 	} else if (expression->kind == .Dot) {
 		codegenExpressionDot(expression, (ExpressionDot*)expression->expression);
 	} else if (expression->kind == .PrefixOperator) {

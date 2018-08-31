@@ -1,4 +1,5 @@
 struct Symbol {
+	var parent: Symbol*;
 	var children: Context*;
 	
 	var name: String*;

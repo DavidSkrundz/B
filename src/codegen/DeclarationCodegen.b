@@ -4,6 +4,15 @@ func codegenDeclarationStructDeclaration(declaration: Declaration*) {
 	printf((char*)" ");
 	codegenIdentifier(declaration->name->string);
 	printf((char*)";\n");
+	
+	var decl = (DeclarationStruct*)declaration->declaration;
+	if (decl->functions != NULL) {
+		var i = 0;
+		while (i < Buffer_getCount((Void**)decl->functions)) {
+			codegenDeclarationFuncDefinition(decl->functions[i], (DeclarationFunc*)decl->functions[i]->declaration);
+			i = i + 1;
+		};
+	};
 };
 
 func codegenDeclarationEnumDeclaration(declaration: Declaration*, decl: DeclarationEnum*) {
@@ -81,6 +90,10 @@ func codegenDeclarationFuncDefinition(declaration: Declaration*, decl: Declarati
 	var funcType = (TypeFunction*)declaration->symbol->type->type;
 	codegenType(funcType->returnType);
 	printf((char*)" ");
+	if (declaration->symbol->parent != NULL) {
+		codegenIdentifier(declaration->symbol->parent->name);
+		printf((char*)"_");
+	};
 	codegenIdentifier(declaration->name->string);
 	codegenDeclarationFuncArgs(decl->args);
 	printf((char*)";\n");
@@ -154,11 +167,25 @@ func codegenDeclarationFuncImplementation(declaration: Declaration*, decl: Decla
 	var funcType = (TypeFunction*)declaration->symbol->type->type;
 	codegenType(funcType->returnType);
 	printf((char*)" ");
+	if (declaration->symbol->parent != NULL) {
+		codegenIdentifier(declaration->symbol->parent->name);
+		printf((char*)"_");
+	};
 	codegenIdentifier(declaration->name->string);
 	codegenDeclarationFuncArgs(decl->args);
 	printf((char*)" ");
 	codegenStatementBlock(decl->block);
 	printf((char*)"\n\n");
+};
+
+func codegenDeclarationStructImplementation(decl: DeclarationStruct*) {
+	if (decl->functions != NULL) {
+		var i = 0;
+		while (i < Buffer_getCount((Void**)decl->functions)) {
+			codegenDeclarationFuncImplementation(decl->functions[i], (DeclarationFunc*)decl->functions[i]->declaration);
+			i = i + 1;
+		};
+	};
 };
 
 func codegenDeclarationImplementation(declaration: Declaration*) {
@@ -168,6 +195,7 @@ func codegenDeclarationImplementation(declaration: Declaration*) {
 	} else if (declaration->kind == .Func) {
 		codegenDeclarationFuncImplementation(declaration, (DeclarationFunc*)declaration->declaration);
 	} else if (declaration->kind == .Struct) {
+		codegenDeclarationStructImplementation((DeclarationStruct*)declaration->declaration);
 	} else if (declaration->kind == .Enum) {
 	} else {
 		ProgrammingError("called codegenDeclarationImplementation on a .Invalid");

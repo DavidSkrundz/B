@@ -33,6 +33,7 @@ struct DeclarationFunc {
 
 struct DeclarationStruct {
 	var fields: Declaration**;
+	var functions: Declaration**;
 };
 
 struct DeclarationEnumCase {

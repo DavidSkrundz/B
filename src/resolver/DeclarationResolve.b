@@ -76,6 +76,7 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Sy
 	registerSymbol(symbol);
 	
 	pushContext();
+	symbol->children = contexts->context;
 	if (declaration->fields != NULL) {
 		var i = 0;
 		while (i < Buffer_getCount((Void**)declaration->fields)) {
@@ -83,7 +84,14 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Sy
 			i = i + 1;
 		};
 	};
-	symbol->children = contexts->context;
+	if (declaration->functions != NULL) {
+		var i = 0;
+		while (i < Buffer_getCount((Void**)declaration->functions)) {
+			var funcSymbol = resolveDeclaration(declaration->functions[i]);
+			funcSymbol->parent = symbol;
+			i = i + 1;
+		};
+	};
 	popContext();
 	
 	return symbol;

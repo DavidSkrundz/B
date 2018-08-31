@@ -67,9 +67,14 @@ func expectDeclarationStruct(declaration: Declaration*): DeclarationStruct* {
 	var decl = newDeclarationStruct();
 	if (checkToken(.OpenCurly)) {
 		while (isToken(.CloseCurly) == false) {
-			var varDecl = expectDeclaration();
-			if (varDecl->kind != .Var) { ParserErrorTmp("expecting var declaration"); };
-			Buffer_append((Void***)&decl->fields, (Void*)varDecl);
+			var subDecl = expectDeclaration();
+			if (subDecl->kind == .Var) {
+				Buffer_append((Void***)&decl->fields, (Void*)subDecl);
+			} else if (subDecl->kind == .Func) {
+				Buffer_append((Void***)&decl->functions, (Void*)subDecl);
+			} else {
+				ParserErrorTmp("expecting var or func declaration");
+			};;
 		};
 		expectToken(.CloseCurly);
 	};

@@ -93,6 +93,22 @@ func printDeclarationStruct(declaration: DeclarationStruct*, name: Token*) {
 		printf((char*)")");
 		printf((char*)"\n");
 	};
+	if (declaration->functions != NULL) {
+		printDepth();
+		printf((char*)"(functions\n");
+		depth = depth + 1;
+		var i = 0;
+		while (i < Buffer_getCount((Void**)declaration->functions)) {
+			printDepth();
+			printDeclaration(declaration->functions[i]);
+			printf((char*)"\n");
+			i = i + 1;
+		};
+		depth = depth - 1;
+		printDepth();
+		printf((char*)")");
+		printf((char*)"\n");
+	};
 	depth = depth - 1;
 	printDepth();
 	printf((char*)")");

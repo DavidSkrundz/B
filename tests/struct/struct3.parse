@@ -1,0 +1,54 @@
+(struct
+ (identifier S)
+ (fields
+  (var (identifier a) (type (identifier UInt)))
+ )
+ (functions
+  (func (identifier setA) ()
+   (arguments
+    ((identifier self) (type (pointer (identifier S))))
+    ((identifier newA) (type (identifier UInt)))
+   )
+   (block
+    (assign
+     (->
+      (identifier self)
+      (identifier a)
+     )
+     (identifier newA)
+     )
+   )
+  )
+  (func (identifier getA) (type (identifier UInt))
+   (arguments
+    ((identifier self) (type (pointer (identifier S))))
+   )
+   (block
+    (return (->
+     (identifier self)
+     (identifier a)
+    ))
+   )
+  )
+ )
+)
+
+(func (identifier test) ()
+ (arguments
+ )
+ (block
+  (var (identifier s) (type (pointer (identifier S))))
+  (call (->
+    (identifier s)
+    (identifier setA)
+   )
+   (integer 4)
+  )
+  (call (->
+    (identifier s)
+    (identifier getA)
+   )
+  )
+ )
+)
+
