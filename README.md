@@ -44,9 +44,7 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 
 ## Things to do
 
-- Add associated functions to structs (similar to fields, looked up with symbols)
 - Add associated functions to enums (similar to values, looked up with symbols)
-
 - Rewrite `resolveExpressionDot` to handle `Enum.Case`, `Struct.Field`, and `struct.field`
 - `resolveExpressionArrow` should dereference the value then call `resolveExpressionArrow`
 
