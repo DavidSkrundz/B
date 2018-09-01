@@ -14,6 +14,7 @@
 <structDeclaration> ::= `struct' <identifier> `{' <structField>* `}' `;'
 
 <structField> ::= `var' <identifier> `:' <type>`;'
+\alt <funcDeclaration>
 
 <funcDeclaration> ::= `func' <identifier> `(' <funcArgumentList>? `)' ( `:' <type> )? <statementBlock>? `;'
 
