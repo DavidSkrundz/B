@@ -82,7 +82,7 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Sy
 	selfSymbol->name = String_init_literal("self");
 	selfSymbol->type = resolveTypePointer(symbol->type);
 	selfSymbol->pos = symbol->pos;
-	Symbol_use(selfSymbol);
+	selfSymbol->use();
 	registerSymbol(selfSymbol);
 	
 	if (declaration->fields != NULL) {
