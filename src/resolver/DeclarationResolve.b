@@ -77,6 +77,14 @@ func resolveDeclarationStruct(declaration: DeclarationStruct*, name: Token*): Sy
 	
 	pushContext();
 	symbol->children = contexts->context;
+	
+	var selfSymbol = Symbol_init();
+	selfSymbol->name = String_init_literal("self");
+	selfSymbol->type = resolveTypePointer(symbol->type);
+	selfSymbol->pos = symbol->pos;
+	Symbol_use(selfSymbol);
+	registerSymbol(selfSymbol);
+	
 	if (declaration->fields != NULL) {
 		var i = 0;
 		while (i < Buffer_getCount((Void**)declaration->fields)) {

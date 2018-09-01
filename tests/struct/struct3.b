@@ -1,11 +1,11 @@
 struct S {
 	var a: UInt;
 	
-	func setA(self: S*, newA: UInt) {
+	func setA(newA: UInt) {
 		self->a = newA;
 	};
 	
-	func getA(self: S*): UInt {
+	func getA(): UInt {
 		return self->a;
 	};
 };

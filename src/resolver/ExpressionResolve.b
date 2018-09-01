@@ -69,25 +69,20 @@ func resolveExpressionFunctionCall(expression: ExpressionFunctionCall*, expected
 		ResolverError(expression->function->pos, "function call returns wrong type", "", "");
 	};
 	
-	var offset = 0;
-	if (expression->function->kind == .Arrow) {
-		offset = 1;
-	};
-	
-	var requiredArgumentCount = Buffer_getCount((Void**)funcType->argumentTypes) - offset;
+	var requiredArgumentCount = Buffer_getCount((Void**)funcType->argumentTypes);
 	if (Buffer_getCount((Void**)expression->arguments) < requiredArgumentCount) {
 		ResolverError(expression->function->pos, "not enough arguments in function call", "", "");
 	};
 	if (requiredArgumentCount < Buffer_getCount((Void**)expression->arguments) && funcType->isVariadic == false) {
 		ResolverError(expression->function->pos, "too many arguments in function call", "", "");
 	};
-	var i = offset;
+	var i = 0;
 	while (i < Buffer_getCount((Void**)funcType->argumentTypes)) {
-		resolveExpression(expression->arguments[i - offset], funcType->argumentTypes[i]);
+		resolveExpression(expression->arguments[i], funcType->argumentTypes[i]);
 		i = i + 1;
 	};
 	while (i < Buffer_getCount((Void**)expression->arguments)) {
-		resolveExpression(expression->arguments[i - offset], NULL);
+		resolveExpression(expression->arguments[i], NULL);
 		i = i + 1;
 	};
 	

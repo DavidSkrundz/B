@@ -69,11 +69,15 @@ func codegenDeclarationFuncArg(argument: DeclarationFuncArg*) {
 	codegenIdentifier(argument->name->string);
 };
 
-func codegenDeclarationFuncArgs(args: DeclarationFuncArgs*) {
+func codegenDeclarationFuncArgs(args: DeclarationFuncArgs*, associatedSymbol: Symbol*) {
 	printf((char*)"(");
-	if (Buffer_getCount((Void**)args->args) == 0) {
+	if (associatedSymbol != NULL) {
+		codegenIdentifier(associatedSymbol->name);
+		printf((char*)"* self");
+		if (Buffer_getCount((Void**)args->args) > 0) { printf((char*)", "); };
+	} else if (Buffer_getCount((Void**)args->args) == 0) {
 		printf((char*)"void");
-	};
+	};;
 	var i = 0;
 	while (i < Buffer_getCount((Void**)args->args)) {
 		codegenDeclarationFuncArg(args->args[i]);
@@ -95,7 +99,7 @@ func codegenDeclarationFuncDefinition(declaration: Declaration*, decl: Declarati
 		printf((char*)"_");
 	};
 	codegenIdentifier(declaration->name->string);
-	codegenDeclarationFuncArgs(decl->args);
+	codegenDeclarationFuncArgs(decl->args, declaration->symbol->parent);
 	printf((char*)";\n");
 };
 
@@ -172,7 +176,7 @@ func codegenDeclarationFuncImplementation(declaration: Declaration*, decl: Decla
 		printf((char*)"_");
 	};
 	codegenIdentifier(declaration->name->string);
-	codegenDeclarationFuncArgs(decl->args);
+	codegenDeclarationFuncArgs(decl->args, declaration->symbol->parent);
 	printf((char*)" ");
 	codegenStatementBlock(decl->block);
 	printf((char*)"\n\n");

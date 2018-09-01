@@ -6,7 +6,6 @@
  (functions
   (func (identifier setA) ()
    (arguments
-    ((identifier self) (type (pointer (identifier S))))
     ((identifier newA) (type (identifier UInt)))
    )
    (block
@@ -21,7 +20,6 @@
   )
   (func (identifier getA) (type (identifier UInt))
    (arguments
-    ((identifier self) (type (pointer (identifier S))))
    )
    (block
     (return (->
