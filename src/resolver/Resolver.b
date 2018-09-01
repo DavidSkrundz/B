@@ -21,7 +21,7 @@ func Resolve() {
 	while (i < Buffer_getCount((Void**)contexts->context->symbols)) {
 		var symbol = contexts->context->symbols[i];
 		if (symbol->name == mainString && symbol->type->kind == .Function) {
-			symbol->use();
+			Symbol_use(symbol);
 		};
 		i = i + 1;
 	};
@@ -32,7 +32,7 @@ func warnUnusedVariables() {
 	var i = 0;
 	while (i < Buffer_getCount((Void**)contexts->context->symbols)) {
 		var symbol = contexts->context->symbols[i];
-		if (symbol->isUnused()) {
+		if (Symbol_unused(symbol)) {
 			ResolverWarning2(symbol->pos, "unused symbol '", symbol->name->string, "'");
 		};
 		if (symbol->isType && symbol->children != NULL) {

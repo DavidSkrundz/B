@@ -53,7 +53,7 @@ func findSymbolByType(type: Type*): Symbol* {
 		while (i < Buffer_getCount((Void**)currentContext->symbols)) {
 			if (currentContext->symbols[i]->type == type && currentContext->symbols[i]->isType) {
 				var sym = currentContext->symbols[i];
-				sym->use();
+				Symbol_use(sym);
 				return sym;
 			};
 			i = i + 1;
@@ -70,7 +70,7 @@ func findSymbol(name: String*): Symbol* {
 		while (i < Buffer_getCount((Void**)currentContext->symbols)) {
 			if (currentContext->symbols[i]->name == name) {
 				var sym = currentContext->symbols[i];
-				sym->use();
+				Symbol_use(sym);
 				return sym;
 			};
 			i = i + 1;
@@ -83,7 +83,7 @@ func findSymbol(name: String*): Symbol* {
 func resolveSymbol(name: String*): Symbol* {
 	var symbol = findSymbol(name);
 	if (symbol != NULL) {
-		symbol->use();
+		Symbol_use(symbol);
 		return symbol;
 	};
 	var i = 0;
