@@ -1,7 +1,6 @@
 func parseIdentifier(): Token* {
 	var token = *_tokens;
-	if (checkToken(.Identifier)) { return token; };
-	return NULL;
+	return checkToken(.Identifier) ? token : NULL;
 };
 
 func expectIdentifier(): Token* {
