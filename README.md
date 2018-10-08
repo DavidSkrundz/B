@@ -75,3 +75,4 @@ make install  # Copy build/bc to bin/bc (if the tests pass)
 - Block comments (with nesting)
 - Improve VSCode plugin with compile/debug/autocompletion features
 - When `make test` fails to compile running it again gives a different, irrelevant error
+- [advanced] Remove all keywords and define generic concepts such as `conditional` and `loop`, and implement some way to define keywords at compile-time where custom code can be run to interact with the ast during parsing and resolving
