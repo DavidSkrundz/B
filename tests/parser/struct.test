@@ -1,0 +1,30 @@
+(struct
+ (identifier Value)
+ (fields
+  (var (identifier value) (type (identifier UInt)))
+ )
+ (functions
+  (func (identifier getSet) (type (identifier UInt))
+   (arguments
+    ((identifier newValue) (type (identifier UInt)))
+   )
+   (block
+    (var (identifier tmp) (expression
+      (->
+       (identifier self)
+       (identifier value)
+      )
+    ))
+    (assign
+     (->
+      (identifier self)
+      (identifier value)
+     )
+     (identifier newValue)
+     )
+    (return (identifier tmp))
+   )
+  )
+ )
+)
+

@@ -1,8 +1,0 @@
-(func (identifier main) ()
- (arguments
-  ((identifier a) (type (identifier Int)))
- )
- (block
- )
-)
-

@@ -1,1 +1,5 @@
-*.gen
+*.lex
+*.parse
+*.resolve
+*.codegen
+*.run

@@ -1,9 +1,0 @@
-tests/struct/struct2.b:1:8: warning: unused symbol 'MyStruct'
-struct MyStruct {
-       ^
-tests/struct/struct2.b:2:6: warning: unused symbol 'a'
-	var a: Int;
-	    ^
-tests/struct/struct2.b:3:6: warning: unused symbol 'b'
-	var b: Bool;
-	    ^

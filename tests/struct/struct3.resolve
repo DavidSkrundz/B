@@ -1,3 +1,0 @@
-tests/struct/struct3.b:13:6: warning: unused symbol 'test'
-func test() {
-     ^

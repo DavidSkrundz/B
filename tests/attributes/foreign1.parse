@@ -1,9 +1,0 @@
-@foreign(c)
-(struct
- (identifier char)
-)
-
-(var (identifier c) (type (identifier char)) (expression
-  (cast (type (identifier char)) (integer 0))
-))
-

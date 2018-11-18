@@ -1,0 +1,1 @@
+@foreign(c) struct char;

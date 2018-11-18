@@ -1,8 +1,0 @@
-(func (identifier main) (type (identifier UInt))
- (arguments
- )
- (block
-  (return (integer 0))
- )
-)
-

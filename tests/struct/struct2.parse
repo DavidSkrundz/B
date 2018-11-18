@@ -1,8 +1,0 @@
-(struct
- (identifier MyStruct)
- (fields
-  (var (identifier a) (type (identifier Int)))
-  (var (identifier b) (type (identifier Bool)))
- )
-)
-

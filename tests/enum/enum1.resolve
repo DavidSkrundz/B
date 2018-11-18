@@ -1,6 +1,0 @@
-tests/enum/enum1.b:6:5: warning: unused symbol 'a'
-var a = ExitStatus.Success;
-    ^
-tests/enum/enum1.b:7:5: warning: unused symbol 'b'
-var b: ExitStatus = .Failure;
-    ^

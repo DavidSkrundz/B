@@ -73,7 +73,7 @@ $(BC): $(BC_NEW) | $(BIN_DIR)
 	@diff -q $(STAGE2_C) $(BC_C) >/dev/null || (echo "Stage 3 c codegen failed" && exit 1)
 	@cp $< $@
 
-clean:
-	@$(RM) -r $(BUILD_DIR)
+clean::
+	@$(RM) -rf $(BUILD_DIR)
 
 include $(TOPDIR)/Make.test

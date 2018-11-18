@@ -1,0 +1,3 @@
+tests/resolver/shadow.b:4:7: warning: symbol 'a' shadows symbol at tests/resolver/shadow.b:2:6
+		var a = 2;
+		    ^
