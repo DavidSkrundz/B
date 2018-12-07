@@ -8,7 +8,7 @@ struct TypeIdentifier {
 };
 
 func TypeIdentifier_init(name: String*): TypeIdentifier* {
-	var type = (TypeIdentifier*)xcalloc(1, sizeof(TypeIdentifier));
+	var type = (TypeIdentifier*)Calloc(1, sizeof(TypeIdentifier));
 	type->name = name;
 	return type;
 };
@@ -18,7 +18,7 @@ struct TypePointer {
 };
 
 func TypePointer_init(base: Type*): TypePointer* {
-	var type = (TypePointer*)xcalloc(1, sizeof(TypePointer));
+	var type = (TypePointer*)Calloc(1, sizeof(TypePointer));
 	type->base = base;
 	return type;
 };
@@ -30,9 +30,9 @@ struct TypeFunction {
 };
 
 func newType(): Type* {
-	return (Type*)xcalloc(1, sizeof(Type));
+	return (Type*)Calloc(1, sizeof(Type));
 };
 
 func newTypeFunction(): TypeFunction* {
-	return (TypeFunction*)xcalloc(1, sizeof(TypeFunction));
+	return (TypeFunction*)Calloc(1, sizeof(TypeFunction));
 };

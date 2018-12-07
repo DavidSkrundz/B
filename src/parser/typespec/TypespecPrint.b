@@ -6,7 +6,7 @@ func printTypespec(typespec: Typespec*) {
 		printTypespecIdentifier((TypespecIdentifier*)typespec->spec);
 	} else {
 		fprintf(stderr, (char*)"Invalid typespec kind %u\n", typespec->kind);
-		abort();
+		Abort();
 	};;
 	printf((char*)")");
 };
@@ -19,10 +19,10 @@ func printTypespecPointer(typespec: TypespecPointer*) {
 		printTypespecIdentifier((TypespecIdentifier*)typespec->base->spec);
 	} else if (typespec->base->kind == .Invalid) {
 		fprintf(stderr, (char*)"Invalid typespec kind %u\n", typespec->base->kind);
-		abort();
+		Abort();
 	} else {
 		fprintf(stderr, (char*)"Invalid typespec kind %u\n", typespec->base->kind);
-		abort();
+		Abort();
 	};;;
 	printf((char*)")");
 };

@@ -153,10 +153,10 @@ func printDeclaration(declaration: Declaration*) {
 		printDeclarationEnum((DeclarationEnum*)declaration->declaration, declaration->name);
 	} else if (declaration->kind == .Invalid) {
 		fprintf(stderr, (char*)"Invalid declaration kind %u\n", declaration->kind);
-		abort();
+		Abort();
 	} else {
 		fprintf(stderr, (char*)"Invalid declaration kind %u\n", declaration->kind);
-		abort();
+		Abort();
 	};;;;;
 };
 

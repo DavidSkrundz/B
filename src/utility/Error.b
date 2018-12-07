@@ -59,7 +59,7 @@ func ResolverError(pos: SrcPos*, message1: UInt8*, message2: UInt8*, message3: U
 
 func ProgrammingError(message: UInt8*) {
 	fprintf(stderr, (char*)"Programming Error: %s\n", message);
-	abort();
+	Abort();
 };
 
 func _printUpToNewline(string: UInt8*) {

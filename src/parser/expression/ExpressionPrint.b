@@ -202,9 +202,9 @@ func printExpression(expression: Expression*) {
 		printExpressionStringLiteral((ExpressionStringLiteral*)expression->expression);
 	} else if (expression->kind == .Invalid) {
 		fprintf(stderr, (char*)"Invalid expression kind %u\n", expression->kind);
-		abort();
+		Abort();
 	} else {
 		fprintf(stderr, (char*)"Invalid expression kind %u\n", expression->kind);
-		abort();
+		Abort();
 	};;;;;;;;;;;;;;;;;;;;
 };

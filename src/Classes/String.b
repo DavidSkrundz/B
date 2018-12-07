@@ -18,7 +18,7 @@ func String_init(str: UInt8*, length: UInt): String* {
 		};
 		i = i + 1;
 	};
-	var s = (String*)xcalloc(1, sizeof(String));
+	var s = (String*)Calloc(1, sizeof(String));
 	s->length = length;
 	s->string = StringDuplicate(str, length);
 	Buffer_append((Void***)&_string_interns, (Void*)s);

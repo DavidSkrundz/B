@@ -197,7 +197,7 @@ func lexStringLiteral() {
 	var i = 0;
 	while (_code[i] != '"' && isprint(_code[i])) { i = i + 1; };
 	if (_code[i] != '"') { LexerError(); };
-	var string = (UInt8*)xcalloc(i, sizeof(UInt8));
+	var string = (UInt8*)Calloc(i, sizeof(UInt8));
 	i = 0;
 	while (*_code != '"' && isprint(*_code)) {
 		if (*_code == '\\') {

@@ -20,6 +20,6 @@ struct Symbol {
 };
 
 func Symbol_init(): Symbol* {
-	return (Symbol*)xcalloc(1, sizeof(Symbol));
+	return (Symbol*)Calloc(1, sizeof(Symbol));
 };
 

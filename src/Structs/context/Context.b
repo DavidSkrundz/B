@@ -4,7 +4,7 @@ struct Context {
 };
 
 func newContext(): Context* {
-	return (Context*)xcalloc(1, sizeof(Context));
+	return (Context*)Calloc(1, sizeof(Context));
 };
 
 func pushContext() {

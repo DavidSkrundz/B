@@ -87,75 +87,75 @@ struct ExpressionStringLiteral {
 };
 
 func newExpression(): Expression* {
-	return (Expression*)xcalloc(1, sizeof(Expression));
+	return (Expression*)Calloc(1, sizeof(Expression));
 };
 
 func newExpressionCast(): ExpressionCast* {
-	return (ExpressionCast*)xcalloc(1, sizeof(ExpressionCast));
+	return (ExpressionCast*)Calloc(1, sizeof(ExpressionCast));
 };
 
 func newExpressionSizeof(): ExpressionSizeof* {
-	return (ExpressionSizeof*)xcalloc(1, sizeof(ExpressionSizeof));
+	return (ExpressionSizeof*)Calloc(1, sizeof(ExpressionSizeof));
 };
 
 func newExpressionOffsetof(): ExpressionOffsetof* {
-	return (ExpressionOffsetof*)xcalloc(1, sizeof(ExpressionOffsetof));
+	return (ExpressionOffsetof*)Calloc(1, sizeof(ExpressionOffsetof));
 };
 
 func newExpressionDereference(): ExpressionDereference* {
-	return (ExpressionDereference*)xcalloc(1, sizeof(ExpressionDereference));
+	return (ExpressionDereference*)Calloc(1, sizeof(ExpressionDereference));
 };
 
 func newExpressionReference(): ExpressionReference* {
-	return (ExpressionReference*)xcalloc(1, sizeof(ExpressionReference));
+	return (ExpressionReference*)Calloc(1, sizeof(ExpressionReference));
 };
 
 func newExpressionFunctionCall(): ExpressionFunctionCall* {
-	return (ExpressionFunctionCall*)xcalloc(1, sizeof(ExpressionFunctionCall));
+	return (ExpressionFunctionCall*)Calloc(1, sizeof(ExpressionFunctionCall));
 };
 
 func newExpressionSubscript(): ExpressionSubscript* {
-	return (ExpressionSubscript*)xcalloc(1, sizeof(ExpressionSubscript));
+	return (ExpressionSubscript*)Calloc(1, sizeof(ExpressionSubscript));
 };
 
 func newExpressionArrow(field: Token*): ExpressionArrow* {
-	var expression = (ExpressionArrow*)xcalloc(1, sizeof(ExpressionArrow));
+	var expression = (ExpressionArrow*)Calloc(1, sizeof(ExpressionArrow));
 	expression->field = field;
 	return expression;
 };
 
 func newExpressionDot(): ExpressionDot* {
-	return (ExpressionDot*)xcalloc(1, sizeof(ExpressionDot));
+	return (ExpressionDot*)Calloc(1, sizeof(ExpressionDot));
 };
 
 func newExpressionPrefix(): ExpressionPrefix* {
-	return (ExpressionPrefix*)xcalloc(1, sizeof(ExpressionPrefix));
+	return (ExpressionPrefix*)Calloc(1, sizeof(ExpressionPrefix));
 };
 
 func newExpressionInfixOperator(): ExpressionInfix* {
-	return (ExpressionInfix*)xcalloc(1, sizeof(ExpressionInfix));
+	return (ExpressionInfix*)Calloc(1, sizeof(ExpressionInfix));
 };
 
 func newExpressionTernary(): ExpressionTernary* {
-	return (ExpressionTernary*)xcalloc(1, sizeof(ExpressionTernary));
+	return (ExpressionTernary*)Calloc(1, sizeof(ExpressionTernary));
 };
 
 func newExpressionIdentifier(): ExpressionIdentifier* {
-	return (ExpressionIdentifier*)xcalloc(1, sizeof(ExpressionIdentifier));
+	return (ExpressionIdentifier*)Calloc(1, sizeof(ExpressionIdentifier));
 };
 
 func newExpressionBooleanLiteral(): ExpressionBooleanLiteral* {
-	return (ExpressionBooleanLiteral*)xcalloc(1, sizeof(ExpressionBooleanLiteral));
+	return (ExpressionBooleanLiteral*)Calloc(1, sizeof(ExpressionBooleanLiteral));
 };
 
 func newExpressionIntegerLiteral(): ExpressionIntegerLiteral* {
-	return (ExpressionIntegerLiteral*)xcalloc(1, sizeof(ExpressionIntegerLiteral));
+	return (ExpressionIntegerLiteral*)Calloc(1, sizeof(ExpressionIntegerLiteral));
 };
 
 func newExpressionCharacterLiteral(): ExpressionCharacterLiteral* {
-	return (ExpressionCharacterLiteral*)xcalloc(1, sizeof(ExpressionCharacterLiteral));
+	return (ExpressionCharacterLiteral*)Calloc(1, sizeof(ExpressionCharacterLiteral));
 };
 
 func newExpressionStringLiteral(): ExpressionStringLiteral* {
-	return (ExpressionStringLiteral*)xcalloc(1, sizeof(ExpressionStringLiteral));
+	return (ExpressionStringLiteral*)Calloc(1, sizeof(ExpressionStringLiteral));
 };

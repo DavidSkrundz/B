@@ -6,7 +6,7 @@ struct Buffer {
 
 func _Buffer_get(list: Void***): Buffer* {
 	if (*list == NULL) {
-		var buffer = (Buffer*)xcalloc(1, sizeof(Buffer));
+		var buffer = (Buffer*)Calloc(1, sizeof(Buffer));
 		buffer->capacity = 1;
 		*list = &buffer->elements;
 		return buffer;
@@ -18,7 +18,7 @@ func Buffer_append(list: Void***, element: Void*) {
 	var buffer = _Buffer_get(list);
 	if (buffer->count == buffer->capacity) {
 		buffer->capacity = buffer->capacity * 2;
-		buffer = (Buffer*)xrealloc((Void*)buffer, sizeof(Buffer) + buffer->capacity * sizeof(Void*));
+		buffer = (Buffer*)Realloc((Void*)buffer, sizeof(Buffer) + buffer->capacity * sizeof(Void*));
 		*list = &buffer->elements;
 	};
 	(*list)[buffer->count] = element;

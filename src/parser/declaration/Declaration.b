@@ -45,33 +45,33 @@ struct DeclarationEnum {
 };
 
 func newDeclaration(): Declaration* {
-	return (Declaration*)xcalloc(1, sizeof(Declaration));
+	return (Declaration*)Calloc(1, sizeof(Declaration));
 };
 
 func newDeclarationVar(): DeclarationVar* {
-	return (DeclarationVar*)xcalloc(1, sizeof(DeclarationVar));
+	return (DeclarationVar*)Calloc(1, sizeof(DeclarationVar));
 };
 
 func newDeclarationFuncArg(): DeclarationFuncArg* {
-	return (DeclarationFuncArg*)xcalloc(1, sizeof(DeclarationFuncArg));
+	return (DeclarationFuncArg*)Calloc(1, sizeof(DeclarationFuncArg));
 };
 
 func newDeclarationFuncArgs(): DeclarationFuncArgs* {
-	return (DeclarationFuncArgs*)xcalloc(1, sizeof(DeclarationFuncArgs));
+	return (DeclarationFuncArgs*)Calloc(1, sizeof(DeclarationFuncArgs));
 };
 
 func newDeclarationFunc(): DeclarationFunc* {
-	return (DeclarationFunc*)xcalloc(1, sizeof(DeclarationFunc));
+	return (DeclarationFunc*)Calloc(1, sizeof(DeclarationFunc));
 };
 
 func newDeclarationStruct(): DeclarationStruct* {
-	return (DeclarationStruct*)xcalloc(1, sizeof(DeclarationStruct));
+	return (DeclarationStruct*)Calloc(1, sizeof(DeclarationStruct));
 };
 
 func newDeclarationEnumCase(): DeclarationEnumCase* {
-	return (DeclarationEnumCase*)xcalloc(1, sizeof(DeclarationEnumCase));
+	return (DeclarationEnumCase*)Calloc(1, sizeof(DeclarationEnumCase));
 };
 
 func newDeclarationEnum(): DeclarationEnum* {
-	return (DeclarationEnum*)xcalloc(1, sizeof(DeclarationEnum));
+	return (DeclarationEnum*)Calloc(1, sizeof(DeclarationEnum));
 };

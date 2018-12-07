@@ -4,7 +4,7 @@ struct ContextChain {
 };
 
 func newContextChain(): ContextChain* {
-	return (ContextChain*)xcalloc(1, sizeof(ContextChain));
+	return (ContextChain*)Calloc(1, sizeof(ContextChain));
 };
 
 var contexts: ContextChain*;

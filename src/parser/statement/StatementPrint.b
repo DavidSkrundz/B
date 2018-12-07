@@ -77,10 +77,10 @@ func printStatement(statement: Statement*) {
 		printStatementReturn((StatementReturn*)statement->statement);
 	} else if (statement->kind == .Invalid) {
 		fprintf(stderr, (char*)"Invalid statement kind %u\n", statement->kind);
-		abort();
+		Abort();
 	} else {
 		fprintf(stderr, (char*)"Invalid statement kind %u\n", statement->kind);
-		abort();
+		Abort();
 	};;;;;;;;
 };
 

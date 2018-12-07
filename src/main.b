@@ -17,7 +17,7 @@ func main(argc: int, argv: char**): int {
 	} else if (argv[1][1] == (char)'g') {
 		flags = (UInt8)(1 << 3);
 	} else { printUsage(argv[0]); };;;;
-	bmain(&argv[2], (UInt)argc - 2, flags);
+	bmain((UInt8**)&argv[2], (UInt)argc - 2, flags);
 	
 	exit(EXIT_SUCCESS);
 };
@@ -29,19 +29,21 @@ func printVersion(self: char*) {
 
 func printUsage(self: char*) {
 	printf((char*)"Usage: %s <option> file...\n", self);
-	printf((char*)"Options:\n");
-	printf((char*)"  --version                Print the version\n");
-	printf((char*)"  -l                       Lex and output tokens\n");
-	printf((char*)"  -p                       Parse and output ast\n");
-	printf((char*)"  -r                       Resolve and output errors\n");
-	printf((char*)"  -g                       Codegen and output C\n");
+	PrintString("Options:\n");
+	PrintString("  --version                Print the version\n");
+	PrintString("  -l                       Lex and output tokens\n");
+	PrintString("  -p                       Parse and output ast\n");
+	PrintString("  -r                       Resolve and output errors\n");
+	PrintString("  -g                       Codegen and output C\n");
 	exit(EXIT_FAILURE);
 };
 
-func bmain(files: char**, fileCount: UInt, flags: UInt8) {
+func bmain(files: UInt8**, fileCount: UInt, flags: UInt8) {
 	var i = 0;
 	while (i < fileCount) {
-		_codeLength = readFile(files[i], &_code);
+		var file = OpenFile(files[i], "r");
+		_codeLength = file->readAll(&_code);
+		file->close();
 		
 		var tempFlags = flags;
 		

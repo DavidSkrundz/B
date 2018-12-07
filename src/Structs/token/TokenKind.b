@@ -134,6 +134,6 @@ func _printTokenKind(kind: TokenKind, stream: FILE*) {
 		fprintf(stream, (char*)"STRING");
 	} else {
 		fprintf(stderr, (char*)"Unknown token kind: %u\n", kind);
-		abort();
+		Abort();
 	};;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 };
